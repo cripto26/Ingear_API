@@ -7,8 +7,8 @@ from decimal import Decimal
 class CotizacionBase(BaseModel):
     consecutivo: str
     id_cotizador: int
+    id_proyecto: int
     url_cotizacion: Optional[str] = None
-    valor: Optional[Decimal] = None
     tiempo_entrega: Optional[str] = None
     nombre_cotizacion: Optional[str] = None
     tipo_cotizacion: Optional[str] = None
@@ -24,8 +24,8 @@ class CotizacionCreate(CotizacionBase):
 class CotizacionUpdate(BaseModel):
     consecutivo: Optional[str] = None
     id_cotizador: Optional[int] = None
+    id_proyecto: Optional[int] = None
     url_cotizacion: Optional[str] = None
-    valor: Optional[Decimal] = None
     tiempo_entrega: Optional[str] = None
     nombre_cotizacion: Optional[str] = None
     tipo_cotizacion: Optional[str] = None

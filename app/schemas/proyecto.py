@@ -6,7 +6,6 @@ from decimal import Decimal
 
 class ProyectoBase(BaseModel):
     nombre: str
-    cotizacion_id: Optional[int] = None
     url_cuenta_cobro: Optional[str] = None
     anticipo: Optional[Decimal] = None
     fecha_inicio: Optional[date] = None
@@ -24,7 +23,6 @@ class ProyectoCreate(ProyectoBase):
 
 class ProyectoUpdate(BaseModel):
     nombre: Optional[str] = None
-    cotizacion_id: Optional[int] = None
     url_cuenta_cobro: Optional[str] = None
     anticipo: Optional[Decimal] = None
     fecha_inicio: Optional[date] = None

@@ -41,6 +41,9 @@ class Producto(Base):
     moneda = Column(String(20), nullable=True)
     arancel = Column(Numeric(8, 2), nullable=True)
 
+    referencia = Column(String(120), nullable=True)
+    categoria = Column(String(120), nullable=True)
+
     # En tu última versión: inventario vive dentro del producto
     cantidad_inventario = Column(Integer, nullable=False, default=0)
 

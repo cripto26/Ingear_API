@@ -24,6 +24,8 @@ class ProductoBase(BaseModel):
     moneda: Optional[str] = None
     arancel: Optional[Decimal] = None
     cantidad_inventario: int = 0
+    referencia: Optional[str] = None
+    categoria: Optional[str] = None
 
 
 class ProductoCreate(ProductoBase):

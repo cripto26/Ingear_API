@@ -1,0 +1,1392 @@
+﻿
+==================== FILE: D:\API_Ingear\.env ====================
+
+DATABASE_URL=postgresql+psycopg://ingear_user:123456@localhost:5432/ingear_db
+APP_NAME=Ingear API
+
+
+==================== FILE: D:\API_Ingear\app\api\v1\api.py ====================
+
+from fastapi import APIRouter
+
+from app.api.v1.endpoints.cliente import router as cliente_router
+from app.api.v1.endpoints.empleado import router as empleado_router
+from app.api.v1.endpoints.oportunidad import router as oportunidad_router
+from app.api.v1.endpoints.cotizacion import router as cotizacion_router
+from app.api.v1.endpoints.proyecto import router as proyecto_router
+from app.api.v1.endpoints.producto import router as producto_router
+from app.api.v1.endpoints.despacho import router as despacho_router
+from app.api.v1.endpoints.relaciones_proyecto import router as relaciones_router
+
+
+
+api_router = APIRouter()
+api_router.include_router(cliente_router, prefix="/clientes", tags=["clientes"])
+api_router.include_router(empleado_router, prefix="/empleados", tags=["empleados"])
+api_router.include_router(oportunidad_router, prefix="/oportunidades", tags=["oportunidades"])
+api_router.include_router(cotizacion_router, prefix="/cotizaciones", tags=["cotizaciones"])
+api_router.include_router(proyecto_router, prefix="/proyectos", tags=["proyectos"])
+api_router.include_router(producto_router, prefix="/productos", tags=["productos"])
+api_router.include_router(despacho_router, prefix="/despachos", tags=["despachos"])
+api_router.include_router(relaciones_router, prefix="/proyectos", tags=["relaciones-proyecto"])
+
+
+==================== FILE: D:\API_Ingear\app\api\v1\endpoints\cliente.py ====================
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.schemas.cliente import ClienteCreate, ClienteUpdate, ClienteOut
+from app.crud.cliente import crud_cliente
+
+router = APIRouter()
+
+
+@router.get("/", response_model=list[ClienteOut])
+def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+    return crud_cliente.list(db, skip=skip, limit=limit)
+
+
+@router.get("/{cliente_id}", response_model=ClienteOut)
+def obtener(cliente_id: int, db: Session = Depends(get_db)):
+    obj = crud_cliente.get(db, cliente_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Cliente no encontrado")
+    return obj
+
+
+@router.post("/", response_model=ClienteOut, status_code=201)
+def crear(payload: ClienteCreate, db: Session = Depends(get_db)):
+    return crud_cliente.create(db, payload.model_dump())
+
+
+@router.put("/{cliente_id}", response_model=ClienteOut)
+def actualizar(cliente_id: int, payload: ClienteUpdate, db: Session = Depends(get_db)):
+    obj = crud_cliente.get(db, cliente_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Cliente no encontrado")
+    data = payload.model_dump(exclude_unset=True)
+    return crud_cliente.update(db, obj, data)
+
+
+@router.delete("/{cliente_id}", status_code=204)
+def eliminar(cliente_id: int, db: Session = Depends(get_db)):
+    deleted = crud_cliente.remove(db, cliente_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Cliente no encontrado")
+    return None
+
+
+==================== FILE: D:\API_Ingear\app\api\v1\endpoints\cotizacion.py ====================
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.schemas.cotizacion import CotizacionCreate, CotizacionUpdate, CotizacionOut
+from app.crud.cotizacion import crud_cotizacion
+
+router = APIRouter()
+
+
+@router.get("/", response_model=list[CotizacionOut])
+def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+    return crud_cotizacion.list(db, skip=skip, limit=limit)
+
+
+@router.get("/{cotizacion_id}", response_model=CotizacionOut)
+def obtener(cotizacion_id: int, db: Session = Depends(get_db)):
+    obj = crud_cotizacion.get(db, cotizacion_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="CotizaciÃ³n no encontrada")
+    return obj
+
+
+@router.post("/", response_model=CotizacionOut, status_code=201)
+def crear(payload: CotizacionCreate, db: Session = Depends(get_db)):
+    return crud_cotizacion.create(db, payload.model_dump())
+
+
+@router.put("/{cotizacion_id}", response_model=CotizacionOut)
+def actualizar(cotizacion_id: int, payload: CotizacionUpdate, db: Session = Depends(get_db)):
+    obj = crud_cotizacion.get(db, cotizacion_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="CotizaciÃ³n no encontrada")
+    return crud_cotizacion.update(db, obj, payload.model_dump(exclude_unset=True))
+
+
+@router.delete("/{cotizacion_id}", status_code=204)
+def eliminar(cotizacion_id: int, db: Session = Depends(get_db)):
+    deleted = crud_cotizacion.remove(db, cotizacion_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="CotizaciÃ³n no encontrada")
+    return None
+
+
+==================== FILE: D:\API_Ingear\app\api\v1\endpoints\despacho.py ====================
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.schemas.despacho import DespachoCreate, DespachoUpdate, DespachoOut
+from app.crud.despacho import crud_despacho
+
+router = APIRouter()
+
+
+@router.get("/", response_model=list[DespachoOut])
+def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+    return crud_despacho.list(db, skip=skip, limit=limit)
+
+
+@router.get("/{despacho_id}", response_model=DespachoOut)
+def obtener(despacho_id: int, db: Session = Depends(get_db)):
+    obj = crud_despacho.get(db, despacho_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Despacho no encontrado")
+    return obj
+
+
+@router.post("/", response_model=DespachoOut, status_code=201)
+def crear(payload: DespachoCreate, db: Session = Depends(get_db)):
+    return crud_despacho.create(db, payload.model_dump())
+
+
+@router.put("/{despacho_id}", response_model=DespachoOut)
+def actualizar(despacho_id: int, payload: DespachoUpdate, db: Session = Depends(get_db)):
+    obj = crud_despacho.get(db, despacho_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Despacho no encontrado")
+    return crud_despacho.update(db, obj, payload.model_dump(exclude_unset=True))
+
+
+@router.delete("/{despacho_id}", status_code=204)
+def eliminar(despacho_id: int, db: Session = Depends(get_db)):
+    deleted = crud_despacho.remove(db, despacho_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Despacho no encontrado")
+    return None
+
+
+==================== FILE: D:\API_Ingear\app\api\v1\endpoints\empleado.py ====================
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.schemas.empleado import EmpleadoCreate, EmpleadoUpdate, EmpleadoOut
+from app.crud.empleado import crud_empleado
+
+router = APIRouter()
+
+
+@router.get("/", response_model=list[EmpleadoOut])
+def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+    return crud_empleado.list(db, skip=skip, limit=limit)
+
+
+@router.get("/{empleado_id}", response_model=EmpleadoOut)
+def obtener(empleado_id: int, db: Session = Depends(get_db)):
+    obj = crud_empleado.get(db, empleado_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Empleado no encontrado")
+    return obj
+
+
+@router.post("/", response_model=EmpleadoOut, status_code=201)
+def crear(payload: EmpleadoCreate, db: Session = Depends(get_db)):
+    return crud_empleado.create(db, payload.model_dump())
+
+
+@router.put("/{empleado_id}", response_model=EmpleadoOut)
+def actualizar(empleado_id: int, payload: EmpleadoUpdate, db: Session = Depends(get_db)):
+    obj = crud_empleado.get(db, empleado_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Empleado no encontrado")
+    return crud_empleado.update(db, obj, payload.model_dump(exclude_unset=True))
+
+
+@router.delete("/{empleado_id}", status_code=204)
+def eliminar(empleado_id: int, db: Session = Depends(get_db)):
+    deleted = crud_empleado.remove(db, empleado_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Empleado no encontrado")
+    return None
+
+
+==================== FILE: D:\API_Ingear\app\api\v1\endpoints\oportunidad.py ====================
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.schemas.oportunidad import OportunidadCreate, OportunidadUpdate, OportunidadOut
+from app.crud.oportunidad import crud_oportunidad
+
+router = APIRouter()
+
+
+@router.get("/", response_model=list[OportunidadOut])
+def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+    return crud_oportunidad.list(db, skip=skip, limit=limit)
+
+
+@router.get("/{oportunidad_id}", response_model=OportunidadOut)
+def obtener(oportunidad_id: int, db: Session = Depends(get_db)):
+    obj = crud_oportunidad.get(db, oportunidad_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Oportunidad no encontrada")
+    return obj
+
+
+@router.post("/", response_model=OportunidadOut, status_code=201)
+def crear(payload: OportunidadCreate, db: Session = Depends(get_db)):
+    return crud_oportunidad.create(db, payload.model_dump())
+
+
+@router.put("/{oportunidad_id}", response_model=OportunidadOut)
+def actualizar(oportunidad_id: int, payload: OportunidadUpdate, db: Session = Depends(get_db)):
+    obj = crud_oportunidad.get(db, oportunidad_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Oportunidad no encontrada")
+    return crud_oportunidad.update(db, obj, payload.model_dump(exclude_unset=True))
+
+
+@router.delete("/{oportunidad_id}", status_code=204)
+def eliminar(oportunidad_id: int, db: Session = Depends(get_db)):
+    deleted = crud_oportunidad.remove(db, oportunidad_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Oportunidad no encontrada")
+    return None
+
+
+==================== FILE: D:\API_Ingear\app\api\v1\endpoints\producto.py ====================
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.schemas.producto import ProductoCreate, ProductoUpdate, ProductoOut
+from app.crud.producto import crud_producto
+
+router = APIRouter()
+
+
+@router.get("/", response_model=list[ProductoOut])
+def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+    return crud_producto.list(db, skip=skip, limit=limit)
+
+
+@router.get("/{producto_id}", response_model=ProductoOut)
+def obtener(producto_id: int, db: Session = Depends(get_db)):
+    obj = crud_producto.get(db, producto_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return obj
+
+
+@router.post("/", response_model=ProductoOut, status_code=201)
+def crear(payload: ProductoCreate, db: Session = Depends(get_db)):
+    return crud_producto.create(db, payload.model_dump())
+
+
+@router.put("/{producto_id}", response_model=ProductoOut)
+def actualizar(producto_id: int, payload: ProductoUpdate, db: Session = Depends(get_db)):
+    obj = crud_producto.get(db, producto_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return crud_producto.update(db, obj, payload.model_dump(exclude_unset=True))
+
+
+@router.delete("/{producto_id}", status_code=204)
+def eliminar(producto_id: int, db: Session = Depends(get_db)):
+    deleted = crud_producto.remove(db, producto_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return None
+
+
+==================== FILE: D:\API_Ingear\app\api\v1\endpoints\proyecto.py ====================
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.schemas.proyecto import ProyectoCreate, ProyectoUpdate, ProyectoOut
+from app.crud.proyecto import crud_proyecto
+
+router = APIRouter()
+
+
+@router.get("/", response_model=list[ProyectoOut])
+def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+    return crud_proyecto.list(db, skip=skip, limit=limit)
+
+
+@router.get("/{proyecto_id}", response_model=ProyectoOut)
+def obtener(proyecto_id: int, db: Session = Depends(get_db)):
+    obj = crud_proyecto.get(db, proyecto_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Proyecto no encontrado")
+    return obj
+
+
+@router.post("/", response_model=ProyectoOut, status_code=201)
+def crear(payload: ProyectoCreate, db: Session = Depends(get_db)):
+    return crud_proyecto.create(db, payload.model_dump())
+
+
+@router.put("/{proyecto_id}", response_model=ProyectoOut)
+def actualizar(proyecto_id: int, payload: ProyectoUpdate, db: Session = Depends(get_db)):
+    obj = crud_proyecto.get(db, proyecto_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Proyecto no encontrado")
+    return crud_proyecto.update(db, obj, payload.model_dump(exclude_unset=True))
+
+
+@router.delete("/{proyecto_id}", status_code=204)
+def eliminar(proyecto_id: int, db: Session = Depends(get_db)):
+    deleted = crud_proyecto.remove(db, proyecto_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Proyecto no encontrado")
+    return None
+
+
+==================== FILE: D:\API_Ingear\app\api\v1\endpoints\relaciones_proyecto.py ====================
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.models.proyecto import Proyecto
+from app.models.empleado import Empleado
+from app.models.cliente import Cliente
+from app.models.despacho import Despacho
+
+from app.models.proyecto_empleado import ProyectoEmpleado
+from app.models.proyecto_cliente import ProyectoCliente
+from app.models.proyecto_despacho import ProyectoDespacho
+
+from app.schemas.proyecto_empleado import ProyectoEmpleadoLink
+from app.schemas.proyecto_cliente import ProyectoClienteLink
+from app.schemas.proyecto_despacho import ProyectoDespachoLink
+
+router = APIRouter()
+
+
+def _assert_exists(db: Session, model, obj_id: int, name: str):
+    obj = db.get(model, obj_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail=f"{name} no encontrado")
+    return obj
+
+
+# ---- EMPLEADOS EN PROYECTO ----
+@router.post("/{proyecto_id}/empleados", status_code=201)
+def asignar_empleado(proyecto_id: int, payload: ProyectoEmpleadoLink, db: Session = Depends(get_db)):
+    _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
+    _assert_exists(db, Empleado, payload.id_empleado, "Empleado")
+
+    link = ProyectoEmpleado(id_proyecto=proyecto_id, id_empleado=payload.id_empleado)
+    db.add(link)
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="RelaciÃ³n proyecto-empleado ya existe")
+    return {"ok": True}
+
+
+@router.delete("/{proyecto_id}/empleados/{empleado_id}", status_code=204)
+def quitar_empleado(proyecto_id: int, empleado_id: int, db: Session = Depends(get_db)):
+    _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
+    _assert_exists(db, Empleado, empleado_id, "Empleado")
+
+    link = db.get(ProyectoEmpleado, {"id_proyecto": proyecto_id, "id_empleado": empleado_id})
+    if not link:
+        raise HTTPException(status_code=404, detail="RelaciÃ³n no encontrada")
+    db.delete(link)
+    db.commit()
+    return None
+
+
+# ---- CLIENTES EN PROYECTO ----
+@router.post("/{proyecto_id}/clientes", status_code=201)
+def asignar_cliente(proyecto_id: int, payload: ProyectoClienteLink, db: Session = Depends(get_db)):
+    _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
+    _assert_exists(db, Cliente, payload.id_cliente, "Cliente")
+
+    link = ProyectoCliente(id_proyecto=proyecto_id, id_cliente=payload.id_cliente)
+    db.add(link)
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="RelaciÃ³n proyecto-cliente ya existe")
+    return {"ok": True}
+
+
+@router.delete("/{proyecto_id}/clientes/{cliente_id}", status_code=204)
+def quitar_cliente(proyecto_id: int, cliente_id: int, db: Session = Depends(get_db)):
+    _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
+    _assert_exists(db, Cliente, cliente_id, "Cliente")
+
+    link = db.get(ProyectoCliente, {"id_proyecto": proyecto_id, "id_cliente": cliente_id})
+    if not link:
+        raise HTTPException(status_code=404, detail="RelaciÃ³n no encontrada")
+    db.delete(link)
+    db.commit()
+    return None
+
+
+# ---- DESPACHOS EN PROYECTO ----
+@router.post("/{proyecto_id}/despachos", status_code=201)
+def asignar_despacho(proyecto_id: int, payload: ProyectoDespachoLink, db: Session = Depends(get_db)):
+    _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
+    _assert_exists(db, Despacho, payload.id_despacho, "Despacho")
+
+    link = ProyectoDespacho(id_proyecto=proyecto_id, id_despacho=payload.id_despacho)
+    db.add(link)
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="RelaciÃ³n proyecto-despacho ya existe")
+    return {"ok": True}
+
+
+@router.delete("/{proyecto_id}/despachos/{despacho_id}", status_code=204)
+def quitar_despacho(proyecto_id: int, despacho_id: int, db: Session = Depends(get_db)):
+    _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
+    _assert_exists(db, Despacho, despacho_id, "Despacho")
+
+    link = db.get(ProyectoDespacho, {"id_proyecto": proyecto_id, "id_despacho": despacho_id})
+    if not link:
+        raise HTTPException(status_code=404, detail="RelaciÃ³n no encontrada")
+    db.delete(link)
+    db.commit()
+    return None
+
+
+==================== FILE: D:\API_Ingear\app\core\config.py ====================
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+    APP_NAME: str = "Ingear API"
+    DATABASE_URL: str
+
+
+settings = Settings()
+
+
+==================== FILE: D:\API_Ingear\app\crud\base.py ====================
+
+from typing import Any, Generic, Optional, Type, TypeVar
+from sqlalchemy.orm import Session
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
+from fastapi import HTTPException
+
+ModelType = TypeVar("ModelType")
+
+
+class CRUDBase(Generic[ModelType]):
+    def __init__(self, model: Type[ModelType]):
+        self.model = model
+
+    def get(self, db: Session, id: Any) -> Optional[ModelType]:
+        return db.get(self.model, id)
+
+    def list(self, db: Session, skip: int = 0, limit: int = 50):
+        stmt = select(self.model).offset(skip).limit(limit)
+        return list(db.execute(stmt).scalars().all())
+
+    def create(self, db: Session, obj_in: dict) -> ModelType:
+        obj = self.model(**obj_in)
+        db.add(obj)
+        try:
+            db.commit()
+            db.refresh(obj)
+        except IntegrityError:
+            db.rollback()
+            raise HTTPException(
+                status_code=409,
+                detail="A resource with the same unique identifier already exists.",
+            )
+        return obj
+
+    def update(self, db: Session, db_obj: ModelType, obj_in: dict) -> ModelType:
+        for k, v in obj_in.items():
+            setattr(db_obj, k, v)
+        try:
+            db.commit()
+            db.refresh(db_obj)
+        except IntegrityError:
+            db.rollback()
+            raise HTTPException(
+                status_code=409,
+                detail="The update violates a unique constraint.",
+            )
+        return db_obj
+
+    def remove(self, db: Session, id: Any) -> Optional[ModelType]:
+        obj = self.get(db, id)
+        if not obj:
+            return None
+        db.delete(obj)
+        db.commit()
+        return obj
+
+
+==================== FILE: D:\API_Ingear\app\crud\cliente.py ====================
+
+from app.crud.base import CRUDBase
+from app.models.cliente import Cliente
+
+crud_cliente = CRUDBase(Cliente)
+
+
+==================== FILE: D:\API_Ingear\app\crud\cotizacion.py ====================
+
+from app.crud.base import CRUDBase
+from app.models.cotizacion import Cotizacion
+
+crud_cotizacion = CRUDBase(Cotizacion)
+
+
+==================== FILE: D:\API_Ingear\app\crud\despacho.py ====================
+
+from app.crud.base import CRUDBase
+from app.models.despacho import Despacho
+
+crud_despacho = CRUDBase(Despacho)
+
+
+==================== FILE: D:\API_Ingear\app\crud\empleado.py ====================
+
+from app.crud.base import CRUDBase
+from app.models.empleado import Empleado
+
+crud_empleado = CRUDBase(Empleado)
+
+
+==================== FILE: D:\API_Ingear\app\crud\oportunidad.py ====================
+
+from app.crud.base import CRUDBase
+from app.models.oportunidad import Oportunidad
+
+crud_oportunidad = CRUDBase(Oportunidad)
+
+
+==================== FILE: D:\API_Ingear\app\crud\producto.py ====================
+
+from app.crud.base import CRUDBase
+from app.models.producto import Producto
+
+crud_producto = CRUDBase(Producto)
+
+
+==================== FILE: D:\API_Ingear\app\crud\proyecto.py ====================
+
+from app.crud.base import CRUDBase
+from app.models.proyecto import Proyecto
+
+crud_proyecto = CRUDBase(Proyecto)
+
+
+==================== FILE: D:\API_Ingear\app\db\base.py ====================
+
+from sqlalchemy.orm import DeclarativeBase
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+==================== FILE: D:\API_Ingear\app\db\session.py ====================
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from app.core.config import settings
+
+engine = create_engine(settings.DATABASE_URL, pool_pre_ping=True)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+ 
+
+==================== FILE: D:\API_Ingear\app\main.py ====================
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.core.config import settings
+from app.api.v1.api import api_router
+
+app = FastAPI(title=settings.APP_NAME)
+
+# CORS para desarrollo local (Vite suele correr en 5173)
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(api_router, prefix="/api/v1")
+
+
+@app.get("/")
+def root():
+    return {"ok": True, "name": settings.APP_NAME}
+
+
+==================== FILE: D:\API_Ingear\app\models\__init__.py ====================
+
+from app.models.cliente import Cliente
+from app.models.empleado import Empleado
+from app.models.oportunidad import Oportunidad
+from app.models.cotizacion import Cotizacion
+from app.models.proyecto import Proyecto
+from app.models.producto import Producto
+from app.models.despacho import Despacho
+from app.models.proyecto_empleado import ProyectoEmpleado
+from app.models.proyecto_cliente import ProyectoCliente
+from app.models.proyecto_despacho import ProyectoDespacho
+
+__all__ = [
+    "Cliente",
+    "Empleado",
+    "Oportunidad",
+    "Cotizacion",
+    "Proyecto",
+    "Producto",
+    "Despacho",
+    "ProyectoEmpleado",
+    "ProyectoCliente",
+    "ProyectoDespacho",
+]
+
+
+==================== FILE: D:\API_Ingear\app\models\cliente.py ====================
+
+from sqlalchemy import String, Integer, Column, UniqueConstraint, ForeignKey
+from app.db.base import Base
+from sqlalchemy.orm import relationship
+
+
+class Cliente(Base):
+    __tablename__ = "cliente"
+
+    id = Column(Integer, primary_key=True, index=True)
+    razon_social = Column(String(255), nullable=False)
+    nit = Column(String(50), nullable=False, index=True)
+    telefono = Column(String(50), nullable=True)
+    email = Column(String(255), nullable=True)
+    direccion = Column(String(255), nullable=True)
+    ciudad = Column(String(120), nullable=True)
+
+    world_office_id = Column(String(80), nullable=False)
+    tipo_contribuyente = Column(String(120), nullable=True)
+    actividad_economica = Column(String(200), nullable=True)
+
+    oportunidades = relationship("Oportunidad", back_populates="cliente", cascade="all, delete-orphan")
+    # M:N con Proyecto vÃ­a tabla puente
+    proyectos = relationship("Proyecto", secondary="proyecto_cliente", back_populates="clientes")
+
+    __table_args__ = (
+        UniqueConstraint("nit", name="uq_cliente_nit"),
+    )
+
+
+==================== FILE: D:\API_Ingear\app\models\cotizacion.py ====================
+
+from sqlalchemy import (
+    String,
+    Integer,
+    Column,
+    ForeignKey,
+    DateTime,
+    Numeric,
+    UniqueConstraint,
+)
+from sqlalchemy.sql import func
+from app.db.base import Base
+from sqlalchemy.orm import relationship
+
+
+
+class Cotizacion(Base):
+    __tablename__ = "cotizacion"
+
+    id = Column(Integer, primary_key=True, index=True)
+    consecutivo = Column(String(60), nullable=False, index=True)
+
+    id_cotizador = Column(Integer, ForeignKey("empleado.id"), nullable=False, index=True)
+    id_proyecto = Column(Integer, ForeignKey("proyecto.id"), nullable=False, index=True)
+    
+    
+
+    url_cotizacion = Column(String(500), nullable=True)
+
+   
+    tiempo_entrega = Column(String(120), nullable=True)
+    nombre_cotizacion = Column(String(255), nullable=True)
+
+    fecha_creacion = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+    tipo_cotizacion = Column(String(120), nullable=True)
+    etapa_cotizacion = Column(String(120), nullable=True)
+    forma_pago = Column(String(120), nullable=True)
+
+    total = Column(Numeric(14, 2), nullable=True)
+
+    cotizador = relationship("Empleado", back_populates="cotizaciones", foreign_keys=[id_cotizador])
+    proyecto = relationship("Proyecto", back_populates="cotizaciones", foreign_keys=[id_proyecto])
+
+    __table_args__ = (
+        UniqueConstraint("consecutivo", name="uq_cotizacion_consecutivo"),
+    )
+
+
+==================== FILE: D:\API_Ingear\app\models\despacho.py ====================
+
+from sqlalchemy import (
+    String,
+    Integer,
+    Column,
+    Date,
+    Numeric,
+)
+from app.db.base import Base
+from sqlalchemy.orm import relationship
+
+
+class Despacho(Base):
+    __tablename__ = "despachos"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    fecha = Column(Date, nullable=False)
+    transportadora = Column(String(120), nullable=True)
+    guia = Column(String(120), nullable=True)
+
+    valor_flete_seguro = Column(Numeric(14, 2), nullable=True)
+    valor_mercancia = Column(Numeric(14, 2), nullable=True)
+
+    ciudad_origen = Column(String(120), nullable=True)
+    contacto = Column(String(150), nullable=True)
+
+    estado = Column(String(80), nullable=True)
+    ciudad_destino = Column(String(120), nullable=True)
+
+    proyectos = relationship("Proyecto", secondary="proyecto_despacho", back_populates="despachos")
+
+
+==================== FILE: D:\API_Ingear\app\models\empleado.py ====================
+
+from sqlalchemy import String, Integer, Column, UniqueConstraint
+from app.db.base import Base
+from sqlalchemy.orm import relationship
+
+class Empleado(Base):
+    __tablename__ = "empleado"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(200), nullable=False)
+    email = Column(String(255), nullable=True)
+    cargo = Column(String(120), nullable=True)
+    area = Column(String(120), nullable=True)
+    estado = Column(String(50), nullable=True)
+    cedula = Column(String(50), nullable=True, index=True)
+    telefono = Column(String(50), nullable=True)
+
+    cotizaciones = relationship("Cotizacion", back_populates="cotizador")
+
+    oportunidades_responsable = relationship(
+        "Oportunidad",
+        back_populates="responsable",
+        foreign_keys="Oportunidad.responsable_cotizacion",
+    )
+
+    proyectos = relationship("Proyecto", secondary="proyecto_empleado", back_populates="empleados")
+
+    __table_args__ = (
+        UniqueConstraint("cedula", name="uq_empleado_cedula"),
+    )
+
+
+==================== FILE: D:\API_Ingear\app\models\oportunidad.py ====================
+
+from sqlalchemy import (
+    String,
+    Integer,
+    Column,
+    ForeignKey,
+    Date,
+    Numeric,
+)
+from app.db.base import Base
+from sqlalchemy.orm import relationship
+
+
+class Oportunidad(Base):
+    __tablename__ = "oportunidad"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    cliente_id = Column(Integer, ForeignKey("cliente.id"), nullable=False, index=True)
+
+    nombre_proyecto = Column(String(255), nullable=True)
+    tipologia = Column(String(120), nullable=True)
+    tipo_contacto = Column(String(120), nullable=True)
+    ciudad = Column(String(120), nullable=True)
+    tipo_servicio = Column(String(120), nullable=True)
+
+    # En el ER aparece como "responsable_cotizacion" (relaciÃ³n a EMPLEADO)
+    responsable_cotizacion = Column(Integer, ForeignKey("empleado.id"), nullable=False, index=True)
+
+    marca_predominante = Column(String(120), nullable=True)
+
+    fecha_oportunidad = Column(Date, nullable=False)
+    fecha_cotizacion = Column(Date, nullable=True)
+
+    rubro_sin_iva = Column(Numeric(14, 2), nullable=True)
+    nivel_importancia = Column(String(50), nullable=True)
+    porcentaje_cierre = Column(Numeric(5, 2), nullable=True)
+    fecha_cierre = Column(Date, nullable=True)
+
+    cliente = relationship("Cliente", back_populates="oportunidades")
+
+    responsable = relationship(
+        "Empleado",
+        back_populates="oportunidades_responsable",
+        foreign_keys=[responsable_cotizacion],
+    )
+
+    # Proyecto asociado (si tu ER lo piensa 1:1, mira la nota de UNIQUE abajo)
+    proyecto = relationship("Proyecto", back_populates="oportunidad", uselist=False)
+
+
+==================== FILE: D:\API_Ingear\app\models\producto.py ====================
+
+from sqlalchemy import (
+    String,
+    Integer,
+    Column,
+    Date,
+    Numeric,
+    UniqueConstraint,
+)
+from app.db.base import Base
+
+
+class Producto(Base):
+    __tablename__ = "producto"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    codigo_producto = Column(String(80), nullable=False, index=True)
+    marca = Column(String(120), nullable=True)
+    descripcion = Column(String(500), nullable=True)
+
+    costo_instalacion = Column(Numeric(14, 2), nullable=True)
+    costo_fabrica = Column(Numeric(14, 2), nullable=True)
+    descuento_fabricante = Column(Numeric(8, 2), nullable=True)
+
+    pais_origen = Column(String(120), nullable=True)
+    costo_ingear = Column(Numeric(14, 2), nullable=True)
+
+    fecha_creacion_producto = Column(Date, nullable=True)
+
+    url_imagen = Column(String(500), nullable=True)
+    url_ficha_tecnica = Column(String(500), nullable=True)
+
+    peso_kg = Column(Numeric(10, 3), nullable=True)
+    volumen = Column(Numeric(12, 4), nullable=True)
+
+    valor_inventario = Column(Numeric(14, 2), nullable=True)
+
+    tipo_producto = Column(String(120), nullable=True)
+    subtipo = Column(String(120), nullable=True)
+
+    moneda = Column(String(20), nullable=True)
+    arancel = Column(Numeric(8, 2), nullable=True)
+
+    # En tu Ãºltima versiÃ³n: inventario vive dentro del producto
+    cantidad_inventario = Column(Integer, nullable=False, default=0)
+
+    __table_args__ = (
+        UniqueConstraint("codigo_producto", name="uq_producto_codigo"),
+    )
+
+
+==================== FILE: D:\API_Ingear\app\models\proyecto.py ====================
+
+from sqlalchemy import (
+    String,
+    Integer,
+    Column,
+    ForeignKey,
+    Date,
+    Numeric,
+    Text,
+)
+from app.db.base import Base
+from sqlalchemy.orm import relationship
+
+
+class Proyecto(Base):
+    __tablename__ = "proyecto"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(255), nullable=False)
+
+
+    url_cuenta_cobro = Column(String(500), nullable=True)
+    anticipo = Column(Numeric(14, 2), nullable=True)
+
+    fecha_inicio = Column(Date, nullable=True)
+
+    estado_logistica = Column(String(80), nullable=True)
+    estado_contable = Column(String(80), nullable=True)
+    estado_ingenieria = Column(String(80), nullable=True)
+    estado_factura = Column(String(80), nullable=True)
+
+    observacion = Column(Text, nullable=True)
+
+    oportunidad_id = Column(Integer, ForeignKey("oportunidad.id"), nullable=True, index=True)
+
+    oportunidad = relationship("Oportunidad", back_populates="proyecto")
+
+    # 1:N con Cotizacion (porque Cotizacion.id_proyecto existe)
+    cotizaciones = relationship("Cotizacion", back_populates="proyecto")
+
+    # M:N
+    empleados = relationship("Empleado", secondary="proyecto_empleado", back_populates="proyectos")
+    clientes = relationship("Cliente", secondary="proyecto_cliente", back_populates="proyectos")
+    despachos = relationship("Despacho", secondary="proyecto_despacho", back_populates="proyectos")
+
+
+==================== FILE: D:\API_Ingear\app\models\proyecto_cliente.py ====================
+
+from sqlalchemy import Integer, Column, ForeignKey
+from app.db.base import Base
+
+
+class ProyectoCliente(Base):
+    __tablename__ = "proyecto_cliente"
+
+    id_cliente = Column(Integer, ForeignKey("cliente.id"), primary_key=True)
+    id_proyecto = Column(Integer, ForeignKey("proyecto.id"), primary_key=True)
+
+
+==================== FILE: D:\API_Ingear\app\models\proyecto_despacho.py ====================
+
+from sqlalchemy import Integer, Column, ForeignKey
+from app.db.base import Base
+
+
+class ProyectoDespacho(Base):
+    __tablename__ = "proyecto_despacho"
+
+    id_despacho = Column(Integer, ForeignKey("despachos.id"), primary_key=True)
+    id_proyecto = Column(Integer, ForeignKey("proyecto.id"), primary_key=True)
+
+
+==================== FILE: D:\API_Ingear\app\models\proyecto_empleado.py ====================
+
+from sqlalchemy import Integer, Column, ForeignKey
+from app.db.base import Base
+
+
+class ProyectoEmpleado(Base):
+    __tablename__ = "proyecto_empleado"
+
+    id_empleado = Column(Integer, ForeignKey("empleado.id"), primary_key=True)
+    id_proyecto = Column(Integer, ForeignKey("proyecto.id"), primary_key=True)
+
+
+==================== FILE: D:\API_Ingear\app\schemas\cliente.py ====================
+
+from pydantic import BaseModel, EmailStr
+from typing import Optional
+
+
+class ClienteBase(BaseModel):
+    razon_social: str
+    nit: str
+    telefono: Optional[str] = None
+    email: Optional[EmailStr] = None
+    direccion: Optional[str] = None
+    ciudad: Optional[str] = None
+    world_office_id: str
+    tipo_contribuyente: Optional[str] = None
+    actividad_economica: Optional[str] = None
+
+
+class ClienteCreate(ClienteBase):
+    pass
+
+
+class ClienteUpdate(BaseModel):
+    razon_social: Optional[str] = None
+    nit: Optional[str] = None
+    telefono: Optional[str] = None
+    email: Optional[EmailStr] = None
+    direccion: Optional[str] = None
+    ciudad: Optional[str] = None
+    world_office_id: Optional[str] = None
+    tipo_contribuyente: Optional[str] = None
+    actividad_economica: Optional[str] = None
+
+
+class ClienteOut(ClienteBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+==================== FILE: D:\API_Ingear\app\schemas\cotizacion.py ====================
+
+from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
+from decimal import Decimal
+
+
+class CotizacionBase(BaseModel):
+    consecutivo: str
+    id_cotizador: int
+    id_proyecto: int
+    url_cotizacion: Optional[str] = None
+    tiempo_entrega: Optional[str] = None
+    nombre_cotizacion: Optional[str] = None
+    tipo_cotizacion: Optional[str] = None
+    etapa_cotizacion: Optional[str] = None
+    forma_pago: Optional[str] = None
+    total: Optional[Decimal] = None
+
+
+class CotizacionCreate(CotizacionBase):
+    pass
+
+
+class CotizacionUpdate(BaseModel):
+    consecutivo: Optional[str] = None
+    id_cotizador: Optional[int] = None
+    id_proyecto: Optional[int] = None
+    url_cotizacion: Optional[str] = None
+    tiempo_entrega: Optional[str] = None
+    nombre_cotizacion: Optional[str] = None
+    tipo_cotizacion: Optional[str] = None
+    etapa_cotizacion: Optional[str] = None
+    forma_pago: Optional[str] = None
+    total: Optional[Decimal] = None
+
+
+class CotizacionOut(CotizacionBase):
+    id: int
+    fecha_creacion: datetime
+
+    class Config:
+        from_attributes = True
+
+
+==================== FILE: D:\API_Ingear\app\schemas\despacho.py ====================
+
+from pydantic import BaseModel
+from typing import Optional
+from datetime import date
+from decimal import Decimal
+
+
+class DespachoBase(BaseModel):
+    fecha: Optional[date] = None
+    transportadora: Optional[str] = None
+    guia: Optional[str] = None
+    valor_flete_seguro: Optional[Decimal] = None
+    valor_mercancia: Optional[Decimal] = None
+    ciudad_origen: Optional[str] = None
+    contacto: Optional[str] = None
+    estado: Optional[str] = None
+    ciudad_destino: Optional[str] = None
+
+
+class DespachoCreate(DespachoBase):
+    pass
+
+
+class DespachoUpdate(DespachoBase):
+    pass
+
+
+class DespachoOut(DespachoBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+==================== FILE: D:\API_Ingear\app\schemas\empleado.py ====================
+
+from pydantic import BaseModel, EmailStr
+from typing import Optional
+
+
+class EmpleadoBase(BaseModel):
+    nombre: str
+    email: Optional[EmailStr] = None
+    cargo: Optional[str] = None
+    area: Optional[str] = None
+    estado: Optional[str] = None
+    cedula: Optional[str] = None
+    telefono: Optional[str] = None
+
+
+class EmpleadoCreate(EmpleadoBase):
+    pass
+
+
+class EmpleadoUpdate(BaseModel):
+    nombre: Optional[str] = None
+    email: Optional[EmailStr] = None
+    cargo: Optional[str] = None
+    area: Optional[str] = None
+    estado: Optional[str] = None
+    cedula: Optional[str] = None
+    telefono: Optional[str] = None
+
+
+class EmpleadoOut(EmpleadoBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+==================== FILE: D:\API_Ingear\app\schemas\oportunidad.py ====================
+
+from pydantic import BaseModel
+from typing import Optional
+from datetime import date
+from decimal import Decimal
+
+
+class OportunidadBase(BaseModel):
+    # Required fields based on model (nullable=False)
+    cliente_id: int
+    responsable_cotizacion: int
+    fecha_oportunidad: date
+
+    # Optional fields (nullable=True)
+    nombre_proyecto: Optional[str] = None
+    tipologia: Optional[str] = None
+    tipo_contacto: Optional[str] = None
+    ciudad: Optional[str] = None
+    tipo_servicio: Optional[str] = None
+    marca_predominante: Optional[str] = None
+    fecha_cotizacion: Optional[date] = None
+    rubro_sin_iva: Optional[Decimal] = None
+    nivel_importancia: Optional[str] = None
+    porcentaje_cierre: Optional[Decimal] = None
+    fecha_cierre: Optional[date] = None
+
+
+class OportunidadCreate(OportunidadBase):
+    pass
+
+
+class OportunidadUpdate(BaseModel):
+    # All fields are optional for updates
+    cliente_id: Optional[int] = None
+    responsable_cotizacion: Optional[int] = None
+    fecha_oportunidad: Optional[date] = None
+    nombre_proyecto: Optional[str] = None
+    tipologia: Optional[str] = None
+    tipo_contacto: Optional[str] = None
+    ciudad: Optional[str] = None
+    tipo_servicio: Optional[str] = None
+    marca_predominante: Optional[str] = None
+    fecha_cotizacion: Optional[date] = None
+    rubro_sin_iva: Optional[Decimal] = None
+    nivel_importancia: Optional[str] = None
+    porcentaje_cierre: Optional[Decimal] = None
+    fecha_cierre: Optional[date] = None
+
+
+class OportunidadOut(OportunidadBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+==================== FILE: D:\API_Ingear\app\schemas\producto.py ====================
+
+from pydantic import BaseModel
+from typing import Optional
+from datetime import date
+from decimal import Decimal
+
+
+class ProductoBase(BaseModel):
+    codigo_producto: str
+    marca: Optional[str] = None
+    descripcion: Optional[str] = None
+    costo_instalacion: Optional[Decimal] = None
+    costo_fabrica: Optional[Decimal] = None
+    descuento_fabricante: Optional[Decimal] = None
+    pais_origen: Optional[str] = None
+    costo_ingear: Optional[Decimal] = None
+    fecha_creacion_producto: Optional[date] = None
+    url_imagen: Optional[str] = None
+    url_ficha_tecnica: Optional[str] = None
+    peso_kg: Optional[Decimal] = None
+    volumen: Optional[Decimal] = None
+    valor_inventario: Optional[Decimal] = None
+    tipo_producto: Optional[str] = None
+    subtipo: Optional[str] = None
+    moneda: Optional[str] = None
+    arancel: Optional[Decimal] = None
+    cantidad_inventario: int = 0
+
+
+class ProductoCreate(ProductoBase):
+    pass
+
+
+class ProductoUpdate(BaseModel):
+    codigo_producto: Optional[str] = None
+    marca: Optional[str] = None
+    descripcion: Optional[str] = None
+    costo_instalacion: Optional[Decimal] = None
+    costo_fabrica: Optional[Decimal] = None
+    descuento_fabricante: Optional[Decimal] = None
+    pais_origen: Optional[str] = None
+    costo_ingear: Optional[Decimal] = None
+    fecha_creacion_producto: Optional[date] = None
+    url_imagen: Optional[str] = None
+    url_ficha_tecnica: Optional[str] = None
+    peso_kg: Optional[Decimal] = None
+    volumen: Optional[Decimal] = None
+    valor_inventario: Optional[Decimal] = None
+    tipo_producto: Optional[str] = None
+    subtipo: Optional[str] = None
+    moneda: Optional[str] = None
+    arancel: Optional[Decimal] = None
+    cantidad_inventario: Optional[int] = None
+
+
+class ProductoOut(ProductoBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+==================== FILE: D:\API_Ingear\app\schemas\proyecto.py ====================
+
+from pydantic import BaseModel
+from typing import Optional
+from datetime import date
+from decimal import Decimal
+
+
+class ProyectoBase(BaseModel):
+    nombre: str
+    url_cuenta_cobro: Optional[str] = None
+    anticipo: Optional[Decimal] = None
+    fecha_inicio: Optional[date] = None
+    estado_logistica: Optional[str] = None
+    estado_contable: Optional[str] = None
+    estado_ingenieria: Optional[str] = None
+    estado_factura: Optional[str] = None
+    observacion: Optional[str] = None
+    oportunidad_id: Optional[int] = None
+
+
+class ProyectoCreate(ProyectoBase):
+    pass
+
+
+class ProyectoUpdate(BaseModel):
+    nombre: Optional[str] = None
+    url_cuenta_cobro: Optional[str] = None
+    anticipo: Optional[Decimal] = None
+    fecha_inicio: Optional[date] = None
+    estado_logistica: Optional[str] = None
+    estado_contable: Optional[str] = None
+    estado_ingenieria: Optional[str] = None
+    estado_factura: Optional[str] = None
+    observacion: Optional[str] = None
+    oportunidad_id: Optional[int] = None
+
+
+class ProyectoOut(ProyectoBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+==================== FILE: D:\API_Ingear\app\schemas\proyecto_cliente.py ====================
+
+from pydantic import BaseModel
+
+
+class ProyectoClienteLink(BaseModel):
+    id_cliente: int
+
+
+==================== FILE: D:\API_Ingear\app\schemas\proyecto_despacho.py ====================
+
+from pydantic import BaseModel
+
+
+class ProyectoDespachoLink(BaseModel):
+    id_despacho: int
+
+
+==================== FILE: D:\API_Ingear\app\schemas\proyecto_empleado.py ====================
+
+from pydantic import BaseModel
+
+
+class ProyectoEmpleadoLink(BaseModel):
+    id_empleado: int
+
+
+==================== FILE: D:\API_Ingear\requirements.txt ====================
+
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+SQLAlchemy==2.0.36
+psycopg[binary]==3.2.5
+pydantic==2.10.3
+pydantic-settings==2.6.1
+python-dotenv==1.0.1
+

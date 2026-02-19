@@ -1,37 +1,35 @@
 ﻿
-==================== FILE: D:\API_Ingear\.env ====================
+==================== FILE: C:\API_Ingear\.env ====================
 
 DATABASE_URL=postgresql+psycopg://ingear_user:123456@localhost:5432/ingear_db
 APP_NAME=Ingear API
 
 
-==================== FILE: D:\API_Ingear\app\api\v1\api.py ====================
+==================== FILE: C:\API_Ingear\app\api\v1\api.py ====================
+
+# app/api/v1/api.py
 
 from fastapi import APIRouter
 
-from app.api.v1.endpoints.cliente import router as cliente_router
-from app.api.v1.endpoints.empleado import router as empleado_router
-from app.api.v1.endpoints.oportunidad import router as oportunidad_router
-from app.api.v1.endpoints.cotizacion import router as cotizacion_router
-from app.api.v1.endpoints.proyecto import router as proyecto_router
-from app.api.v1.endpoints.producto import router as producto_router
-from app.api.v1.endpoints.despacho import router as despacho_router
-from app.api.v1.endpoints.relaciones_proyecto import router as relaciones_router
-
-
+from app.api.v1.endpoints import producto
+from app.api.v1.endpoints import cliente
+from app.api.v1.endpoints import oportunidad
+from app.api.v1.endpoints import cotizacion
+from app.api.v1.endpoints import fx
+from app.api.v1.endpoints import pais
 
 api_router = APIRouter()
-api_router.include_router(cliente_router, prefix="/clientes", tags=["clientes"])
-api_router.include_router(empleado_router, prefix="/empleados", tags=["empleados"])
-api_router.include_router(oportunidad_router, prefix="/oportunidades", tags=["oportunidades"])
-api_router.include_router(cotizacion_router, prefix="/cotizaciones", tags=["cotizaciones"])
-api_router.include_router(proyecto_router, prefix="/proyectos", tags=["proyectos"])
-api_router.include_router(producto_router, prefix="/productos", tags=["productos"])
-api_router.include_router(despacho_router, prefix="/despachos", tags=["despachos"])
-api_router.include_router(relaciones_router, prefix="/proyectos", tags=["relaciones-proyecto"])
+
+api_router.include_router(producto.router, prefix="/productos", tags=["productos"])
+api_router.include_router(cliente.router, prefix="/clientes", tags=["clientes"])
+api_router.include_router(oportunidad.router, prefix="/oportunidades", tags=["oportunidades"])
+api_router.include_router(cotizacion.router, prefix="/cotizaciones", tags=["cotizaciones"])
+
+api_router.include_router(fx.router, prefix="/fx", tags=["fx"])
+api_router.include_router(pais.router, prefix="/paises", tags=["paises"])
 
 
-==================== FILE: D:\API_Ingear\app\api\v1\endpoints\cliente.py ====================
+==================== FILE: C:\API_Ingear\app\api\v1\endpoints\cliente.py ====================
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -78,7 +76,7 @@ def eliminar(cliente_id: int, db: Session = Depends(get_db)):
     return None
 
 
-==================== FILE: D:\API_Ingear\app\api\v1\endpoints\cotizacion.py ====================
+==================== FILE: C:\API_Ingear\app\api\v1\endpoints\cotizacion.py ====================
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -124,7 +122,7 @@ def eliminar(cotizacion_id: int, db: Session = Depends(get_db)):
     return None
 
 
-==================== FILE: D:\API_Ingear\app\api\v1\endpoints\despacho.py ====================
+==================== FILE: C:\API_Ingear\app\api\v1\endpoints\despacho.py ====================
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -170,7 +168,7 @@ def eliminar(despacho_id: int, db: Session = Depends(get_db)):
     return None
 
 
-==================== FILE: D:\API_Ingear\app\api\v1\endpoints\empleado.py ====================
+==================== FILE: C:\API_Ingear\app\api\v1\endpoints\empleado.py ====================
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -216,7 +214,31 @@ def eliminar(empleado_id: int, db: Session = Depends(get_db)):
     return None
 
 
-==================== FILE: D:\API_Ingear\app\api\v1\endpoints\oportunidad.py ====================
+==================== FILE: C:\API_Ingear\app\api\v1\endpoints\fx.py ====================
+
+# app/api/v1/endpoints/fx.py
+from fastapi import APIRouter, HTTPException
+
+from app.schemas.fx import FxRatesOut
+from app.services.fx_service import get_fx_rates
+
+router = APIRouter()
+
+
+@router.get("/rates", response_model=FxRatesOut)
+async def read_fx_rates():
+    """
+    Devuelve:
+    - usd_cop: TRM USD/COP (BanRep SDMX)
+    - eur_cop: EUR/COP calculado = (usd_cop) * (usd por 1 eur del BCE)
+    """
+    try:
+        return await get_fx_rates()
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"No se pudo consultar TRM/EUR: {e}")
+
+
+==================== FILE: C:\API_Ingear\app\api\v1\endpoints\oportunidad.py ====================
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -262,7 +284,60 @@ def eliminar(oportunidad_id: int, db: Session = Depends(get_db)):
     return None
 
 
-==================== FILE: D:\API_Ingear\app\api\v1\endpoints\producto.py ====================
+==================== FILE: C:\API_Ingear\app\api\v1\endpoints\pais.py ====================
+
+# app/api/v1/endpoints/pais.py
+from typing import List
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.api.deps import get_db
+from app.crud.crud_pais import crud_pais
+from app.schemas.pais import PaisCreate, PaisOut, PaisUpdate
+
+router = APIRouter()
+
+
+@router.get("/", response_model=List[PaisOut])
+def list_paises(db: Session = Depends(get_db), skip: int = 0, limit: int = 1000):
+    return crud_pais.get_multi(db, skip=skip, limit=limit)
+
+
+@router.get("/{pais}", response_model=PaisOut)
+def get_pais(pais: str, db: Session = Depends(get_db)):
+    obj = crud_pais.get(db, id=pais)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Pais no encontrado")
+    return obj
+
+
+@router.post("/", response_model=PaisOut)
+def create_pais(payload: PaisCreate, db: Session = Depends(get_db)):
+    # evita duplicados por PK
+    existing = crud_pais.get(db, id=payload.pais)
+    if existing:
+        raise HTTPException(status_code=409, detail="Ese pais ya existe")
+    return crud_pais.create(db, obj_in=payload)
+
+
+@router.put("/{pais}", response_model=PaisOut)
+def update_pais(pais: str, payload: PaisUpdate, db: Session = Depends(get_db)):
+    obj = crud_pais.get(db, id=pais)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Pais no encontrado")
+    return crud_pais.update(db, db_obj=obj, obj_in=payload)
+
+
+@router.delete("/{pais}", response_model=PaisOut)
+def delete_pais(pais: str, db: Session = Depends(get_db)):
+    obj = crud_pais.get(db, id=pais)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Pais no encontrado")
+    return crud_pais.remove(db, id=pais)
+
+
+==================== FILE: C:\API_Ingear\app\api\v1\endpoints\producto.py ====================
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -308,7 +383,7 @@ def eliminar(producto_id: int, db: Session = Depends(get_db)):
     return None
 
 
-==================== FILE: D:\API_Ingear\app\api\v1\endpoints\proyecto.py ====================
+==================== FILE: C:\API_Ingear\app\api\v1\endpoints\proyecto.py ====================
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -354,7 +429,7 @@ def eliminar(proyecto_id: int, db: Session = Depends(get_db)):
     return None
 
 
-==================== FILE: D:\API_Ingear\app\api\v1\endpoints\relaciones_proyecto.py ====================
+==================== FILE: C:\API_Ingear\app\api\v1\endpoints\relaciones_proyecto.py ====================
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -470,7 +545,7 @@ def quitar_despacho(proyecto_id: int, despacho_id: int, db: Session = Depends(ge
     return None
 
 
-==================== FILE: D:\API_Ingear\app\core\config.py ====================
+==================== FILE: C:\API_Ingear\app\core\config.py ====================
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -485,7 +560,7 @@ class Settings(BaseSettings):
 settings = Settings()
 
 
-==================== FILE: D:\API_Ingear\app\crud\base.py ====================
+==================== FILE: C:\API_Ingear\app\crud\base.py ====================
 
 from typing import Any, Generic, Optional, Type, TypeVar
 from sqlalchemy.orm import Session
@@ -544,7 +619,7 @@ class CRUDBase(Generic[ModelType]):
         return obj
 
 
-==================== FILE: D:\API_Ingear\app\crud\cliente.py ====================
+==================== FILE: C:\API_Ingear\app\crud\cliente.py ====================
 
 from app.crud.base import CRUDBase
 from app.models.cliente import Cliente
@@ -552,7 +627,7 @@ from app.models.cliente import Cliente
 crud_cliente = CRUDBase(Cliente)
 
 
-==================== FILE: D:\API_Ingear\app\crud\cotizacion.py ====================
+==================== FILE: C:\API_Ingear\app\crud\cotizacion.py ====================
 
 from app.crud.base import CRUDBase
 from app.models.cotizacion import Cotizacion
@@ -560,7 +635,7 @@ from app.models.cotizacion import Cotizacion
 crud_cotizacion = CRUDBase(Cotizacion)
 
 
-==================== FILE: D:\API_Ingear\app\crud\despacho.py ====================
+==================== FILE: C:\API_Ingear\app\crud\despacho.py ====================
 
 from app.crud.base import CRUDBase
 from app.models.despacho import Despacho
@@ -568,7 +643,7 @@ from app.models.despacho import Despacho
 crud_despacho = CRUDBase(Despacho)
 
 
-==================== FILE: D:\API_Ingear\app\crud\empleado.py ====================
+==================== FILE: C:\API_Ingear\app\crud\empleado.py ====================
 
 from app.crud.base import CRUDBase
 from app.models.empleado import Empleado
@@ -576,7 +651,7 @@ from app.models.empleado import Empleado
 crud_empleado = CRUDBase(Empleado)
 
 
-==================== FILE: D:\API_Ingear\app\crud\oportunidad.py ====================
+==================== FILE: C:\API_Ingear\app\crud\oportunidad.py ====================
 
 from app.crud.base import CRUDBase
 from app.models.oportunidad import Oportunidad
@@ -584,7 +659,16 @@ from app.models.oportunidad import Oportunidad
 crud_oportunidad = CRUDBase(Oportunidad)
 
 
-==================== FILE: D:\API_Ingear\app\crud\producto.py ====================
+==================== FILE: C:\API_Ingear\app\crud\pais.py ====================
+
+# app/crud/pais.py
+from app.crud.base import CRUDBase
+from app.models.pais import Pais
+
+crud_pais = CRUDBase(Pais)
+
+
+==================== FILE: C:\API_Ingear\app\crud\producto.py ====================
 
 from app.crud.base import CRUDBase
 from app.models.producto import Producto
@@ -592,7 +676,7 @@ from app.models.producto import Producto
 crud_producto = CRUDBase(Producto)
 
 
-==================== FILE: D:\API_Ingear\app\crud\proyecto.py ====================
+==================== FILE: C:\API_Ingear\app\crud\proyecto.py ====================
 
 from app.crud.base import CRUDBase
 from app.models.proyecto import Proyecto
@@ -600,7 +684,7 @@ from app.models.proyecto import Proyecto
 crud_proyecto = CRUDBase(Proyecto)
 
 
-==================== FILE: D:\API_Ingear\app\db\base.py ====================
+==================== FILE: C:\API_Ingear\app\db\base.py ====================
 
 from sqlalchemy.orm import DeclarativeBase
 
@@ -609,7 +693,7 @@ class Base(DeclarativeBase):
     pass
 
 
-==================== FILE: D:\API_Ingear\app\db\session.py ====================
+==================== FILE: C:\API_Ingear\app\db\session.py ====================
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -629,7 +713,7 @@ def get_db():
         db.close()
  
 
-==================== FILE: D:\API_Ingear\app\main.py ====================
+==================== FILE: C:\API_Ingear\app\main.py ====================
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -663,7 +747,7 @@ def root():
     return {"ok": True, "name": settings.APP_NAME}
 
 
-==================== FILE: D:\API_Ingear\app\models\__init__.py ====================
+==================== FILE: C:\API_Ingear\app\models\__init__.py ====================
 
 from app.models.cliente import Cliente
 from app.models.empleado import Empleado
@@ -675,6 +759,7 @@ from app.models.despacho import Despacho
 from app.models.proyecto_empleado import ProyectoEmpleado
 from app.models.proyecto_cliente import ProyectoCliente
 from app.models.proyecto_despacho import ProyectoDespacho
+from app.models.pais import Pais  
 
 __all__ = [
     "Cliente",
@@ -687,10 +772,11 @@ __all__ = [
     "ProyectoEmpleado",
     "ProyectoCliente",
     "ProyectoDespacho",
+    "Pais",  
 ]
 
 
-==================== FILE: D:\API_Ingear\app\models\cliente.py ====================
+==================== FILE: C:\API_Ingear\app\models\cliente.py ====================
 
 from sqlalchemy import String, Integer, Column, UniqueConstraint, ForeignKey
 from app.db.base import Base
@@ -721,7 +807,7 @@ class Cliente(Base):
     )
 
 
-==================== FILE: D:\API_Ingear\app\models\cotizacion.py ====================
+==================== FILE: C:\API_Ingear\app\models\cotizacion.py ====================
 
 from sqlalchemy import (
     String,
@@ -771,7 +857,7 @@ class Cotizacion(Base):
     )
 
 
-==================== FILE: D:\API_Ingear\app\models\despacho.py ====================
+==================== FILE: C:\API_Ingear\app\models\despacho.py ====================
 
 from sqlalchemy import (
     String,
@@ -805,7 +891,7 @@ class Despacho(Base):
     proyectos = relationship("Proyecto", secondary="proyecto_despacho", back_populates="despachos")
 
 
-==================== FILE: D:\API_Ingear\app\models\empleado.py ====================
+==================== FILE: C:\API_Ingear\app\models\empleado.py ====================
 
 from sqlalchemy import String, Integer, Column, UniqueConstraint
 from app.db.base import Base
@@ -838,7 +924,7 @@ class Empleado(Base):
     )
 
 
-==================== FILE: D:\API_Ingear\app\models\oportunidad.py ====================
+==================== FILE: C:\API_Ingear\app\models\oportunidad.py ====================
 
 from sqlalchemy import (
     String,
@@ -890,7 +976,26 @@ class Oportunidad(Base):
     proyecto = relationship("Proyecto", back_populates="oportunidad", uselist=False)
 
 
-==================== FILE: D:\API_Ingear\app\models\producto.py ====================
+==================== FILE: C:\API_Ingear\app\models\pais.py ====================
+
+from sqlalchemy import String, Column, Numeric
+from app.db.base import Base
+
+
+class Pais(Base):
+    __tablename__ = "pais"
+
+    # En tu BD: pais es PK (varchar(120))
+    pais = Column(String(120), primary_key=True, index=True)
+
+    # En tu BD:
+    # valor_peso_kilogramo numeric(14,4)
+    # gasto_en_origen numeric(14,2)
+    valor_peso_kilogramo = Column(Numeric(14, 4), nullable=True)
+    gasto_en_origen = Column(Numeric(14, 2), nullable=True)
+
+
+==================== FILE: C:\API_Ingear\app\models\producto.py ====================
 
 from sqlalchemy import (
     String,
@@ -935,6 +1040,9 @@ class Producto(Base):
     moneda = Column(String(20), nullable=True)
     arancel = Column(Numeric(8, 2), nullable=True)
 
+    referencia = Column(String(120), nullable=True)
+    categoria = Column(String(120), nullable=True)
+
     # En tu Ãºltima versiÃ³n: inventario vive dentro del producto
     cantidad_inventario = Column(Integer, nullable=False, default=0)
 
@@ -943,7 +1051,7 @@ class Producto(Base):
     )
 
 
-==================== FILE: D:\API_Ingear\app\models\proyecto.py ====================
+==================== FILE: C:\API_Ingear\app\models\proyecto.py ====================
 
 from sqlalchemy import (
     String,
@@ -990,7 +1098,7 @@ class Proyecto(Base):
     despachos = relationship("Despacho", secondary="proyecto_despacho", back_populates="proyectos")
 
 
-==================== FILE: D:\API_Ingear\app\models\proyecto_cliente.py ====================
+==================== FILE: C:\API_Ingear\app\models\proyecto_cliente.py ====================
 
 from sqlalchemy import Integer, Column, ForeignKey
 from app.db.base import Base
@@ -1003,7 +1111,7 @@ class ProyectoCliente(Base):
     id_proyecto = Column(Integer, ForeignKey("proyecto.id"), primary_key=True)
 
 
-==================== FILE: D:\API_Ingear\app\models\proyecto_despacho.py ====================
+==================== FILE: C:\API_Ingear\app\models\proyecto_despacho.py ====================
 
 from sqlalchemy import Integer, Column, ForeignKey
 from app.db.base import Base
@@ -1016,7 +1124,7 @@ class ProyectoDespacho(Base):
     id_proyecto = Column(Integer, ForeignKey("proyecto.id"), primary_key=True)
 
 
-==================== FILE: D:\API_Ingear\app\models\proyecto_empleado.py ====================
+==================== FILE: C:\API_Ingear\app\models\proyecto_empleado.py ====================
 
 from sqlalchemy import Integer, Column, ForeignKey
 from app.db.base import Base
@@ -1029,7 +1137,7 @@ class ProyectoEmpleado(Base):
     id_proyecto = Column(Integer, ForeignKey("proyecto.id"), primary_key=True)
 
 
-==================== FILE: D:\API_Ingear\app\schemas\cliente.py ====================
+==================== FILE: C:\API_Ingear\app\schemas\cliente.py ====================
 
 from pydantic import BaseModel, EmailStr
 from typing import Optional
@@ -1070,7 +1178,7 @@ class ClienteOut(ClienteBase):
         from_attributes = True
 
 
-==================== FILE: D:\API_Ingear\app\schemas\cotizacion.py ====================
+==================== FILE: C:\API_Ingear\app\schemas\cotizacion.py ====================
 
 from pydantic import BaseModel
 from typing import Optional
@@ -1116,7 +1224,7 @@ class CotizacionOut(CotizacionBase):
         from_attributes = True
 
 
-==================== FILE: D:\API_Ingear\app\schemas\despacho.py ====================
+==================== FILE: C:\API_Ingear\app\schemas\despacho.py ====================
 
 from pydantic import BaseModel
 from typing import Optional
@@ -1151,7 +1259,7 @@ class DespachoOut(DespachoBase):
         from_attributes = True
 
 
-==================== FILE: D:\API_Ingear\app\schemas\empleado.py ====================
+==================== FILE: C:\API_Ingear\app\schemas\empleado.py ====================
 
 from pydantic import BaseModel, EmailStr
 from typing import Optional
@@ -1188,7 +1296,26 @@ class EmpleadoOut(EmpleadoBase):
         from_attributes = True
 
 
-==================== FILE: D:\API_Ingear\app\schemas\oportunidad.py ====================
+==================== FILE: C:\API_Ingear\app\schemas\fx.py ====================
+
+from pydantic import BaseModel, Field
+from typing import Optional
+
+class FxSources(BaseModel):
+    usd_cop: str = Field(..., description="Fuente TRM USD/COP")
+    usd_per_eur: str = Field(..., description="Fuente USD por 1 EUR")
+    note: Optional[str] = Field(None, description="AclaraciÃ³n de cÃ¡lculo")
+
+class FxRatesOut(BaseModel):
+    usd_cop: float
+    eur_cop: float
+    trm_date: str
+    eurusd_date: str
+    fetched_at: str
+    sources: FxSources
+
+
+==================== FILE: C:\API_Ingear\app\schemas\oportunidad.py ====================
 
 from pydantic import BaseModel
 from typing import Optional
@@ -1245,7 +1372,35 @@ class OportunidadOut(OportunidadBase):
         from_attributes = True
 
 
-==================== FILE: D:\API_Ingear\app\schemas\producto.py ====================
+==================== FILE: C:\API_Ingear\app\schemas\pais.py ====================
+
+# app/schemas/pais.py
+from decimal import Decimal
+from pydantic import BaseModel, Field
+
+
+class PaisBase(BaseModel):
+    pais: str = Field(..., max_length=120)
+    valor_peso_kilogramo: Decimal
+    gasto_en_origen: Decimal
+
+
+class PaisCreate(PaisBase):
+    pass
+
+
+class PaisUpdate(BaseModel):
+    # PK no se actualiza
+    valor_peso_kilogramo: Decimal | None = None
+    gasto_en_origen: Decimal | None = None
+
+
+class PaisOut(PaisBase):
+    class Config:
+        from_attributes = True
+
+
+==================== FILE: C:\API_Ingear\app\schemas\producto.py ====================
 
 from pydantic import BaseModel
 from typing import Optional
@@ -1273,6 +1428,8 @@ class ProductoBase(BaseModel):
     moneda: Optional[str] = None
     arancel: Optional[Decimal] = None
     cantidad_inventario: int = 0
+    referencia: Optional[str] = None
+    categoria: Optional[str] = None
 
 
 class ProductoCreate(ProductoBase):
@@ -1308,7 +1465,7 @@ class ProductoOut(ProductoBase):
         from_attributes = True
 
 
-==================== FILE: D:\API_Ingear\app\schemas\proyecto.py ====================
+==================== FILE: C:\API_Ingear\app\schemas\proyecto.py ====================
 
 from pydantic import BaseModel
 from typing import Optional
@@ -1353,7 +1510,7 @@ class ProyectoOut(ProyectoBase):
         from_attributes = True
 
 
-==================== FILE: D:\API_Ingear\app\schemas\proyecto_cliente.py ====================
+==================== FILE: C:\API_Ingear\app\schemas\proyecto_cliente.py ====================
 
 from pydantic import BaseModel
 
@@ -1362,7 +1519,7 @@ class ProyectoClienteLink(BaseModel):
     id_cliente: int
 
 
-==================== FILE: D:\API_Ingear\app\schemas\proyecto_despacho.py ====================
+==================== FILE: C:\API_Ingear\app\schemas\proyecto_despacho.py ====================
 
 from pydantic import BaseModel
 
@@ -1371,7 +1528,7 @@ class ProyectoDespachoLink(BaseModel):
     id_despacho: int
 
 
-==================== FILE: D:\API_Ingear\app\schemas\proyecto_empleado.py ====================
+==================== FILE: C:\API_Ingear\app\schemas\proyecto_empleado.py ====================
 
 from pydantic import BaseModel
 
@@ -1380,7 +1537,295 @@ class ProyectoEmpleadoLink(BaseModel):
     id_empleado: int
 
 
-==================== FILE: D:\API_Ingear\requirements.txt ====================
+==================== FILE: C:\API_Ingear\app\services\fx_service.py ====================
+
+# app/services/fx_service.py
+
+import asyncio
+import time
+from datetime import datetime, timezone
+from typing import Dict, Tuple, Optional
+import xml.etree.ElementTree as ET
+
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
+from urllib.error import URLError, HTTPError
+
+from app.schemas.fx import FxRatesOut, FxSources
+
+# Intentar usar httpx si estÃ¡ instalado; si no, fallback a urllib (std lib)
+try:
+    import httpx  # type: ignore
+    _HAS_HTTPX = True
+except ModuleNotFoundError:
+    httpx = None  # type: ignore
+    _HAS_HTTPX = False
+
+
+# Cache simple en memoria (TTL)
+_CACHE: Dict[str, Tuple[float, FxRatesOut]] = {}
+_CACHE_TTL_SECONDS = 30 * 60  # 30 min
+
+# ---- Fuentes ----
+# BanRep SDMX REST
+BANREP_SDMX_BASE = "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data"
+BANREP_TRM_FLOWREF = "ESTAT,DF_TRM_DAILY_LATEST,1.0"  # TRM latest
+
+# ECB: USD por 1 EUR (para calcular EUR/COP)
+ECB_EXR_CSV_URL = (
+    "https://data-api.ecb.europa.eu/service/data/EXR/"
+    "D.USD.EUR.SP00.A?lastNObservations=1&format=csvdata"
+)
+
+
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _cache_get(key: str):
+    hit = _CACHE.get(key)
+    if not hit:
+        return None
+    ts, val = hit
+    if (time.time() - ts) <= _CACHE_TTL_SECONDS:
+        return val
+    return None
+
+
+def _cache_set(key: str, val: FxRatesOut):
+    _CACHE[key] = (time.time(), val)
+
+
+def _normalize_date(date_str: str) -> str:
+    """
+    SDMX a veces retorna YYYY-MM-DD y a veces YYYYMMDD.
+    Normalizamos a YYYY-MM-DD.
+    """
+    s = (date_str or "").strip()
+    if len(s) == 8 and s.isdigit():
+        return f"{s[0:4]}-{s[4:6]}-{s[6:8]}"
+    return s
+
+
+def _parse_sdmx_generic_xml_for_last_obs(xml_bytes: bytes) -> Tuple[str, float]:
+    """
+    Parsea SDMX GenericData y extrae (fecha, valor) de la Ãºltima observaciÃ³n vÃ¡lida.
+    Busca:
+      - ObsDimension value="YYYY-MM-DD" (o YYYYMMDD)
+      - ObsValue value="1234.56"
+    """
+    root = ET.fromstring(xml_bytes)
+
+    last_date = None
+    last_value = None
+
+    # Recorremos Observaciones
+    for obs in root.iter():
+        tag = obs.tag.split("}")[-1]  # quita namespace
+        if tag != "Obs":
+            continue
+
+        obs_date = None
+        obs_value = None
+
+        for child in list(obs):
+            ctag = child.tag.split("}")[-1]
+            if ctag == "ObsDimension":
+                obs_date = child.attrib.get("value")
+            elif ctag == "ObsValue":
+                v = child.attrib.get("value")
+                if v is not None:
+                    try:
+                        obs_value = float(v)
+                    except ValueError:
+                        obs_value = None
+
+        if obs_date and (obs_value is not None):
+            last_date = obs_date
+            last_value = obs_value
+
+    if last_date is None or last_value is None:
+        raise ValueError("No se encontrÃ³ observaciÃ³n vÃ¡lida en respuesta SDMX.")
+
+    return _normalize_date(last_date), last_value
+
+
+def _parse_ecb_csv_for_last_obs(csv_text: str) -> Tuple[str, float]:
+    """
+    CSV del BCE: header + 1 fila.
+    Necesitamos TIME_PERIOD y OBS_VALUE.
+    """
+    lines = [ln for ln in (csv_text or "").splitlines() if ln.strip()]
+    if len(lines) < 2:
+        raise ValueError("CSV del BCE sin datos.")
+
+    header = [h.strip().strip('"') for h in lines[0].split(",")]
+    row = [c.strip().strip('"') for c in lines[-1].split(",")]
+
+    def idx(name: str):
+        try:
+            return header.index(name)
+        except ValueError:
+            return -1
+
+    i_time = idx("TIME_PERIOD")
+    i_val = idx("OBS_VALUE")
+    if i_time == -1 or i_val == -1:
+        raise ValueError("CSV del BCE no contiene TIME_PERIOD/OBS_VALUE.")
+
+    date = row[i_time]
+    val = float(row[i_val])
+    return date, val  # USD por 1 EUR
+
+
+def _urllib_get(url: str, params: Optional[dict] = None, timeout: int = 20) -> Tuple[bytes, str]:
+    """
+    GET con stdlib. Retorna (bytes, text-decoded).
+    """
+    final_url = url
+    if params:
+        qs = urlencode(params)
+        sep = "&" if "?" in url else "?"
+        final_url = f"{url}{sep}{qs}"
+
+    req = Request(
+        final_url,
+        headers={
+            "User-Agent": "IngearAPI/1.0",
+            "Accept": "*/*",
+        },
+        method="GET",
+    )
+
+    try:
+        with urlopen(req, timeout=timeout) as resp:
+            data = resp.read()
+            # Mejor esfuerzo para decodificar texto
+            try:
+                charset = resp.headers.get_content_charset() or "utf-8"
+            except Exception:
+                charset = "utf-8"
+            text = data.decode(charset, errors="replace")
+            return data, text
+    except HTTPError as e:
+        raise RuntimeError(f"HTTPError {e.code} en {final_url}") from e
+    except URLError as e:
+        raise RuntimeError(f"URLError en {final_url}: {e}") from e
+
+
+async def _fetch_usd_cop_trm_banrep(client=None) -> Tuple[str, float]:
+    url = f"{BANREP_SDMX_BASE}/{BANREP_TRM_FLOWREF}/all/ALL/"
+    params = {"dimensionAtObservation": "TIME_PERIOD", "detail": "full"}
+
+    if _HAS_HTTPX:
+        assert client is not None, "httpx client requerido cuando httpx estÃ¡ disponible"
+        r = await client.get(url, params=params, timeout=20)
+        r.raise_for_status()
+        return _parse_sdmx_generic_xml_for_last_obs(r.content)
+
+    # Fallback stdlib
+    data, _ = await asyncio.to_thread(_urllib_get, url, params, 20)
+    return _parse_sdmx_generic_xml_for_last_obs(data)
+
+
+async def _fetch_usd_per_eur_ecb(client=None) -> Tuple[str, float]:
+    if _HAS_HTTPX:
+        assert client is not None, "httpx client requerido cuando httpx estÃ¡ disponible"
+        r = await client.get(ECB_EXR_CSV_URL, timeout=20)
+        r.raise_for_status()
+        return _parse_ecb_csv_for_last_obs(r.text)
+
+    # Fallback stdlib
+    _, text = await asyncio.to_thread(_urllib_get, ECB_EXR_CSV_URL, None, 20)
+    return _parse_ecb_csv_for_last_obs(text)
+
+
+async def get_fx_rates() -> FxRatesOut:
+    cached = _cache_get("fx_rates")
+    if cached:
+        return cached
+
+    if _HAS_HTTPX:
+        async with httpx.AsyncClient() as client:  # type: ignore
+            (trm_date, usd_cop), (eurusd_date, usd_per_eur) = await asyncio.gather(
+                _fetch_usd_cop_trm_banrep(client),
+                _fetch_usd_per_eur_ecb(client),
+            )
+    else:
+        (trm_date, usd_cop), (eurusd_date, usd_per_eur) = await asyncio.gather(
+            _fetch_usd_cop_trm_banrep(None),
+            _fetch_usd_per_eur_ecb(None),
+        )
+
+    eur_cop = usd_cop * usd_per_eur
+
+    out = FxRatesOut(
+        usd_cop=round(usd_cop, 4),
+        eur_cop=round(eur_cop, 4),
+        trm_date=trm_date,
+        eurusd_date=eurusd_date,
+        fetched_at=_now_iso(),
+        sources=FxSources(
+            usd_cop="BanRep SDMX (DF_TRM_DAILY_LATEST)",
+            usd_per_eur="ECB Data API (EXR D.USD.EUR.SP00.A)",
+            note="EUR/COP calculado = (USD/COP TRM) * (USD por 1 EUR)",
+        ),
+    )
+
+    _cache_set("fx_rates", out)
+    return out
+
+
+==================== FILE: C:\API_Ingear\README.md ====================
+
+# Ingear API (FastAPI + PostgreSQL)
+
+API REST para soportar el flujo de negocio de Ingear: **Clientes â†’ Oportunidades â†’ Proyectos â†’ Cotizaciones â†’ Despachos**, incluyendo **Productos** e **integraciones M:N** (proyectoâ€“empleado, proyectoâ€“cliente, proyectoâ€“despacho).
+
+---
+
+## ðŸš€ Stack
+
+- **FastAPI** (OpenAPI/Swagger)
+- **SQLAlchemy 2.0**
+- **PostgreSQL** (psycopg)
+- **Pydantic v2** + **pydantic-settings**
+- **Uvicorn**
+
+Dependencias principales (`requirements.txt`):
+- fastapi==0.115.6
+- uvicorn[standard]==0.34.0
+- SQLAlchemy==2.0.36
+- psycopg[binary]==3.2.5
+- pydantic==2.10.3
+- pydantic-settings==2.6.1
+- python-dotenv==1.0.1
+
+---
+
+## ðŸ“ Estructura del proyecto
+
+```txt
+API_INGEAR/
+â”œâ”€ app/
+â”‚  â”œâ”€ main.py                 # Crea FastAPI, CORS y monta /api/v1
+â”‚  â”œâ”€ core/
+â”‚  â”‚  â””â”€ config.py            # Settings (.env)
+â”‚  â”œâ”€ db/
+â”‚  â”‚  â”œâ”€ base.py              # DeclarativeBase
+â”‚  â”‚  â””â”€ session.py           # Engine + SessionLocal + get_db()
+â”‚  â”œâ”€ api/
+â”‚  â”‚  â””â”€ v1/
+â”‚  â”‚     â”œâ”€ api.py            # Incluye routers por recurso
+â”‚  â”‚     â””â”€ endpoints/        # Endpoints REST (CRUD y relaciones)
+â”‚  â”œâ”€ models/                 # Modelos SQLAlchemy (tablas)
+â”‚  â”œâ”€ schemas/                # Schemas Pydantic (Create/Update/Out)
+â”‚  â””â”€ crud/                   # CRUDBase + mÃ³dulos por entidad
+â”œâ”€ requirements.txt
+â””â”€ .env
+
+
+==================== FILE: C:\API_Ingear\requirements.txt ====================
 
 fastapi==0.115.6
 uvicorn[standard]==0.34.0
@@ -1389,4 +1834,4 @@ psycopg[binary]==3.2.5
 pydantic==2.10.3
 pydantic-settings==2.6.1
 python-dotenv==1.0.1
-
+httpx==0.27.2

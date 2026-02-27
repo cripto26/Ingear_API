@@ -6,6 +6,7 @@ class Settings(BaseSettings):
 
     APP_NAME: str = "Ingear API"
     DATABASE_URL: str
+    GOOGLE_SERVICE_ACCOUNT_FILE: str
 
 
 settings = Settings()

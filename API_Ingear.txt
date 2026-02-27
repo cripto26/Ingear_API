@@ -3,7 +3,7 @@
 
 DATABASE_URL=postgresql+psycopg://ingear_user:123456@localhost:5432/ingear_db
 APP_NAME=Ingear API
-
+GOOGLE_SERVICE_ACCOUNT_FILE=C:\API_Ingear\service-account.json
 
 ==================== FILE: C:\API_Ingear\app\api\v1\api.py ====================
 
@@ -287,64 +287,70 @@ def eliminar(oportunidad_id: int, db: Session = Depends(get_db)):
 ==================== FILE: C:\API_Ingear\app\api\v1\endpoints\pais.py ====================
 
 # app/api/v1/endpoints/pais.py
-from typing import List
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_db
-from app.crud.crud_pais import crud_pais
+from app.db.session import get_db
+from app.crud.pais import crud_pais
 from app.schemas.pais import PaisCreate, PaisOut, PaisUpdate
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[PaisOut])
-def list_paises(db: Session = Depends(get_db), skip: int = 0, limit: int = 1000):
-    return crud_pais.get_multi(db, skip=skip, limit=limit)
+@router.get("/", response_model=list[PaisOut])
+def listar(skip: int = 0, limit: int = 1000, db: Session = Depends(get_db)):
+    return crud_pais.list(db, skip=skip, limit=limit)
 
 
 @router.get("/{pais}", response_model=PaisOut)
-def get_pais(pais: str, db: Session = Depends(get_db)):
-    obj = crud_pais.get(db, id=pais)
+def obtener(pais: str, db: Session = Depends(get_db)):
+    obj = crud_pais.get(db, pais)
     if not obj:
         raise HTTPException(status_code=404, detail="Pais no encontrado")
     return obj
 
 
-@router.post("/", response_model=PaisOut)
-def create_pais(payload: PaisCreate, db: Session = Depends(get_db)):
+@router.post("/", response_model=PaisOut, status_code=201)
+def crear(payload: PaisCreate, db: Session = Depends(get_db)):
     # evita duplicados por PK
-    existing = crud_pais.get(db, id=payload.pais)
+    existing = crud_pais.get(db, payload.pais)
     if existing:
         raise HTTPException(status_code=409, detail="Ese pais ya existe")
-    return crud_pais.create(db, obj_in=payload)
+
+    # Pydantic v2 -> model_dump()
+    return crud_pais.create(db, payload.model_dump())
 
 
 @router.put("/{pais}", response_model=PaisOut)
-def update_pais(pais: str, payload: PaisUpdate, db: Session = Depends(get_db)):
-    obj = crud_pais.get(db, id=pais)
+def actualizar(pais: str, payload: PaisUpdate, db: Session = Depends(get_db)):
+    obj = crud_pais.get(db, pais)
     if not obj:
         raise HTTPException(status_code=404, detail="Pais no encontrado")
-    return crud_pais.update(db, db_obj=obj, obj_in=payload)
+
+    data = payload.model_dump(exclude_unset=True)
+    return crud_pais.update(db, obj, data)
 
 
-@router.delete("/{pais}", response_model=PaisOut)
-def delete_pais(pais: str, db: Session = Depends(get_db)):
-    obj = crud_pais.get(db, id=pais)
-    if not obj:
+@router.delete("/{pais}", status_code=204)
+def eliminar(pais: str, db: Session = Depends(get_db)):
+    deleted = crud_pais.remove(db, pais)
+    if not deleted:
         raise HTTPException(status_code=404, detail="Pais no encontrado")
-    return crud_pais.remove(db, id=pais)
+    return None
 
 
 ==================== FILE: C:\API_Ingear\app\api\v1\endpoints\producto.py ====================
 
+import io
+
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 from app.schemas.producto import ProductoCreate, ProductoUpdate, ProductoOut
 from app.crud.producto import crud_producto
+from app.services.product_image_service import build_product_thumbnail_from_drive_url
 
 router = APIRouter()
 
@@ -360,6 +366,38 @@ def obtener(producto_id: int, db: Session = Depends(get_db)):
     if not obj:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
     return obj
+
+
+@router.get("/{producto_id}/imagen")
+def obtener_imagen_producto(producto_id: int, db: Session = Depends(get_db)):
+    obj = crud_producto.get(db, producto_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+
+    if not obj.url_imagen:
+        raise HTTPException(status_code=404, detail="Producto sin imagen")
+
+    try:
+        image_bytes = build_product_thumbnail_from_drive_url(
+            obj.url_imagen,
+            width=140,
+            height=90,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        # AquÃ­ caerÃ¡n errores de permisos, archivo inexistente o credenciales
+        raise HTTPException(status_code=502, detail=f"No se pudo obtener la imagen: {e}")
+
+    headers = {
+        "Cache-Control": "public, max-age=3600"
+    }
+
+    return StreamingResponse(
+        io.BytesIO(image_bytes),
+        media_type="image/jpeg",
+        headers=headers,
+    )
 
 
 @router.post("/", response_model=ProductoOut, status_code=201)
@@ -381,7 +419,6 @@ def eliminar(producto_id: int, db: Session = Depends(get_db)):
     if not deleted:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
     return None
-
 
 ==================== FILE: C:\API_Ingear\app\api\v1\endpoints\proyecto.py ====================
 
@@ -555,10 +592,10 @@ class Settings(BaseSettings):
 
     APP_NAME: str = "Ingear API"
     DATABASE_URL: str
+    GOOGLE_SERVICE_ACCOUNT_FILE: str
 
 
 settings = Settings()
-
 
 ==================== FILE: C:\API_Ingear\app\crud\base.py ====================
 
@@ -1776,6 +1813,97 @@ async def get_fx_rates() -> FxRatesOut:
     return out
 
 
+==================== FILE: C:\API_Ingear\app\services\product_image_service.py ====================
+
+import io
+import re
+from typing import Optional
+
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseDownload
+from PIL import Image
+
+from app.core.config import settings
+
+
+_DRIVE_SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
+
+
+def extract_drive_file_id(raw_url: str) -> str:
+    url = (raw_url or "").strip()
+    if not url:
+        raise ValueError("La URL de imagen estÃ¡ vacÃ­a.")
+
+    patterns = [
+        r"/file/d/([^/]+)",
+        r"[?&]id=([^&]+)",
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, url, flags=re.IGNORECASE)
+        if match and match.group(1):
+            return match.group(1)
+
+    raise ValueError("No se pudo extraer el fileId desde la URL de Google Drive.")
+
+
+def _build_drive_service():
+    creds = service_account.Credentials.from_service_account_file(
+        settings.GOOGLE_SERVICE_ACCOUNT_FILE,
+        scopes=_DRIVE_SCOPES,
+    )
+    return build("drive", "v3", credentials=creds, cache_discovery=False)
+
+
+def download_drive_file(file_id: str) -> bytes:
+    service = _build_drive_service()
+
+    request = service.files().get_media(fileId=file_id)
+    buffer = io.BytesIO()
+    downloader = MediaIoBaseDownload(buffer, request)
+
+    done = False
+    while not done:
+        _, done = downloader.next_chunk()
+
+    buffer.seek(0)
+    return buffer.read()
+
+
+def resize_image_to_box(raw_bytes: bytes, width: int = 140, height: int = 90) -> bytes:
+    src = Image.open(io.BytesIO(raw_bytes)).convert("RGBA")
+
+    # Mantiene proporciÃ³n; nunca deforma
+    src.thumbnail((width, height), Image.Resampling.LANCZOS)
+
+    # Fondo blanco fijo 140x90
+    canvas = Image.new("RGB", (width, height), (255, 255, 255))
+
+    x = (width - src.width) // 2
+    y = (height - src.height) // 2
+
+    # Si la imagen tiene transparencia, la respeta al pegar
+    if "A" in src.getbands():
+        canvas.paste(src.convert("RGB"), (x, y), src.getchannel("A"))
+    else:
+        canvas.paste(src.convert("RGB"), (x, y))
+
+    out = io.BytesIO()
+    canvas.save(out, format="JPEG", quality=90, optimize=True)
+    out.seek(0)
+    return out.read()
+
+
+def build_product_thumbnail_from_drive_url(
+    drive_url: str,
+    width: int = 140,
+    height: int = 90,
+) -> bytes:
+    file_id = extract_drive_file_id(drive_url)
+    original_bytes = download_drive_file(file_id)
+    return resize_image_to_box(original_bytes, width=width, height=height)
+
 ==================== FILE: C:\API_Ingear\README.md ====================
 
 # Ingear API (FastAPI + PostgreSQL)
@@ -1835,3 +1963,7 @@ pydantic==2.10.3
 pydantic-settings==2.6.1
 python-dotenv==1.0.1
 httpx==0.27.2
+google-api-python-client==2.170.0
+google-auth==2.40.3
+Pillow==11.2.1email-validator
+

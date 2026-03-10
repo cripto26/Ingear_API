@@ -23,7 +23,7 @@ def obtener(empleado_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=EmpleadoOut, status_code=201)
 def crear(payload: EmpleadoCreate, db: Session = Depends(get_db)):
-    return crud_empleado.create(db, payload.model_dump())
+    return crud_empleado.create_secure(db, payload.model_dump())
 
 
 @router.put("/{empleado_id}", response_model=EmpleadoOut)
@@ -31,7 +31,7 @@ def actualizar(empleado_id: int, payload: EmpleadoUpdate, db: Session = Depends(
     obj = crud_empleado.get(db, empleado_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Empleado no encontrado")
-    return crud_empleado.update(db, obj, payload.model_dump(exclude_unset=True))
+    return crud_empleado.update_secure(db, obj, payload.model_dump(exclude_unset=True))
 
 
 @router.delete("/{empleado_id}", status_code=204)

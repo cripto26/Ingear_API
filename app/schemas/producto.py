@@ -12,10 +12,13 @@ class ProductoBase(BaseModel):
     costo_fabrica: Optional[Decimal] = None
     descuento_fabricante: Optional[Decimal] = None
     pais_origen: Optional[str] = None
+    ciudad: Optional[str] = None
     costo_ingear: Optional[Decimal] = None
     fecha_creacion_producto: Optional[date] = None
     url_imagen: Optional[str] = None
+    url_imagen_dimension: Optional[str] = None
     url_ficha_tecnica: Optional[str] = None
+    precio_pvp: Optional[Decimal] = None
     peso_kg: Optional[Decimal] = None
     volumen: Optional[Decimal] = None
     valor_inventario: Optional[Decimal] = None
@@ -40,10 +43,13 @@ class ProductoUpdate(BaseModel):
     costo_fabrica: Optional[Decimal] = None
     descuento_fabricante: Optional[Decimal] = None
     pais_origen: Optional[str] = None
+    ciudad: Optional[str] = None
     costo_ingear: Optional[Decimal] = None
     fecha_creacion_producto: Optional[date] = None
     url_imagen: Optional[str] = None
+    url_imagen_dimension: Optional[str] = None
     url_ficha_tecnica: Optional[str] = None
+    precio_pvp: Optional[Decimal] = None
     peso_kg: Optional[Decimal] = None
     volumen: Optional[Decimal] = None
     valor_inventario: Optional[Decimal] = None
@@ -52,6 +58,8 @@ class ProductoUpdate(BaseModel):
     moneda: Optional[str] = None
     arancel: Optional[Decimal] = None
     cantidad_inventario: Optional[int] = None
+    referencia: Optional[str] = None
+    categoria: Optional[str] = None
 
 
 class ProductoOut(ProductoBase):

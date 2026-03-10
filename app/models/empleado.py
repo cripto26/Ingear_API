@@ -13,6 +13,7 @@ class Empleado(Base):
     estado = Column(String(50), nullable=True)
     cedula = Column(String(50), nullable=True, index=True)
     telefono = Column(String(50), nullable=True)
+    contrasena = Column(String(255), nullable=False)
 
     cotizaciones = relationship("Cotizacion", back_populates="cotizador")
 

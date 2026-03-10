@@ -23,11 +23,13 @@ class Producto(Base):
     descuento_fabricante = Column(Numeric(8, 2), nullable=True)
 
     pais_origen = Column(String(120), nullable=True)
+    ciudad = Column(String(120), nullable=True)  
     costo_ingear = Column(Numeric(14, 2), nullable=True)
 
     fecha_creacion_producto = Column(Date, nullable=True)
 
     url_imagen = Column(String(500), nullable=True)
+    url_imagen_dimension = Column(String(500), nullable=True)
     url_ficha_tecnica = Column(String(500), nullable=True)
 
     peso_kg = Column(Numeric(10, 3), nullable=True)
@@ -43,8 +45,8 @@ class Producto(Base):
 
     referencia = Column(String(120), nullable=True)
     categoria = Column(String(120), nullable=True)
+    precio_pvp = Column(Numeric(14, 2), nullable=True)
 
-    # En tu última versión: inventario vive dentro del producto
     cantidad_inventario = Column(Integer, nullable=False, default=0)
 
     __table_args__ = (

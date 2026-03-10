@@ -13,7 +13,7 @@ class EmpleadoBase(BaseModel):
 
 
 class EmpleadoCreate(EmpleadoBase):
-    pass
+    contrasena: str
 
 
 class EmpleadoUpdate(BaseModel):
@@ -24,6 +24,7 @@ class EmpleadoUpdate(BaseModel):
     estado: Optional[str] = None
     cedula: Optional[str] = None
     telefono: Optional[str] = None
+    contrasena: Optional[str] = None
 
 
 class EmpleadoOut(EmpleadoBase):

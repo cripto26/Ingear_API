@@ -18,3 +18,11 @@ class TokenOut(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: AuthUserOut
+
+class ChangePasswordIn(BaseModel):
+    current_password: str
+    new_password: str
+
+
+class MessageOut(BaseModel):
+    message: str

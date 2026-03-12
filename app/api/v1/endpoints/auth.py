@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.crud.empleado import crud_empleado
-from app.schemas.auth import LoginIn, TokenOut, AuthUserOut
-from app.core.security import verify_password, create_access_token, infer_role
+from app.schemas.auth import LoginIn, TokenOut, AuthUserOut, ChangePasswordIn, MessageOut
+from app.core.security import verify_password, create_access_token, infer_role, hash_password
+
 from app.api.deps import get_current_empleado
 
 router = APIRouter()
@@ -27,3 +28,37 @@ def login(payload: LoginIn, db: Session = Depends(get_db)):
 @router.get("/me", response_model=AuthUserOut)
 def me(current = Depends(get_current_empleado)):
     return to_auth_user(current)
+
+@router.post("/change-password", response_model=MessageOut)
+def change_password(
+    payload: ChangePasswordIn,
+    current = Depends(get_current_empleado),
+    db: Session = Depends(get_db),
+):
+    if not verify_password(payload.current_password, current.contrasena):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="La contrasena actual es incorrecta"
+        )
+
+    new_password = (payload.new_password or "").strip()
+
+    if len(new_password) < 8:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="La nueva contrasena debe tener al menos 8 caracteres"
+        )
+
+    if verify_password(new_password, current.contrasena):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="La nueva contrasena no puede ser igual a la actual"
+        )
+
+    current.contrasena = hash_password(new_password)
+    db.add(current)
+    db.commit()
+
+    return MessageOut(message="Contrasena actualizada correctamente")
+
+

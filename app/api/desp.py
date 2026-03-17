@@ -3,7 +3,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.empleado import Empleado
-from app.core.security import decode_access_token, infer_role
+from app.core.security import decode_access_token, infer_role, normalize
 
 bearer = HTTPBearer(auto_error=False)
 
@@ -25,4 +25,14 @@ def require_roles(*roles: str):
         if role not in roles:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No autorizado")
         return current
+    return checker
+
+def require_cargos(*cargos: str):
+    allowed = {normalize(cargo) for cargo in cargos}
+
+    def checker(current: Empleado = Depends(get_current_empleado)):
+        if normalize(current.cargo) not in allowed:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No autorizado")
+        return current
+
     return checker

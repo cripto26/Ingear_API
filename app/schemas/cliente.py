@@ -12,6 +12,8 @@ class ClienteBase(BaseModel):
     world_office_id: str
     tipo_contribuyente: Optional[str] = None
     actividad_economica: Optional[str] = None
+    contacto: Optional[str] = None
+
 
 
 class ClienteCreate(ClienteBase):
@@ -28,6 +30,8 @@ class ClienteUpdate(BaseModel):
     world_office_id: Optional[str] = None
     tipo_contribuyente: Optional[str] = None
     actividad_economica: Optional[str] = None
+    contacto: Optional[str] = None
+
 
 
 class ClienteOut(ClienteBase):

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.api.deps import require_roles
+from app.api.deps import require_cargos, require_roles
 from app.db.session import get_db
 from app.models.empleado import Empleado
 from app.schemas.empleado import EmpleadoCreate, EmpleadoUpdate, EmpleadoOut
@@ -16,9 +16,17 @@ def listar(
     skip: int = 0,
     limit: int = 500,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(require_roles("GERENCIA")),
+    _current: Empleado = Depends(
+        require_cargos(
+            "Gerente",
+            "Lider de proyectos de iluminacion",
+            "Gerente comercial",
+            "Analista de costos y presupuestos",
+        )
+    ),
 ):
     return crud_empleado.list(db, skip=skip, limit=limit)
+
 
 
 @router.get("/{empleado_id}", response_model=EmpleadoOut)

@@ -17,6 +17,8 @@ class Cliente(Base):
     world_office_id = Column(String(80), nullable=False)
     tipo_contribuyente = Column(String(120), nullable=True)
     actividad_economica = Column(String(200), nullable=True)
+    contacto = Column(String(120), nullable=True)
+
 
     oportunidades = relationship("Oportunidad", back_populates="cliente", cascade="all, delete-orphan")
     # M:N con Proyecto vía tabla puente

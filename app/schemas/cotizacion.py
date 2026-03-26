@@ -1,7 +1,32 @@
-from pydantic import AliasChoices, BaseModel, ConfigDict, Field
-from typing import Optional
+import json
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Optional
+
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
+
+
+def _parse_productos(value: Any) -> Any:
+    if value is None:
+        return None
+    if value == "":
+        return []
+    if isinstance(value, str):
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError as exc:
+            raise ValueError("El campo productos debe contener un JSON valido.") from exc
+    return value
+
+
+class CotizacionProductoItem(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    id_producto: int = Field(
+        gt=0,
+        validation_alias=AliasChoices("id_producto", "producto_id"),
+    )
+    cantidad: int = Field(gt=0)
 
 
 class CotizacionBase(BaseModel):
@@ -17,6 +42,13 @@ class CotizacionBase(BaseModel):
     forma_pago: Optional[str] = None
     sub_total: Optional[Decimal] = None
     total: Optional[Decimal] = None
+    productos: list[CotizacionProductoItem] = Field(default_factory=list)
+
+    @field_validator("productos", mode="before")
+    @classmethod
+    def parse_productos(cls, value: Any) -> Any:
+        parsed = _parse_productos(value)
+        return [] if parsed is None else parsed
 
 
 class CotizacionCreate(CotizacionBase):
@@ -42,6 +74,12 @@ class CotizacionUpdate(BaseModel):
     forma_pago: Optional[str] = None
     sub_total: Optional[Decimal] = None
     total: Optional[Decimal] = None
+    productos: Optional[list[CotizacionProductoItem]] = None
+
+    @field_validator("productos", mode="before")
+    @classmethod
+    def parse_productos(cls, value: Any) -> Any:
+        return _parse_productos(value)
 
 
 class CotizacionOut(CotizacionBase):

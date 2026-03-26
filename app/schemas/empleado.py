@@ -22,7 +22,7 @@ class EmpleadoUpdate(BaseModel):
     cargo: Optional[str] = None
     area: Optional[str] = None
     estado: Optional[str] = None
-    cedula: Optional[str] = None
+    cedula: str
     telefono: Optional[str] = None
     contrasena: Optional[str] = None
 

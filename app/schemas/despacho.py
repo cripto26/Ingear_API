@@ -17,7 +17,7 @@ class DespachoBase(BaseModel):
 
 
 class DespachoCreate(DespachoBase):
-    pass
+    fecha: date
 
 
 class DespachoUpdate(DespachoBase):

@@ -24,9 +24,7 @@ class Oportunidad(Base):
     ciudad = Column(String(120), nullable=True)
     tipo_servicio = Column(String(120), nullable=True)
 
-    responsable_cotizacion = Column(
-        Integer, ForeignKey("empleado.id"), nullable=True, index=True
-    )
+    responsable_cotizacion = Column(String(200), nullable=True, index=True)
 
     marca_predominante = Column(String(120), nullable=True)
 
@@ -40,7 +38,7 @@ class Oportunidad(Base):
     segmento = Column(String(120), nullable=True)
     cotizaciones = Column(Text, nullable=True)
     observaciones = Column(Text, nullable=True)
-    numero_empleado = Column(Integer, nullable=True)
+    numero_empleado = Column(Integer, ForeignKey("empleado.id"), nullable=True, index=True)
     nuevo_existente = Column(String(120), nullable=True)
 
     cliente = relationship("Cliente", back_populates="oportunidades")
@@ -48,7 +46,7 @@ class Oportunidad(Base):
     responsable = relationship(
         "Empleado",
         back_populates="oportunidades_responsable",
-        foreign_keys=[responsable_cotizacion],
+        foreign_keys=[numero_empleado],
     )
 
     proyecto = relationship("Proyecto", back_populates="oportunidad", uselist=False)

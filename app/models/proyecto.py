@@ -34,7 +34,7 @@ class Proyecto(Base):
 
     oportunidad = relationship("Oportunidad", back_populates="proyecto")
 
-    # 1:N con Cotizacion (porque Cotizacion.id_proyecto existe)
+    # 1:N con Cotizacion
     cotizaciones = relationship("Cotizacion", back_populates="proyecto")
 
     # M:N

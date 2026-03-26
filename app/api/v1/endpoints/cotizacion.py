@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.schemas.cotizacion import CotizacionCreate, CotizacionUpdate, CotizacionOut
+from app.schemas.cotizacion import CotizacionCreate, CotizacionOut, CotizacionUpdate
 from app.crud.cotizacion import crud_cotizacion
 
 router = APIRouter()
@@ -17,7 +17,7 @@ def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
 def obtener(cotizacion_id: int, db: Session = Depends(get_db)):
     obj = crud_cotizacion.get(db, cotizacion_id)
     if not obj:
-        raise HTTPException(status_code=404, detail="Cotización no encontrada")
+        raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
     return obj
 
 
@@ -30,7 +30,7 @@ def crear(payload: CotizacionCreate, db: Session = Depends(get_db)):
 def actualizar(cotizacion_id: int, payload: CotizacionUpdate, db: Session = Depends(get_db)):
     obj = crud_cotizacion.get(db, cotizacion_id)
     if not obj:
-        raise HTTPException(status_code=404, detail="Cotización no encontrada")
+        raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
     return crud_cotizacion.update(db, obj, payload.model_dump(exclude_unset=True))
 
 
@@ -38,5 +38,5 @@ def actualizar(cotizacion_id: int, payload: CotizacionUpdate, db: Session = Depe
 def eliminar(cotizacion_id: int, db: Session = Depends(get_db)):
     deleted = crud_cotizacion.remove(db, cotizacion_id)
     if not deleted:
-        raise HTTPException(status_code=404, detail="Cotización no encontrada")
+        raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
     return None

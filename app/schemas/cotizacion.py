@@ -1,19 +1,21 @@
-from pydantic import BaseModel
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field
 from typing import Optional
 from datetime import datetime
 from decimal import Decimal
 
 
 class CotizacionBase(BaseModel):
-    consecutivo: str
-    id_cotizador: int
-    id_proyecto: int
+    model_config = ConfigDict(populate_by_name=True)
+
+    id_empleado: int = Field(validation_alias=AliasChoices("id_empleado", "id_cotizador"))
+    id_oportunidad: int = Field(validation_alias=AliasChoices("id_oportunidad", "id_proyecto"))
     url_cotizacion: Optional[str] = None
     tiempo_entrega: Optional[str] = None
     nombre_cotizacion: Optional[str] = None
     tipo_cotizacion: Optional[str] = None
     etapa_cotizacion: Optional[str] = None
     forma_pago: Optional[str] = None
+    sub_total: Optional[Decimal] = None
     total: Optional[Decimal] = None
 
 
@@ -22,15 +24,23 @@ class CotizacionCreate(CotizacionBase):
 
 
 class CotizacionUpdate(BaseModel):
-    consecutivo: Optional[str] = None
-    id_cotizador: Optional[int] = None
-    id_proyecto: Optional[int] = None
+    model_config = ConfigDict(populate_by_name=True)
+
+    id_empleado: Optional[int] = Field(
+        default=None,
+        validation_alias=AliasChoices("id_empleado", "id_cotizador"),
+    )
+    id_oportunidad: Optional[int] = Field(
+        default=None,
+        validation_alias=AliasChoices("id_oportunidad", "id_proyecto"),
+    )
     url_cotizacion: Optional[str] = None
     tiempo_entrega: Optional[str] = None
     nombre_cotizacion: Optional[str] = None
     tipo_cotizacion: Optional[str] = None
     etapa_cotizacion: Optional[str] = None
     forma_pago: Optional[str] = None
+    sub_total: Optional[Decimal] = None
     total: Optional[Decimal] = None
 
 

@@ -13,12 +13,14 @@ def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
     return crud_cliente.list(db, skip=skip, limit=limit)
 
 
-@router.get("/{cliente_id}", response_model=ClienteOut)
-def obtener(cliente_id: int, db: Session = Depends(get_db)):
-    obj = crud_cliente.get(db, cliente_id)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Cliente no encontrado")
-    return obj
+@router.get("/clientes", response_model=list[ClienteOut])
+def list_clientes(
+    skip: int = 0,
+    limit: int = 1000,
+    db: Session = Depends(get_db),
+):
+    return crud_cliente.list(db, skip=skip, limit=limit)
+
 
 
 @router.post("/", response_model=ClienteOut, status_code=201)

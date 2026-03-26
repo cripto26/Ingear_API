@@ -11,17 +11,19 @@ class Empleado(Base):
     cargo = Column(String(120), nullable=True)
     area = Column(String(120), nullable=True)
     estado = Column(String(50), nullable=True)
-    cedula = Column(String(50), nullable=True, index=True)
+    cedula = Column(String(50), nullable=False, index=True)
     telefono = Column(String(50), nullable=True)
     contrasena = Column(String(255), nullable=False)
 
-    cotizaciones = relationship("Cotizacion", back_populates="cotizador")
+    cotizaciones = relationship("Cotizacion", back_populates="empleado")
 
     oportunidades_responsable = relationship(
-        "Oportunidad",
-        back_populates="responsable",
-        foreign_keys="Oportunidad.responsable_cotizacion",
-    )
+    "Oportunidad",
+    back_populates="responsable",
+    foreign_keys="Oportunidad.numero_empleado",
+)
+
+
 
     proyectos = relationship("Proyecto", secondary="proyecto_empleado", back_populates="empleados")
 

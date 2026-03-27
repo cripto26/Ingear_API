@@ -8,6 +8,8 @@ from app.db.session import get_db
 from app.models.producto import Producto
 from app.schemas.cotizacion import CotizacionCreate, CotizacionOut, CotizacionUpdate
 from app.crud.cotizacion import crud_cotizacion
+from app.schemas.cotizacion_version import CotizacionVersionOut
+
 
 router = APIRouter()
 
@@ -75,3 +77,23 @@ def eliminar(cotizacion_id: int, db: Session = Depends(get_db)):
     if not deleted:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
     return None
+
+@router.get("/{cotizacion_id}/versiones", response_model=list[CotizacionVersionOut])
+def listar_versiones(cotizacion_id: int, db: Session = Depends(get_db)):
+    obj = crud_cotizacion.get(db, cotizacion_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
+    return crud_cotizacion.list_versions(db, cotizacion_id)
+
+
+@router.get("/{cotizacion_id}/versiones/{numero_version}", response_model=CotizacionVersionOut)
+def obtener_version(cotizacion_id: int, numero_version: int, db: Session = Depends(get_db)):
+    obj = crud_cotizacion.get(db, cotizacion_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
+
+    version = crud_cotizacion.get_version(db, cotizacion_id, numero_version)
+    if not version:
+        raise HTTPException(status_code=404, detail="Version de cotizacion no encontrada")
+
+    return version

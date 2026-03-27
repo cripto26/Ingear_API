@@ -43,6 +43,7 @@ class Oportunidad(Base):
 
     cliente = relationship("Cliente", back_populates="oportunidades")
 
+
     responsable = relationship(
         "Empleado",
         back_populates="oportunidades_responsable",

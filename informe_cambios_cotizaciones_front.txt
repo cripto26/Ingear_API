@@ -1,0 +1,93 @@
+INFORME DE CAMBIOS PARA FRONTEND
+Modulo: Cotizaciones
+
+Resumen general
+
+La API de cotizaciones ahora maneja historial de cambios sin alterar la logica principal de trabajo.
+La tabla "cotizacion" sigue guardando la version vigente de la cotizacion.
+La tabla "cotizacion_versiones" guarda copias de estados anteriores cuando una cotizacion es modificada.
+
+Que cambia para el frontend
+
+- POST /api/v1/cotizaciones sigue funcionando igual: crea la cotizacion actual en la tabla "cotizacion".
+- PUT /api/v1/cotizaciones/{cotizacion_id} sigue funcionando igual para editar, pero ahora antes de sobreescribir la cotizacion el backend guarda el estado anterior en "cotizacion_versiones".
+- GET /api/v1/cotizaciones/{cotizacion_id} sigue devolviendo la version actual de la cotizacion.
+- Se agregan dos endpoints nuevos para consultar historial:
+  - GET /api/v1/cotizaciones/{cotizacion_id}/versiones
+  - GET /api/v1/cotizaciones/{cotizacion_id}/versiones/{numero_version}
+
+Impacto practico para frontend
+
+- El frontend no debe enviar el campo "versiones" al crear ni al editar.
+- El numero de version lo calcula el backend automaticamente.
+- La primera vez que se edita una cotizacion, el backend guarda en historial el estado anterior como version 1.
+- La segunda edicion guarda el estado anterior como version 2, y asi sucesivamente.
+- Si el usuario elimina una cotizacion, tambien se elimina su historial de versiones.
+
+Que sigue igual
+
+- La pantalla actual de crear cotizacion no necesita cambiar su payload.
+- La pantalla actual de editar cotizacion tampoco necesita cambiar su payload.
+- El formato de "productos" sigue siendo el mismo.
+
+Ejemplo de productos
+
+[
+  { "id_producto": 1, "cantidad": 2 },
+  { "id_producto": 5, "cantidad": 1 }
+]
+
+Nuevas capacidades para frontend
+
+- Mostrar historial de versiones de una cotizacion.
+- Ver una version puntual para comparacion.
+- En una segunda fase se podria implementar restaurar una version anterior, pero eso no hace parte del cambio actual.
+
+Contrato esperado de los endpoints nuevos
+
+1. GET /api/v1/cotizaciones/{id}/versiones
+
+Devuelve una lista de versiones historicas de esa cotizacion.
+
+Ejemplo de respuesta:
+
+[
+  {
+    "id": 3,
+    "cotizacion_id": 15,
+    "id_empleado": 8,
+    "id_oportunidad": 22,
+    "url_cotizacion": "https://...",
+    "tiempo_entrega": "15 dias",
+    "nombre_cotizacion": "Cotizacion cliente A",
+    "tipo_cotizacion": "Venta",
+    "etapa_cotizacion": "Enviada",
+    "forma_pago": "Contado",
+    "sub_total": 150000.00,
+    "total": 178500.00,
+    "productos": [
+      { "id_producto": 1, "cantidad": 2 }
+    ],
+    "versiones": 1,
+    "fecha_creacion": "2026-03-27T10:30:00Z"
+  }
+]
+
+2. GET /api/v1/cotizaciones/{id}/versiones/{numero_version}
+
+Devuelve solo una version especifica de la cotizacion.
+
+Recomendacion de UX
+
+- En el detalle de una cotizacion, agregar una seccion llamada "Historial".
+- Mostrar al menos estos datos por version:
+  - versiones
+  - fecha_creacion
+  - nombre_cotizacion
+  - total
+- Agregar una accion como "Ver detalle" para consultar una version puntual.
+
+Resumen corto
+
+El frontend sigue creando y editando cotizaciones como hasta ahora.
+La diferencia es que ahora la API conserva automaticamente el estado anterior de cada cotizacion editada y expone endpoints para consultar ese historial.

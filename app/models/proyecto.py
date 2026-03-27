@@ -34,9 +34,6 @@ class Proyecto(Base):
 
     oportunidad = relationship("Oportunidad", back_populates="proyecto")
 
-    # 1:N con Cotizacion
-    cotizaciones = relationship("Cotizacion", back_populates="proyecto")
-
     # M:N
     empleados = relationship("Empleado", secondary="proyecto_empleado", back_populates="proyectos")
     clientes = relationship("Cliente", secondary="proyecto_cliente", back_populates="proyectos")

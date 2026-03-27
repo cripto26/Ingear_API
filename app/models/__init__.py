@@ -10,6 +10,8 @@ from app.models.proyecto_empleado import ProyectoEmpleado
 from app.models.proyecto_cliente import ProyectoCliente
 from app.models.proyecto_despacho import ProyectoDespacho
 from app.models.pais import Pais
+from app.models.cotizacion_version import CotizacionVersion
+
 
 __all__ = [
     "Cliente",
@@ -24,4 +26,6 @@ __all__ = [
     "ProyectoCliente",
     "ProyectoDespacho",
     "Pais",
+    "CotizacionVersion",
+
 ]

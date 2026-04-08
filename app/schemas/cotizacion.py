@@ -2,8 +2,9 @@ import json
 from datetime import datetime
 from decimal import Decimal
 from typing import Any, Optional
+from pydantic import AliasChoices, BaseModel, ConfigDict, EmailStr, Field, field_validator
 
-from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
+
 
 
 def _parse_productos(value: Any) -> Any:
@@ -88,3 +89,18 @@ class CotizacionOut(CotizacionBase):
 
     class Config:
         from_attributes = True
+
+
+class CotizacionEmailIn(BaseModel):
+    to_email: Optional[EmailStr] = None
+    subject: Optional[str] = Field(default=None, max_length=255)
+    body: Optional[str] = None
+    pdf_base64: str = Field(min_length=20)
+    pdf_filename: str = Field(default="cotizacion.pdf", min_length=1, max_length=255)
+
+
+class CotizacionEmailOut(BaseModel):
+    message: str
+    sender_email: EmailStr
+    to_email: EmailStr
+    gmail_message_id: str

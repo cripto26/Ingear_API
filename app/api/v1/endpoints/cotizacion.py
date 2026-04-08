@@ -1,14 +1,22 @@
 import json
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.api.deps import get_current_empleado
 from app.db.session import get_db
 from app.models.producto import Producto
-from app.schemas.cotizacion import CotizacionCreate, CotizacionOut, CotizacionUpdate
+from app.schemas.cotizacion import (
+    CotizacionCreate,
+    CotizacionEmailIn,
+    CotizacionEmailOut,
+    CotizacionOut,
+    CotizacionUpdate,
+)
 from app.crud.cotizacion import crud_cotizacion
 from app.schemas.cotizacion_version import CotizacionVersionOut
+from app.services.gmail_service import decode_pdf_base64, send_email_with_pdf
 
 
 router = APIRouter()
@@ -97,3 +105,86 @@ def obtener_version(cotizacion_id: int, numero_version: int, db: Session = Depen
         raise HTTPException(status_code=404, detail="Version de cotizacion no encontrada")
 
     return version
+
+
+
+def _clean_email(value: str | None, label: str) -> str:
+    email = (value or "").strip().lower()
+    if not email or "@" not in email:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"{label} no tiene un correo valido.",
+        )
+    return email
+
+
+def _safe_pdf_filename(value: str | None, cotizacion_id: int) -> str:
+    filename = (value or "").strip() or f"Cotizacion_{cotizacion_id}.pdf"
+    filename = filename.replace("\r", "").replace("\n", "")
+    if not filename.lower().endswith(".pdf"):
+        filename = f"{filename}.pdf"
+    return filename
+
+
+def _default_subject(cotizacion_id: int, nombre_cotizacion: str | None) -> str:
+    nombre = (nombre_cotizacion or "").strip()
+    return f"Cotizacion IngeAr #{cotizacion_id}" if not nombre else f"IngeAr | {nombre}"
+
+
+def _default_body(sender_name: str, sender_role: str | None, nombre_cotizacion: str | None) -> str:
+    nombre = (nombre_cotizacion or "").strip() or "cotizacion solicitada"
+    cargo = (sender_role or "").strip()
+    firma = sender_name if not cargo else f"{sender_name}\n{cargo}"
+    return (
+        f"Hola,\n\n"
+        f"Adjunto enviamos la {nombre} en formato PDF.\n\n"
+        f"Quedamos atentos a cualquier comentario.\n\n"
+        f"{firma}\n"
+        f"IngeAr"
+    )
+
+
+@router.post("/{cotizacion_id}/enviar-email", response_model=CotizacionEmailOut)
+def enviar_email_cotizacion(
+    cotizacion_id: int,
+    payload: CotizacionEmailIn,
+    db: Session = Depends(get_db),
+    current = Depends(get_current_empleado),
+):
+    cotizacion = crud_cotizacion.get(db, cotizacion_id)
+    if not cotizacion:
+        raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
+
+    if not cotizacion.oportunidad or not cotizacion.oportunidad.cliente:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="La cotizacion no tiene cliente asociado.",
+        )
+
+    sender_email = _clean_email(current.email, "El empleado autenticado")
+    to_email = _clean_email(
+        payload.to_email or cotizacion.oportunidad.cliente.email,
+        "El cliente asociado",
+    )
+
+    pdf_bytes = decode_pdf_base64(payload.pdf_base64)
+    pdf_filename = _safe_pdf_filename(payload.pdf_filename, cotizacion.id)
+    subject = (payload.subject or "").strip() or _default_subject(cotizacion.id, cotizacion.nombre_cotizacion)
+    body = (payload.body or "").strip() or _default_body(current.nombre, current.cargo, cotizacion.nombre_cotizacion)
+
+    gmail_message_id = send_email_with_pdf(
+        sender_email=sender_email,
+        sender_name=current.nombre,
+        to_email=to_email,
+        subject=subject,
+        body=body,
+        pdf_filename=pdf_filename,
+        pdf_bytes=pdf_bytes,
+    )
+
+    return CotizacionEmailOut(
+        message="Correo enviado correctamente",
+        sender_email=sender_email,
+        to_email=to_email,
+        gmail_message_id=gmail_message_id,
+    )

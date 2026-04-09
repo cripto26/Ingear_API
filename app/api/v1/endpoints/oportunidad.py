@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.api.deps import require_cargos
+from app.api.deps import require_view_permissions
 from app.db.session import get_db
 from app.models.empleado import Empleado
 from app.schemas.oportunidad import OportunidadCreate, OportunidadUpdate, OportunidadOut
@@ -9,12 +9,7 @@ from app.crud.oportunidad import crud_oportunidad
 
 router = APIRouter()
 
-opportunity_access = require_cargos(
-    "Gerente",
-    "Lider de proyectos de iluminacion",
-    "Gerente comercial",
-    "Analista de costos y presupuestos",
-)
+opportunity_access = require_view_permissions("comercial.oportunidades")
 
 @router.get("/", response_model=list[OportunidadOut])
 def listar(

@@ -40,6 +40,7 @@ class CRUDCotizacion(CRUDBase[Cotizacion]):
             "tipo_cotizacion": db_obj.tipo_cotizacion,
             "etapa_cotizacion": db_obj.etapa_cotizacion,
             "forma_pago": db_obj.forma_pago,
+            "tipo_servicio": db_obj.tipo_servicio,
             "sub_total": db_obj.sub_total,
             "total": db_obj.total,
             "productos": db_obj.productos,

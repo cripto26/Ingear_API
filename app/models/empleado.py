@@ -1,6 +1,7 @@
 from sqlalchemy import String, Integer, Column, UniqueConstraint
 from app.db.base import Base
 from sqlalchemy.orm import relationship
+from app.db.types import JSONEncodedList
 
 class Empleado(Base):
     __tablename__ = "empleado"
@@ -13,6 +14,7 @@ class Empleado(Base):
     estado = Column(String(50), nullable=True)
     cedula = Column(String(50), nullable=False, index=True)
     telefono = Column(String(50), nullable=True)
+    permisos_vistas = Column(JSONEncodedList, nullable=True)
     contrasena = Column(String(255), nullable=False)
 
     cotizaciones = relationship("Cotizacion", back_populates="empleado")

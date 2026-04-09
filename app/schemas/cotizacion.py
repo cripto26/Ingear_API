@@ -41,6 +41,7 @@ class CotizacionBase(BaseModel):
     tipo_cotizacion: Optional[str] = None
     etapa_cotizacion: Optional[str] = None
     forma_pago: Optional[str] = None
+    tipo_servicio: Optional[str] = None
     sub_total: Optional[Decimal] = None
     total: Optional[Decimal] = None
     productos: list[CotizacionProductoItem] = Field(default_factory=list)
@@ -73,6 +74,7 @@ class CotizacionUpdate(BaseModel):
     tipo_cotizacion: Optional[str] = None
     etapa_cotizacion: Optional[str] = None
     forma_pago: Optional[str] = None
+    tipo_servicio: Optional[str] = None
     sub_total: Optional[Decimal] = None
     total: Optional[Decimal] = None
     productos: Optional[list[CotizacionProductoItem]] = None

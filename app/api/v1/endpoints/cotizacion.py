@@ -1,4 +1,5 @@
 import json
+import unicodedata
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
@@ -118,8 +119,61 @@ def _clean_email(value: str | None, label: str) -> str:
     return email
 
 
-def _safe_pdf_filename(value: str | None, cotizacion_id: int) -> str:
-    filename = (value or "").strip() or f"Cotizacion_{cotizacion_id}.pdf"
+def _normalize_lookup(value: str | None) -> str:
+    return (
+        unicodedata.normalize("NFD", (value or "").strip().lower())
+        .encode("ascii", "ignore")
+        .decode("ascii")
+    )
+
+
+def _sanitize_filename_segment(value: str | None, fallback: str) -> str:
+    cleaned = "".join(
+        " " if ch in '<>:"/\\|?*' or ord(ch) < 32 else ch
+        for ch in (value or "")
+    )
+    cleaned = " ".join(cleaned.split()).strip()
+    return cleaned or fallback
+
+
+def _service_label(value: str | None) -> str:
+    normalized = _normalize_lookup(value)
+
+    if not normalized:
+        return ""
+    if "ilumin" in normalized:
+        return "ILUM"
+    if "control" in normalized:
+        return "CONTROL"
+    if "instal" in normalized:
+        return "INSTALACIÓN"
+    if "manten" in normalized:
+        return "MANTENIMIENTO"
+    if "dise" in normalized:
+        return "DISEÑO"
+
+    return _sanitize_filename_segment(value.upper() if value else "", "GENERAL")
+
+
+def _default_pdf_filename(cotizacion) -> str:
+    service_label = _service_label(
+        cotizacion.tipo_servicio or getattr(cotizacion.oportunidad, "tipo_servicio", None)
+    )
+    type_block = f"COT {service_label} INGEAR" if service_label else "COT INGEAR"
+    project_name = _sanitize_filename_segment(
+        getattr(cotizacion.oportunidad, "nombre_proyecto", None),
+        "SIN NOMBRE DE PROYECTO",
+    ).upper()
+    client_name = _sanitize_filename_segment(
+        getattr(getattr(cotizacion.oportunidad, "cliente", None), "razon_social", None),
+        "SIN CLIENTE",
+    ).upper()
+
+    return f"{cotizacion.id} - {type_block} - {project_name} - {client_name}.pdf"
+
+
+def _safe_pdf_filename(value: str | None, cotizacion) -> str:
+    filename = (value or "").strip() or _default_pdf_filename(cotizacion)
     filename = filename.replace("\r", "").replace("\n", "")
     if not filename.lower().endswith(".pdf"):
         filename = f"{filename}.pdf"
@@ -168,7 +222,7 @@ def enviar_email_cotizacion(
     )
 
     pdf_bytes = decode_pdf_base64(payload.pdf_base64)
-    pdf_filename = _safe_pdf_filename(payload.pdf_filename, cotizacion.id)
+    pdf_filename = _safe_pdf_filename(payload.pdf_filename, cotizacion)
     subject = (payload.subject or "").strip() or _default_subject(cotizacion.id, cotizacion.nombre_cotizacion)
     body = (payload.body or "").strip() or _default_body(current.nombre, current.cargo, cotizacion.nombre_cotizacion)
 

@@ -12,7 +12,8 @@ router = APIRouter()
 def to_auth_user(emp) -> AuthUserOut:
     return AuthUserOut(
         id=emp.id, nombre=emp.nombre, email=emp.email, cargo=emp.cargo,
-        area=emp.area, estado=emp.estado, role=infer_role(emp.area, emp.cargo),
+        area=emp.area, estado=emp.estado, permisos_vistas=emp.permisos_vistas,
+        role=infer_role(emp.area, emp.cargo),
     )
 
 @router.post("/login", response_model=TokenOut)

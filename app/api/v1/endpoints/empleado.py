@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.api.deps import require_cargos, require_roles
+from app.api.deps import require_roles, require_view_permissions
 from app.db.session import get_db
 from app.models.empleado import Empleado
 from app.schemas.empleado import EmpleadoCreate, EmpleadoUpdate, EmpleadoOut
@@ -10,20 +10,18 @@ from app.crud.empleado import crud_empleado
 
 router = APIRouter()
 
+employee_catalog_access = require_view_permissions(
+    "comercial.cotizador",
+    "comercial.oportunidades",
+)
+
 
 @router.get("/", response_model=list[EmpleadoOut])
 def listar(
     skip: int = 0,
     limit: int = 500,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(
-        require_cargos(
-            "Gerente",
-            "Lider de proyectos de iluminacion",
-            "Gerente comercial",
-            "Analista de costos y presupuestos",
-        )
-    ),
+    _current: Empleado = Depends(employee_catalog_access),
 ):
     return crud_empleado.list(db, skip=skip, limit=limit)
 

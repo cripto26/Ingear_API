@@ -12,6 +12,7 @@ class AuthUserOut(BaseModel):
     cargo: Optional[str] = None
     area: Optional[str] = None
     estado: Optional[str] = None
+    permisos_vistas: Optional[list[str]] = None
     role: Literal["COMERCIAL", "ADMINISTRACION", "LOGISTICA", "INGENIERIA", "GERENCIA", "OTRO"]
 
 class TokenOut(BaseModel):

@@ -3,4 +3,5 @@ from app.api.desp import (
     require_roles,
     require_cargos,
     require_view_permissions,
+    require_any_access,
 )

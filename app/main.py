@@ -3,7 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.api.v1.api import api_router
-from app.db.schema_updates import ensure_empleado_permisos_vistas_column
+from app.db.schema_updates import (
+    ensure_auth_refresh_session_table,
+    ensure_empleado_permisos_vistas_column,
+)
 from app.db.session import engine
 
 app = FastAPI(title=settings.APP_NAME)
@@ -41,6 +44,7 @@ app.include_router(api_router, prefix="/api/v1")
 @app.on_event("startup")
 def ensure_schema_updates():
     ensure_empleado_permisos_vistas_column(engine)
+    ensure_auth_refresh_session_table(engine)
 
 
 @app.get("/")

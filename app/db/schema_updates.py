@@ -1,6 +1,8 @@
 from sqlalchemy import inspect, text
 from sqlalchemy.engine import Engine
 
+from app.models.auth_refresh_session import AuthRefreshSession
+
 
 def ensure_empleado_permisos_vistas_column(engine: Engine) -> None:
     inspector = inspect(engine)
@@ -16,3 +18,7 @@ def ensure_empleado_permisos_vistas_column(engine: Engine) -> None:
         connection.execute(
             text("ALTER TABLE empleado ADD COLUMN permisos_vistas TEXT")
         )
+
+
+def ensure_auth_refresh_session_table(engine: Engine) -> None:
+    AuthRefreshSession.__table__.create(bind=engine, checkfirst=True)

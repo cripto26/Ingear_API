@@ -4,21 +4,33 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
+from app.api.deps import require_view_permissions
 from app.db.session import get_db
+from app.models.empleado import Empleado
 from app.schemas.producto import ProductoCreate, ProductoUpdate, ProductoOut
 from app.crud.producto import crud_producto
 from app.services.product_image_service import build_product_thumbnail_from_drive_url
 
 router = APIRouter()
+product_access = require_view_permissions("comercial.productos")
 
 
 @router.get("/", response_model=list[ProductoOut])
-def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+def listar(
+    skip: int = 0,
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(product_access),
+):
     return crud_producto.list(db, skip=skip, limit=limit)
 
 
 @router.get("/{producto_id}", response_model=ProductoOut)
-def obtener(producto_id: int, db: Session = Depends(get_db)):
+def obtener(
+    producto_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(product_access),
+):
     obj = crud_producto.get(db, producto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
@@ -26,7 +38,11 @@ def obtener(producto_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/{producto_id}/imagen")
-def obtener_imagen_producto(producto_id: int, db: Session = Depends(get_db)):
+def obtener_imagen_producto(
+    producto_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(product_access),
+):
     obj = crud_producto.get(db, producto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
@@ -58,12 +74,21 @@ def obtener_imagen_producto(producto_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=ProductoOut, status_code=201)
-def crear(payload: ProductoCreate, db: Session = Depends(get_db)):
+def crear(
+    payload: ProductoCreate,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(product_access),
+):
     return crud_producto.create(db, payload.model_dump())
 
 
 @router.put("/{producto_id}", response_model=ProductoOut)
-def actualizar(producto_id: int, payload: ProductoUpdate, db: Session = Depends(get_db)):
+def actualizar(
+    producto_id: int,
+    payload: ProductoUpdate,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(product_access),
+):
     obj = crud_producto.get(db, producto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
@@ -71,7 +96,11 @@ def actualizar(producto_id: int, payload: ProductoUpdate, db: Session = Depends(
 
 
 @router.delete("/{producto_id}", status_code=204)
-def eliminar(producto_id: int, db: Session = Depends(get_db)):
+def eliminar(
+    producto_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(product_access),
+):
     deleted = crud_producto.remove(db, producto_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Producto no encontrado")

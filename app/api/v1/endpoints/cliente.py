@@ -1,15 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.api.deps import require_view_permissions
 from app.db.session import get_db
+from app.models.empleado import Empleado
 from app.schemas.cliente import ClienteCreate, ClienteUpdate, ClienteOut
 from app.crud.cliente import crud_cliente
 
 router = APIRouter()
+client_access = require_view_permissions("comercial.clientes")
 
 
 @router.get("/", response_model=list[ClienteOut])
-def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+def listar(
+    skip: int = 0,
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(client_access),
+):
     return crud_cliente.list(db, skip=skip, limit=limit)
 
 
@@ -18,18 +26,28 @@ def list_clientes(
     skip: int = 0,
     limit: int = 1000,
     db: Session = Depends(get_db),
+    _current: Empleado = Depends(client_access),
 ):
     return crud_cliente.list(db, skip=skip, limit=limit)
 
 
 
 @router.post("/", response_model=ClienteOut, status_code=201)
-def crear(payload: ClienteCreate, db: Session = Depends(get_db)):
+def crear(
+    payload: ClienteCreate,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(client_access),
+):
     return crud_cliente.create(db, payload.model_dump())
 
 
 @router.put("/{cliente_id}", response_model=ClienteOut)
-def actualizar(cliente_id: int, payload: ClienteUpdate, db: Session = Depends(get_db)):
+def actualizar(
+    cliente_id: int,
+    payload: ClienteUpdate,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(client_access),
+):
     obj = crud_cliente.get(db, cliente_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Cliente no encontrado")
@@ -38,7 +56,11 @@ def actualizar(cliente_id: int, payload: ClienteUpdate, db: Session = Depends(ge
 
 
 @router.delete("/{cliente_id}", status_code=204)
-def eliminar(cliente_id: int, db: Session = Depends(get_db)):
+def eliminar(
+    cliente_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(client_access),
+):
     deleted = crud_cliente.remove(db, cliente_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Cliente no encontrado")

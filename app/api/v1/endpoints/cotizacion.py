@@ -5,8 +5,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_empleado
+from app.api.deps import require_view_permissions
 from app.db.session import get_db
+from app.models.empleado import Empleado
 from app.models.producto import Producto
 from app.schemas.cotizacion import (
     CotizacionCreate,
@@ -21,6 +22,7 @@ from app.services.gmail_service import decode_pdf_base64, send_email_with_pdf
 
 
 router = APIRouter()
+cotizacion_access = require_view_permissions("comercial.cotizador")
 
 
 def _serialize_productos(productos):
@@ -46,12 +48,21 @@ def _validar_productos_existentes(db: Session, productos) -> None:
 
 
 @router.get("/", response_model=list[CotizacionOut])
-def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+def listar(
+    skip: int = 0,
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(cotizacion_access),
+):
     return crud_cotizacion.list(db, skip=skip, limit=limit)
 
 
 @router.get("/{cotizacion_id}", response_model=CotizacionOut)
-def obtener(cotizacion_id: int, db: Session = Depends(get_db)):
+def obtener(
+    cotizacion_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(cotizacion_access),
+):
     obj = crud_cotizacion.get(db, cotizacion_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
@@ -59,7 +70,11 @@ def obtener(cotizacion_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=CotizacionOut, status_code=201)
-def crear(payload: CotizacionCreate, db: Session = Depends(get_db)):
+def crear(
+    payload: CotizacionCreate,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(cotizacion_access),
+):
     data = payload.model_dump()
     _validar_productos_existentes(db, data["productos"])
     data["productos"] = _serialize_productos(data["productos"])
@@ -67,7 +82,12 @@ def crear(payload: CotizacionCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{cotizacion_id}", response_model=CotizacionOut)
-def actualizar(cotizacion_id: int, payload: CotizacionUpdate, db: Session = Depends(get_db)):
+def actualizar(
+    cotizacion_id: int,
+    payload: CotizacionUpdate,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(cotizacion_access),
+):
     obj = crud_cotizacion.get(db, cotizacion_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
@@ -81,14 +101,22 @@ def actualizar(cotizacion_id: int, payload: CotizacionUpdate, db: Session = Depe
 
 
 @router.delete("/{cotizacion_id}", status_code=204)
-def eliminar(cotizacion_id: int, db: Session = Depends(get_db)):
+def eliminar(
+    cotizacion_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(cotizacion_access),
+):
     deleted = crud_cotizacion.remove(db, cotizacion_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
     return None
 
 @router.get("/{cotizacion_id}/versiones", response_model=list[CotizacionVersionOut])
-def listar_versiones(cotizacion_id: int, db: Session = Depends(get_db)):
+def listar_versiones(
+    cotizacion_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(cotizacion_access),
+):
     obj = crud_cotizacion.get(db, cotizacion_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
@@ -96,7 +124,12 @@ def listar_versiones(cotizacion_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/{cotizacion_id}/versiones/{numero_version}", response_model=CotizacionVersionOut)
-def obtener_version(cotizacion_id: int, numero_version: int, db: Session = Depends(get_db)):
+def obtener_version(
+    cotizacion_id: int,
+    numero_version: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(cotizacion_access),
+):
     obj = crud_cotizacion.get(db, cotizacion_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
@@ -203,7 +236,7 @@ def enviar_email_cotizacion(
     cotizacion_id: int,
     payload: CotizacionEmailIn,
     db: Session = Depends(get_db),
-    current = Depends(get_current_empleado),
+    current: Empleado = Depends(cotizacion_access),
 ):
     cotizacion = crud_cotizacion.get(db, cotizacion_id)
     if not cotizacion:

@@ -20,6 +20,10 @@ class TokenOut(BaseModel):
     token_type: str = "bearer"
     user: AuthUserOut
 
+
+class PasswordChangeOut(TokenOut):
+    message: str
+
 class ChangePasswordIn(BaseModel):
     current_password: str
     new_password: str

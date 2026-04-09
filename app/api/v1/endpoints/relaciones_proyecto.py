@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.api.deps import require_any_access
 from app.db.session import get_db
 from app.models.proyecto import Proyecto
 from app.models.empleado import Empleado
@@ -16,6 +17,10 @@ from app.schemas.proyecto_cliente import ProyectoClienteLink
 from app.schemas.proyecto_despacho import ProyectoDespachoLink
 
 router = APIRouter()
+project_access = require_any_access(
+    roles=("GERENCIA", "LOGISTICA", "INGENIERIA"),
+    permissions=("comercial.cotizador", "comercial.oportunidades"),
+)
 
 
 def _assert_exists(db: Session, model, obj_id: int, name: str):
@@ -27,7 +32,12 @@ def _assert_exists(db: Session, model, obj_id: int, name: str):
 
 # ---- EMPLEADOS EN PROYECTO ----
 @router.post("/{proyecto_id}/empleados", status_code=201)
-def asignar_empleado(proyecto_id: int, payload: ProyectoEmpleadoLink, db: Session = Depends(get_db)):
+def asignar_empleado(
+    proyecto_id: int,
+    payload: ProyectoEmpleadoLink,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(project_access),
+):
     _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
     _assert_exists(db, Empleado, payload.id_empleado, "Empleado")
 
@@ -42,7 +52,12 @@ def asignar_empleado(proyecto_id: int, payload: ProyectoEmpleadoLink, db: Sessio
 
 
 @router.delete("/{proyecto_id}/empleados/{empleado_id}", status_code=204)
-def quitar_empleado(proyecto_id: int, empleado_id: int, db: Session = Depends(get_db)):
+def quitar_empleado(
+    proyecto_id: int,
+    empleado_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(project_access),
+):
     _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
     _assert_exists(db, Empleado, empleado_id, "Empleado")
 
@@ -56,7 +71,12 @@ def quitar_empleado(proyecto_id: int, empleado_id: int, db: Session = Depends(ge
 
 # ---- CLIENTES EN PROYECTO ----
 @router.post("/{proyecto_id}/clientes", status_code=201)
-def asignar_cliente(proyecto_id: int, payload: ProyectoClienteLink, db: Session = Depends(get_db)):
+def asignar_cliente(
+    proyecto_id: int,
+    payload: ProyectoClienteLink,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(project_access),
+):
     _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
     _assert_exists(db, Cliente, payload.id_cliente, "Cliente")
 
@@ -71,7 +91,12 @@ def asignar_cliente(proyecto_id: int, payload: ProyectoClienteLink, db: Session 
 
 
 @router.delete("/{proyecto_id}/clientes/{cliente_id}", status_code=204)
-def quitar_cliente(proyecto_id: int, cliente_id: int, db: Session = Depends(get_db)):
+def quitar_cliente(
+    proyecto_id: int,
+    cliente_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(project_access),
+):
     _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
     _assert_exists(db, Cliente, cliente_id, "Cliente")
 
@@ -85,7 +110,12 @@ def quitar_cliente(proyecto_id: int, cliente_id: int, db: Session = Depends(get_
 
 # ---- DESPACHOS EN PROYECTO ----
 @router.post("/{proyecto_id}/despachos", status_code=201)
-def asignar_despacho(proyecto_id: int, payload: ProyectoDespachoLink, db: Session = Depends(get_db)):
+def asignar_despacho(
+    proyecto_id: int,
+    payload: ProyectoDespachoLink,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(project_access),
+):
     _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
     _assert_exists(db, Despacho, payload.id_despacho, "Despacho")
 
@@ -100,7 +130,12 @@ def asignar_despacho(proyecto_id: int, payload: ProyectoDespachoLink, db: Sessio
 
 
 @router.delete("/{proyecto_id}/despachos/{despacho_id}", status_code=204)
-def quitar_despacho(proyecto_id: int, despacho_id: int, db: Session = Depends(get_db)):
+def quitar_despacho(
+    proyecto_id: int,
+    despacho_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(project_access),
+):
     _assert_exists(db, Proyecto, proyecto_id, "Proyecto")
     _assert_exists(db, Despacho, despacho_id, "Despacho")
 

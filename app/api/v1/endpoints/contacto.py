@@ -1,20 +1,32 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.api.deps import require_view_permissions
 from app.db.session import get_db
+from app.models.empleado import Empleado
 from app.schemas.contacto import ContactoCreate, ContactoUpdate, ContactoOut
 from app.crud.contacto import crud_contacto
 
 router = APIRouter()
+contact_access = require_view_permissions("comercial.contactos")
 
 
 @router.get("/", response_model=list[ContactoOut])
-def listar(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+def listar(
+    skip: int = 0,
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(contact_access),
+):
     return crud_contacto.list(db, skip=skip, limit=limit)
 
 
 @router.get("/{contacto_id}", response_model=ContactoOut)
-def obtener(contacto_id: int, db: Session = Depends(get_db)):
+def obtener(
+    contacto_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(contact_access),
+):
     obj = crud_contacto.get(db, contacto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Contacto no encontrado")
@@ -22,12 +34,21 @@ def obtener(contacto_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=ContactoOut, status_code=201)
-def crear(payload: ContactoCreate, db: Session = Depends(get_db)):
+def crear(
+    payload: ContactoCreate,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(contact_access),
+):
     return crud_contacto.create(db, payload.model_dump())
 
 
 @router.put("/{contacto_id}", response_model=ContactoOut)
-def actualizar(contacto_id: int, payload: ContactoUpdate, db: Session = Depends(get_db)):
+def actualizar(
+    contacto_id: int,
+    payload: ContactoUpdate,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(contact_access),
+):
     obj = crud_contacto.get(db, contacto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Contacto no encontrado")
@@ -35,7 +56,11 @@ def actualizar(contacto_id: int, payload: ContactoUpdate, db: Session = Depends(
 
 
 @router.delete("/{contacto_id}", status_code=204)
-def eliminar(contacto_id: int, db: Session = Depends(get_db)):
+def eliminar(
+    contacto_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(contact_access),
+):
     deleted = crud_contacto.remove(db, contacto_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Contacto no encontrado")

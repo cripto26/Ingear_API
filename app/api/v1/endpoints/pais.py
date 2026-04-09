@@ -2,20 +2,31 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.api.deps import get_current_empleado
 from app.db.session import get_db
 from app.crud.pais import crud_pais
+from app.models.empleado import Empleado
 from app.schemas.pais import PaisCreate, PaisOut, PaisUpdate
 
 router = APIRouter()
 
 
 @router.get("/", response_model=list[PaisOut])
-def listar(skip: int = 0, limit: int = 1000, db: Session = Depends(get_db)):
+def listar(
+    skip: int = 0,
+    limit: int = 1000,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(get_current_empleado),
+):
     return crud_pais.list(db, skip=skip, limit=limit)
 
 
 @router.get("/{pais}", response_model=PaisOut)
-def obtener(pais: str, db: Session = Depends(get_db)):
+def obtener(
+    pais: str,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(get_current_empleado),
+):
     obj = crud_pais.get(db, pais)
     if not obj:
         raise HTTPException(status_code=404, detail="Pais no encontrado")
@@ -23,7 +34,11 @@ def obtener(pais: str, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=PaisOut, status_code=201)
-def crear(payload: PaisCreate, db: Session = Depends(get_db)):
+def crear(
+    payload: PaisCreate,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(get_current_empleado),
+):
     # evita duplicados por PK
     existing = crud_pais.get(db, payload.pais)
     if existing:
@@ -34,7 +49,12 @@ def crear(payload: PaisCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{pais}", response_model=PaisOut)
-def actualizar(pais: str, payload: PaisUpdate, db: Session = Depends(get_db)):
+def actualizar(
+    pais: str,
+    payload: PaisUpdate,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(get_current_empleado),
+):
     obj = crud_pais.get(db, pais)
     if not obj:
         raise HTTPException(status_code=404, detail="Pais no encontrado")
@@ -44,7 +64,11 @@ def actualizar(pais: str, payload: PaisUpdate, db: Session = Depends(get_db)):
 
 
 @router.delete("/{pais}", status_code=204)
-def eliminar(pais: str, db: Session = Depends(get_db)):
+def eliminar(
+    pais: str,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(get_current_empleado),
+):
     deleted = crud_pais.remove(db, pais)
     if not deleted:
         raise HTTPException(status_code=404, detail="Pais no encontrado")

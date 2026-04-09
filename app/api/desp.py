@@ -59,3 +59,26 @@ def require_view_permissions(*permissions: str):
         )
 
     return checker
+
+
+def require_any_access(*, roles: tuple[str, ...] = (), permissions: tuple[str, ...] = ()):
+    allowed_roles = {str(role or "").strip().upper() for role in roles}
+    allowed_permissions = {
+        str(permission or "").strip().lower() for permission in permissions
+    }
+    allowed_permissions.discard("")
+
+    def checker(current: Empleado = Depends(get_current_empleado)):
+        current_role = infer_role(current.area, current.cargo)
+        if current_role in allowed_roles:
+            return current
+
+        if any(has_view_permission(current, permission) for permission in allowed_permissions):
+            return current
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No autorizado",
+        )
+
+    return checker

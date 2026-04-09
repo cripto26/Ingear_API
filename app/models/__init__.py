@@ -1,5 +1,6 @@
 from app.models.cliente import Cliente
 from app.models.contacto import Contacto
+from app.models.auth_refresh_session import AuthRefreshSession
 from app.models.empleado import Empleado
 from app.models.oportunidad import Oportunidad
 from app.models.cotizacion import Cotizacion
@@ -16,6 +17,7 @@ from app.models.cotizacion_version import CotizacionVersion
 __all__ = [
     "Cliente",
     "Contacto",
+    "AuthRefreshSession",
     "Empleado",
     "Oportunidad",
     "Cotizacion",

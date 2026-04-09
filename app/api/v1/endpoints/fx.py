@@ -1,6 +1,8 @@
 # app/api/v1/endpoints/fx.py
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
+from app.api.deps import get_current_empleado
+from app.models.empleado import Empleado
 from app.schemas.fx import FxRatesOut
 from app.services.fx_service import get_fx_rates
 
@@ -8,7 +10,7 @@ router = APIRouter()
 
 
 @router.get("/rates", response_model=FxRatesOut)
-async def read_fx_rates():
+async def read_fx_rates(current: Empleado = Depends(get_current_empleado)):
     """
     Devuelve:
     - usd_cop: TRM USD/COP (BanRep SDMX)

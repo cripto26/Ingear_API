@@ -28,6 +28,7 @@ class CotizacionProductoItem(BaseModel):
         validation_alias=AliasChoices("id_producto", "producto_id"),
     )
     cantidad: int = Field(gt=0)
+    particion: int = Field(default=1, ge=1)
 
 
 class CotizacionBase(BaseModel):

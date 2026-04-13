@@ -45,6 +45,7 @@ class CotizacionBase(BaseModel):
     tipo_servicio: Optional[str] = None
     sub_total: Optional[Decimal] = None
     total: Optional[Decimal] = None
+    estado: Optional[str] = None
     productos: list[CotizacionProductoItem] = Field(default_factory=list)
 
     @field_validator("productos", mode="before")
@@ -78,6 +79,7 @@ class CotizacionUpdate(BaseModel):
     tipo_servicio: Optional[str] = None
     sub_total: Optional[Decimal] = None
     total: Optional[Decimal] = None
+    estado: Optional[str] = None
     productos: Optional[list[CotizacionProductoItem]] = None
 
     @field_validator("productos", mode="before")

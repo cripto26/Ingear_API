@@ -31,6 +31,7 @@ class Cotizacion(Base):
     sub_total = Column(Numeric(14, 2), nullable=True)
     total = Column(Numeric(15, 2), nullable=True)
     productos = Column(Text, nullable=True)
+    estado = Column(String(50), nullable=True)
 
     empleado = relationship("Empleado", back_populates="cotizaciones", foreign_keys=[id_empleado])
     oportunidad = relationship("Oportunidad", foreign_keys=[id_oportunidad])

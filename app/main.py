@@ -5,8 +5,10 @@ from app.core.config import settings
 from app.api.v1.api import api_router
 from app.db.schema_updates import (
     ensure_auth_refresh_session_table,
+    ensure_cotizacion_version_estado_column,
     ensure_empleado_jefe_id_column,
     ensure_empleado_permisos_vistas_column,
+    ensure_notificacion_table,
 )
 from app.db.session import engine
 
@@ -44,9 +46,11 @@ app.include_router(api_router, prefix="/api/v1")
 
 @app.on_event("startup")
 def ensure_schema_updates():
+    ensure_cotizacion_version_estado_column(engine)
     ensure_empleado_jefe_id_column(engine)
     ensure_empleado_permisos_vistas_column(engine)
     ensure_auth_refresh_session_table(engine)
+    ensure_notificacion_table(engine)
 
 
 @app.get("/")

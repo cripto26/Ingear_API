@@ -3,10 +3,13 @@ import unicodedata
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.api.deps import require_view_permissions
+from app.api.deps import get_current_empleado, require_view_permissions
+from app.core.security import infer_role
 from app.db.session import get_db
+from app.models.cotizacion import Cotizacion
 from app.models.empleado import Empleado
 from app.models.producto import Producto
 from app.schemas.cotizacion import (
@@ -19,6 +22,10 @@ from app.schemas.cotizacion import (
 from app.crud.cotizacion import crud_cotizacion
 from app.schemas.cotizacion_version import CotizacionVersionOut
 from app.services.gmail_service import decode_pdf_base64, send_email_with_pdf
+from app.services.notificacion_service import (
+    create_notification,
+    resolve_notifications_for_entity,
+)
 
 
 router = APIRouter()
@@ -47,6 +54,35 @@ def _validar_productos_existentes(db: Session, productos) -> None:
         )
 
 
+def _resolver_jefe_aprobador(db: Session, empleado: Empleado) -> Empleado | None:
+    jefe_id = getattr(empleado, "jefe_id", None)
+    if not jefe_id:
+        return None
+
+    jefe = db.get(Empleado, jefe_id)
+    if not jefe:
+        return None
+
+    if (jefe.estado or "").strip().lower() != "activo":
+        return None
+
+    return jefe
+
+
+def _build_cotizacion_aprobacion_message(
+    actor: Empleado,
+    cotizacion: Cotizacion,
+) -> str:
+    titulo = (cotizacion.nombre_cotizacion or "").strip()
+    if titulo:
+        return (
+            f"{actor.nombre} creo la cotizacion \"{titulo}\" "
+            "y requiere tu aprobacion."
+        )
+
+    return f"{actor.nombre} creo la cotizacion #{cotizacion.id} y requiere tu aprobacion."
+
+
 @router.get("/", response_model=list[CotizacionOut])
 def listar(
     skip: int = 0,
@@ -73,12 +109,45 @@ def obtener(
 def crear(
     payload: CotizacionCreate,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(cotizacion_access),
+    current: Empleado = Depends(cotizacion_access),
 ):
     data = payload.model_dump()
     _validar_productos_existentes(db, data["productos"])
     data["productos"] = _serialize_productos(data["productos"])
-    return crud_cotizacion.create(db, data)
+    data["id_empleado"] = current.id
+
+    jefe_aprobador = _resolver_jefe_aprobador(db, current)
+    data["estado"] = "1" if jefe_aprobador else "2"
+
+    try:
+        cotizacion = Cotizacion(**data)
+        db.add(cotizacion)
+        db.flush()
+
+        if jefe_aprobador:
+            create_notification(
+                db,
+                destinatario_empleado_id=jefe_aprobador.id,
+                actor_empleado_id=current.id,
+                tipo="cotizacion.aprobacion_requerida",
+                area=current.area,
+                titulo="Cotizacion pendiente de aprobacion",
+                mensaje=_build_cotizacion_aprobacion_message(current, cotizacion),
+                entidad_tipo="cotizacion",
+                entidad_id=cotizacion.id,
+                ruta_destino=f"/cotizador?cotizacionId={cotizacion.id}&approval=1",
+                requiere_accion=True,
+            )
+
+        db.commit()
+        db.refresh(cotizacion)
+        return cotizacion
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail="No fue posible crear la cotizacion.",
+        )
 
 
 @router.put("/{cotizacion_id}", response_model=CotizacionOut)
@@ -110,6 +179,41 @@ def eliminar(
     if not deleted:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
     return None
+
+
+@router.post("/{cotizacion_id}/aprobar", response_model=CotizacionOut)
+def aprobar(
+    cotizacion_id: int,
+    db: Session = Depends(get_db),
+    current: Empleado = Depends(get_current_empleado),
+):
+    cotizacion = crud_cotizacion.get(db, cotizacion_id)
+    if not cotizacion:
+        raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
+
+    jefe_id = getattr(cotizacion.empleado, "jefe_id", None)
+    current_role = infer_role(current.area, current.cargo)
+    can_approve = current.id == jefe_id or current_role == "GERENCIA"
+
+    if not can_approve:
+        raise HTTPException(
+            status_code=403,
+            detail="No tienes permisos para aprobar esta cotizacion.",
+        )
+
+    if (cotizacion.estado or "").strip() != "2":
+        cotizacion.estado = "2"
+
+    resolve_notifications_for_entity(
+        db,
+        entidad_tipo="cotizacion",
+        entidad_id=cotizacion.id,
+        tipo="cotizacion.aprobacion_requerida",
+        destinatario_empleado_id=current.id if current.id == jefe_id else None,
+    )
+    db.commit()
+    db.refresh(cotizacion)
+    return cotizacion
 
 @router.get("/{cotizacion_id}/versiones", response_model=list[CotizacionVersionOut])
 def listar_versiones(

@@ -7,6 +7,7 @@ from app.api.v1.endpoints import cotizacion
 from app.api.v1.endpoints import despacho
 from app.api.v1.endpoints import empleado
 from app.api.v1.endpoints import fx
+from app.api.v1.endpoints import notificacion
 from app.api.v1.endpoints import oportunidad
 from app.api.v1.endpoints import pais
 from app.api.v1.endpoints import producto
@@ -27,3 +28,8 @@ api_router.include_router(empleado.router, prefix="/empleados", tags=["empleados
 api_router.include_router(fx.router, prefix="/fx", tags=["fx"])
 api_router.include_router(pais.router, prefix="/paises", tags=["paises"])
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
+api_router.include_router(
+    notificacion.router,
+    prefix="/notificaciones",
+    tags=["notificaciones"],
+)

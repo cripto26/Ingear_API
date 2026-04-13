@@ -12,6 +12,7 @@ from app.models.proyecto_cliente import ProyectoCliente
 from app.models.proyecto_despacho import ProyectoDespacho
 from app.models.pais import Pais
 from app.models.cotizacion_version import CotizacionVersion
+from app.models.notificacion import Notificacion
 
 
 __all__ = [
@@ -29,5 +30,6 @@ __all__ = [
     "ProyectoDespacho",
     "Pais",
     "CotizacionVersion",
+    "Notificacion",
 
 ]

@@ -56,7 +56,7 @@ class CotizacionBase(BaseModel):
 
 
 class CotizacionCreate(CotizacionBase):
-    pass
+    estado: Optional[str] = "1"
 
 
 class CotizacionUpdate(BaseModel):

@@ -15,6 +15,7 @@ class EmpleadoBase(BaseModel):
     estado: Optional[str] = None
     cedula: Optional[str] = None
     telefono: Optional[str] = None
+    jefe_id: Optional[int] = None
     permisos_vistas: Optional[list[str]] = None
 
     @field_validator("permisos_vistas")
@@ -45,6 +46,7 @@ class EmpleadoUpdate(BaseModel):
     estado: Optional[str] = None
     cedula: str
     telefono: Optional[str] = None
+    jefe_id: Optional[int] = None
     permisos_vistas: Optional[list[str]] = None
     contrasena: Optional[str] = None
 

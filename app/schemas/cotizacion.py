@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from typing import Any, Optional
 from pydantic import AliasChoices, BaseModel, ConfigDict, EmailStr, Field, field_validator
@@ -56,6 +56,7 @@ class CotizacionBase(BaseModel):
 
 
 class CotizacionCreate(CotizacionBase):
+    fecha_probable_venta: Optional[date] = None
     estado: Optional[str] = "1"
 
 
@@ -77,6 +78,7 @@ class CotizacionUpdate(BaseModel):
     etapa_cotizacion: Optional[str] = None
     forma_pago: Optional[str] = None
     tipo_servicio: Optional[str] = None
+    fecha_probable_venta: Optional[date] = None
     sub_total: Optional[Decimal] = None
     total: Optional[Decimal] = None
     estado: Optional[str] = None

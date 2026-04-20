@@ -14,7 +14,7 @@ def utc_now() -> datetime:
 
 
 def build_refresh_expiry() -> datetime:
-    return utc_now() + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+    return utc_now() + timedelta(hours=settings.REFRESH_TOKEN_EXPIRE_HOURS)
 
 
 def hash_refresh_token(raw_token: str) -> str:
@@ -63,7 +63,6 @@ def rotate_refresh_session(db: Session, session: AuthRefreshSession) -> str:
     raw_token = token_urlsafe(48)
     session.token_hash = hash_refresh_token(raw_token)
     session.last_used_at = utc_now()
-    session.expires_at = build_refresh_expiry()
     db.add(session)
     db.commit()
     return raw_token

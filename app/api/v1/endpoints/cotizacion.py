@@ -1,5 +1,6 @@
 import json
 import unicodedata
+from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
@@ -227,6 +228,7 @@ def _sync_oportunidad_cotizaciones(
     db: Session,
     cotizacion: Cotizacion,
     *,
+    fecha_probable_venta: date | None = None,
     previous_oportunidad_id: int | None = None,
     previous_cotizaciones_value: str | None = None,
 ) -> Oportunidad:
@@ -254,6 +256,18 @@ def _sync_oportunidad_cotizaciones(
         next_cotizacion_value,
         previous_entry=previous_cotizaciones_value if same_oportunidad else None,
     )
+
+    fecha_envio = (
+        cotizacion.fecha_creacion.date()
+        if getattr(cotizacion, "fecha_creacion", None) is not None
+        else date.today()
+    )
+
+    if oportunidad.fecha_cotizacion is None:
+        oportunidad.fecha_cotizacion = fecha_envio
+
+    if oportunidad.fecha_cierre is None and fecha_probable_venta is not None:
+        oportunidad.fecha_cierre = fecha_probable_venta
 
     if previous_oportunidad_id and previous_oportunidad_id != oportunidad_id:
         oportunidad_anterior = db.get(Oportunidad, previous_oportunidad_id)
@@ -295,6 +309,7 @@ def crear(
     current: Empleado = Depends(cotizacion_access),
 ):
     data = payload.model_dump()
+    fecha_probable_venta = data.pop("fecha_probable_venta", None)
     _validar_productos_existentes(db, data["productos"])
     data["productos"] = _serialize_productos(data["productos"])
     data["id_empleado"] = current.id
@@ -306,7 +321,11 @@ def crear(
         cotizacion = Cotizacion(**data)
         db.add(cotizacion)
         db.flush()
-        _sync_oportunidad_cotizaciones(db, cotizacion)
+        _sync_oportunidad_cotizaciones(
+            db,
+            cotizacion,
+            fecha_probable_venta=fecha_probable_venta,
+        )
 
         if jefe_aprobador:
             create_notification(
@@ -349,6 +368,7 @@ def actualizar(
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
 
     data = payload.model_dump(exclude_unset=True)
+    fecha_probable_venta = data.pop("fecha_probable_venta", None)
     crear_proyecto_ganada = bool(data.pop("crear_proyecto_ganada", False))
     if "productos" in data:
         _validar_productos_existentes(db, data["productos"])
@@ -425,6 +445,7 @@ def actualizar(
         _sync_oportunidad_cotizaciones(
             db,
             obj,
+            fecha_probable_venta=fecha_probable_venta,
             previous_oportunidad_id=oportunidad_anterior_id,
             previous_cotizaciones_value=cotizacion_anterior_en_oportunidad,
         )

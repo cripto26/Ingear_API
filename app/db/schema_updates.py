@@ -2,6 +2,7 @@ from sqlalchemy import inspect, text
 from sqlalchemy.engine import Engine
 
 from app.models.auth_refresh_session import AuthRefreshSession
+from app.models.cuenta_cobro import CuentaCobro
 from app.models.notificacion import Notificacion
 
 
@@ -47,6 +48,10 @@ def ensure_auth_refresh_session_table(engine: Engine) -> None:
 
 def ensure_notificacion_table(engine: Engine) -> None:
     Notificacion.__table__.create(bind=engine, checkfirst=True)
+
+
+def ensure_cuenta_cobro_table(engine: Engine) -> None:
+    CuentaCobro.__table__.create(bind=engine, checkfirst=True)
 
 
 def ensure_cotizacion_version_estado_column(engine: Engine) -> None:

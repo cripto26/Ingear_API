@@ -50,4 +50,4 @@ class Oportunidad(Base):
         foreign_keys=[numero_empleado],
     )
 
-    proyecto = relationship("Proyecto", back_populates="oportunidad", uselist=False)
+    proyectos = relationship("Proyecto", back_populates="oportunidad")

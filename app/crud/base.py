@@ -1,6 +1,6 @@
 from typing import Any, Generic, Optional, Type, TypeVar
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import desc, select
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
@@ -15,7 +15,7 @@ class CRUDBase(Generic[ModelType]):
         return db.get(self.model, id)
 
     def list(self, db: Session, skip: int = 0, limit: int = 50):
-        stmt = select(self.model).offset(skip).limit(limit)
+        stmt = select(self.model).order_by(desc(self.model.id)).offset(skip).limit(limit)
         return list(db.execute(stmt).scalars().all())
 
     def create(self, db: Session, obj_in: dict) -> ModelType:

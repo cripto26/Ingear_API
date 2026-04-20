@@ -4,6 +4,7 @@ from pydantic import BaseModel, EmailStr
 class LoginIn(BaseModel):
     username: str
     password: str
+    captcha_token: str | None = None
 
 class AuthUserOut(BaseModel):
     id: int
@@ -27,7 +28,3 @@ class PasswordChangeOut(TokenOut):
 class ChangePasswordIn(BaseModel):
     current_password: str
     new_password: str
-
-
-class MessageOut(BaseModel):
-    message: str

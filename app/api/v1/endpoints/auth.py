@@ -25,6 +25,12 @@ from app.services.auth_session_service import (
     revoke_refresh_sessions_for_empleado,
     rotate_refresh_session,
 )
+from app.services.login_protection_service import (
+    extract_client_ip,
+    login_protection_service,
+    normalize_login_key,
+)
+from app.services.turnstile_service import validate_turnstile_token
 
 router = APIRouter()
 
@@ -70,21 +76,44 @@ def get_refresh_token_from_request(request: Request) -> str | None:
 @router.post("/login", response_model=TokenOut)
 def login(
     payload: LoginIn,
+    request: Request,
     response: Response,
     db: Session = Depends(get_db),
 ):
+    client_ip = extract_client_ip(request)
+    login_key = normalize_login_key(payload.username)
+
+    login_protection_service.assert_request_allowed(client_ip, login_key)
+
+    try:
+        validate_turnstile_token(
+            payload.captcha_token,
+            client_ip,
+        )
+    except HTTPException as exc:
+        if exc.status_code == status.HTTP_400_BAD_REQUEST:
+            login_protection_service.register_failure(
+                client_ip,
+                login_key,
+                count_user=False,
+            )
+        raise
+
     empleado = crud_empleado.get_by_login(db, payload.username)
     if not empleado or not verify_password(payload.password, empleado.contrasena):
+        login_protection_service.register_failure(client_ip, login_key)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Credenciales invalidas",
         )
     if (empleado.estado or "").strip().lower() != "activo":
+        login_protection_service.register_failure(client_ip, login_key)
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Cuenta inactiva",
         )
 
+    login_protection_service.register_success(client_ip, login_key)
     access_token = create_access_token(str(empleado.id))
     refresh_token = create_refresh_session(db, empleado.id)
     set_refresh_cookie(response, refresh_token)

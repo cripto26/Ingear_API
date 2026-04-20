@@ -11,7 +11,9 @@ from app.core.security import infer_role
 from app.db.session import get_db
 from app.models.cotizacion import Cotizacion
 from app.models.empleado import Empleado
+from app.models.oportunidad import Oportunidad
 from app.models.producto import Producto
+from app.models.proyecto import Proyecto
 from app.schemas.cotizacion import (
     CotizacionCreate,
     CotizacionEmailIn,
@@ -30,6 +32,22 @@ from app.services.notificacion_service import (
 
 router = APIRouter()
 cotizacion_access = require_view_permissions("comercial.cotizador")
+
+
+def _normalize_stage(value: str | None) -> str:
+    raw = unicodedata.normalize("NFD", (value or "").strip().lower())
+    return "".join(char for char in raw if unicodedata.category(char) != "Mn")
+
+
+def _is_won_stage(value: str | None) -> bool:
+    return _normalize_stage(value) == "ganada"
+
+
+def _normalize_extension(value: str | None, fallback: str = "pdf") -> str:
+    cleaned = "".join(
+        char for char in str(value or fallback).lower() if char.isalnum()
+    )
+    return cleaned or fallback
 
 
 def _serialize_productos(productos):
@@ -83,6 +101,171 @@ def _build_cotizacion_aprobacion_message(
     return f"{actor.nombre} creo la cotizacion #{cotizacion.id} y requiere tu aprobacion."
 
 
+def _build_quote_document_base_name(
+    cotizacion_id: int | None,
+    tipo_servicio: str | None,
+    nombre_proyecto: str | None,
+    cliente_nombre: str | None,
+) -> str:
+    service_label = _service_label(tipo_servicio)
+    type_block = f"COT {service_label} INGEAR" if service_label else "COT INGEAR"
+    project_name = _sanitize_filename_segment(
+        nombre_proyecto,
+        "SIN NOMBRE DE PROYECTO",
+    ).upper()
+    client_name = _sanitize_filename_segment(cliente_nombre, "SIN CLIENTE").upper()
+    id_label = _sanitize_filename_segment(
+        str(cotizacion_id) if cotizacion_id else None,
+        "PENDIENTE",
+    )
+
+    return f"{id_label} - {type_block} - {project_name} - {client_name}"
+
+
+def _build_quote_document_filename(
+    cotizacion_id: int | None,
+    tipo_servicio: str | None,
+    nombre_proyecto: str | None,
+    cliente_nombre: str | None,
+    extension: str | None = "pdf",
+) -> str:
+    base_name = _build_quote_document_base_name(
+        cotizacion_id=cotizacion_id,
+        tipo_servicio=tipo_servicio,
+        nombre_proyecto=nombre_proyecto,
+        cliente_nombre=cliente_nombre,
+    )
+    safe_extension = _normalize_extension(extension)
+    return f"{base_name}.{safe_extension}"
+
+
+def _build_oportunidad_cotizaciones_value(
+    cotizacion: Cotizacion,
+    oportunidad: Oportunidad | None,
+) -> str:
+    cliente_nombre = getattr(getattr(oportunidad, "cliente", None), "razon_social", None)
+
+    return _build_quote_document_filename(
+        cotizacion_id=cotizacion.id,
+        tipo_servicio=cotizacion.tipo_servicio or getattr(oportunidad, "tipo_servicio", None),
+        nombre_proyecto=getattr(oportunidad, "nombre_proyecto", None),
+        cliente_nombre=cliente_nombre,
+        extension="xlsx",
+    )
+
+
+def _split_cotizaciones_entries(value: str | None) -> list[str]:
+    seen: set[str] = set()
+    entries: list[str] = []
+
+    normalized_text = str(value or "").replace("\r", "\n")
+    for raw_entry in normalized_text.split("\n"):
+        entry = raw_entry.strip()
+        if not entry or entry in seen:
+            continue
+        seen.add(entry)
+        entries.append(entry)
+
+    return entries
+
+
+def _join_cotizaciones_entries(entries: list[str]) -> str | None:
+    clean_entries = [entry.strip() for entry in entries if entry and entry.strip()]
+    return "\n".join(clean_entries) if clean_entries else None
+
+
+def _upsert_cotizaciones_value(
+    current_text: str | None,
+    next_entry: str,
+    *,
+    previous_entry: str | None = None,
+) -> str:
+    normalized_previous = (previous_entry or "").strip()
+    normalized_next = next_entry.strip()
+    base_entries: list[str] = []
+
+    for entry in _split_cotizaciones_entries(current_text):
+        if normalized_previous and entry == normalized_previous:
+            continue
+        if entry == normalized_next:
+            continue
+        base_entries.append(entry)
+
+    base_entries.append(normalized_next)
+    return _join_cotizaciones_entries(base_entries) or normalized_next
+
+
+def _remove_cotizaciones_entry(
+    current_text: str | None,
+    entry_to_remove: str | None,
+) -> str | None:
+    normalized_remove = (entry_to_remove or "").strip()
+    if not normalized_remove:
+        return _join_cotizaciones_entries(_split_cotizaciones_entries(current_text))
+
+    filtered_entries = [
+        entry
+        for entry in _split_cotizaciones_entries(current_text)
+        if entry != normalized_remove
+    ]
+    return _join_cotizaciones_entries(filtered_entries)
+
+
+def _find_existing_proyecto_for_oportunidad(
+    db: Session,
+    oportunidad_id: int,
+) -> Proyecto | None:
+    stmt = (
+        select(Proyecto)
+        .where(Proyecto.oportunidad_id == oportunidad_id)
+        .order_by(Proyecto.id.asc())
+    )
+    return db.execute(stmt).scalars().first()
+
+
+def _sync_oportunidad_cotizaciones(
+    db: Session,
+    cotizacion: Cotizacion,
+    *,
+    previous_oportunidad_id: int | None = None,
+    previous_cotizaciones_value: str | None = None,
+) -> Oportunidad:
+    oportunidad_id = cotizacion.id_oportunidad
+    if not oportunidad_id:
+        raise HTTPException(
+            status_code=400,
+            detail="La cotizacion debe estar ligada a una oportunidad.",
+        )
+
+    oportunidad = db.get(Oportunidad, oportunidad_id)
+    if not oportunidad:
+        raise HTTPException(
+            status_code=400,
+            detail="La oportunidad asociada a la cotizacion no existe.",
+        )
+
+    next_cotizacion_value = _build_oportunidad_cotizaciones_value(
+        cotizacion,
+        oportunidad,
+    )
+    same_oportunidad = previous_oportunidad_id == oportunidad_id
+    oportunidad.cotizaciones = _upsert_cotizaciones_value(
+        oportunidad.cotizaciones,
+        next_cotizacion_value,
+        previous_entry=previous_cotizaciones_value if same_oportunidad else None,
+    )
+
+    if previous_oportunidad_id and previous_oportunidad_id != oportunidad_id:
+        oportunidad_anterior = db.get(Oportunidad, previous_oportunidad_id)
+        if oportunidad_anterior:
+            oportunidad_anterior.cotizaciones = _remove_cotizaciones_entry(
+                oportunidad_anterior.cotizaciones,
+                previous_cotizaciones_value,
+            )
+
+    return oportunidad
+
+
 @router.get("/", response_model=list[CotizacionOut])
 def listar(
     skip: int = 0,
@@ -123,6 +306,7 @@ def crear(
         cotizacion = Cotizacion(**data)
         db.add(cotizacion)
         db.flush()
+        _sync_oportunidad_cotizaciones(db, cotizacion)
 
         if jefe_aprobador:
             create_notification(
@@ -142,6 +326,9 @@ def crear(
         db.commit()
         db.refresh(cotizacion)
         return cotizacion
+    except HTTPException:
+        db.rollback()
+        raise
     except IntegrityError:
         db.rollback()
         raise HTTPException(
@@ -162,11 +349,103 @@ def actualizar(
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
 
     data = payload.model_dump(exclude_unset=True)
+    crear_proyecto_ganada = bool(data.pop("crear_proyecto_ganada", False))
     if "productos" in data:
         _validar_productos_existentes(db, data["productos"])
         data["productos"] = _serialize_productos(data["productos"])
 
-    return crud_cotizacion.update(db, obj, data)
+    oportunidad_anterior_id = obj.id_oportunidad
+    oportunidad_anterior = (
+        db.get(Oportunidad, oportunidad_anterior_id)
+        if oportunidad_anterior_id
+        else None
+    )
+    cotizacion_anterior_en_oportunidad = (
+        _build_oportunidad_cotizaciones_value(obj, oportunidad_anterior)
+        if oportunidad_anterior
+        else None
+    )
+    etapa_anterior = obj.etapa_cotizacion
+    etapa_siguiente = data.get("etapa_cotizacion", obj.etapa_cotizacion)
+
+    if crear_proyecto_ganada and (
+        _is_won_stage(etapa_anterior) or not _is_won_stage(etapa_siguiente)
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Solo se puede crear un proyecto cuando la etapa de la "
+                "cotizacion cambia a Ganada."
+            ),
+        )
+
+    proyecto = None
+    proyecto_creado_id = None
+
+    try:
+        for key, value in data.items():
+            setattr(obj, key, value)
+
+        if crear_proyecto_ganada:
+            oportunidad_id = obj.id_oportunidad
+            if not oportunidad_id:
+                raise HTTPException(
+                    status_code=400,
+                    detail=(
+                        "La cotizacion debe estar ligada a una oportunidad para "
+                        "crear el proyecto."
+                    ),
+                )
+
+            oportunidad = db.get(Oportunidad, oportunidad_id)
+            if not oportunidad:
+                raise HTTPException(
+                    status_code=400,
+                    detail="La oportunidad asociada a la cotizacion no existe.",
+                )
+
+            proyecto_existente = _find_existing_proyecto_for_oportunidad(
+                db,
+                oportunidad.id,
+            )
+            if proyecto_existente is None:
+                nombre_proyecto = (oportunidad.nombre_proyecto or "").strip()
+                if not nombre_proyecto:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="La oportunidad asociada no tiene nombre de proyecto.",
+                    )
+
+                proyecto = Proyecto(
+                    nombre=nombre_proyecto,
+                    oportunidad_id=oportunidad.id,
+                )
+                db.add(proyecto)
+
+        _sync_oportunidad_cotizaciones(
+            db,
+            obj,
+            previous_oportunidad_id=oportunidad_anterior_id,
+            previous_cotizaciones_value=cotizacion_anterior_en_oportunidad,
+        )
+
+        db.commit()
+        db.refresh(obj)
+        if proyecto is not None:
+            db.refresh(proyecto)
+            proyecto_creado_id = proyecto.id
+    except HTTPException:
+        db.rollback()
+        raise
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="No fue posible actualizar la cotizacion.",
+        )
+
+    setattr(obj, "proyecto_creado_id", proyecto_creado_id)
+    return obj
 
 
 @router.delete("/{cotizacion_id}", status_code=204)
@@ -293,20 +572,20 @@ def _service_label(value: str | None) -> str:
 
 
 def _default_pdf_filename(cotizacion) -> str:
-    service_label = _service_label(
-        cotizacion.tipo_servicio or getattr(cotizacion.oportunidad, "tipo_servicio", None)
+    return _build_quote_document_filename(
+        cotizacion_id=cotizacion.id,
+        tipo_servicio=(
+            cotizacion.tipo_servicio
+            or getattr(cotizacion.oportunidad, "tipo_servicio", None)
+        ),
+        nombre_proyecto=getattr(cotizacion.oportunidad, "nombre_proyecto", None),
+        cliente_nombre=getattr(
+            getattr(cotizacion.oportunidad, "cliente", None),
+            "razon_social",
+            None,
+        ),
+        extension="pdf",
     )
-    type_block = f"COT {service_label} INGEAR" if service_label else "COT INGEAR"
-    project_name = _sanitize_filename_segment(
-        getattr(cotizacion.oportunidad, "nombre_proyecto", None),
-        "SIN NOMBRE DE PROYECTO",
-    ).upper()
-    client_name = _sanitize_filename_segment(
-        getattr(getattr(cotizacion.oportunidad, "cliente", None), "razon_social", None),
-        "SIN CLIENTE",
-    ).upper()
-
-    return f"{cotizacion.id} - {type_block} - {project_name} - {client_name}.pdf"
 
 
 def _safe_pdf_filename(value: str | None, cotizacion) -> str:

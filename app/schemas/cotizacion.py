@@ -81,6 +81,7 @@ class CotizacionUpdate(BaseModel):
     total: Optional[Decimal] = None
     estado: Optional[str] = None
     productos: Optional[list[CotizacionProductoItem]] = None
+    crear_proyecto_ganada: Optional[bool] = None
 
     @field_validator("productos", mode="before")
     @classmethod
@@ -91,6 +92,7 @@ class CotizacionUpdate(BaseModel):
 class CotizacionOut(CotizacionBase):
     id: int
     fecha_creacion: datetime
+    proyecto_creado_id: Optional[int] = None
 
     class Config:
         from_attributes = True

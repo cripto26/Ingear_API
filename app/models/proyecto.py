@@ -32,7 +32,7 @@ class Proyecto(Base):
 
     oportunidad_id = Column(Integer, ForeignKey("oportunidad.id"), nullable=True, index=True)
 
-    oportunidad = relationship("Oportunidad", back_populates="proyecto")
+    oportunidad = relationship("Oportunidad", back_populates="proyectos")
 
     # M:N
     empleados = relationship("Empleado", secondary="proyecto_empleado", back_populates="proyectos")

@@ -18,6 +18,19 @@ class Settings(BaseSettings):
     REFRESH_COOKIE_SECURE: bool = False
     REFRESH_COOKIE_SAMESITE: Literal["lax", "strict", "none"] = "lax"
     REFRESH_COOKIE_DOMAIN: Optional[str] = None
+    TURNSTILE_ENABLED: bool = False
+    TURNSTILE_SECRET_KEY: Optional[str] = None
+    TURNSTILE_SITEVERIFY_URL: str = (
+        "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+    )
+    LOGIN_RATE_LIMIT_WINDOW_SECONDS: int = 300
+    LOGIN_RATE_LIMIT_MAX_ATTEMPTS_PER_IP: int = 20
+    LOGIN_RATE_LIMIT_MAX_ATTEMPTS_PER_USER: int = 10
+    LOGIN_FAILURE_WINDOW_SECONDS: int = 900
+    LOGIN_FAILURE_LOCK_THRESHOLD: int = 5
+    LOGIN_FAILURE_LOCK_BASE_SECONDS: int = 60
+    LOGIN_FAILURE_LOCK_BACKOFF_MULTIPLIER: int = 2
+    LOGIN_FAILURE_LOCK_MAX_SECONDS: int = 900
 
 
 

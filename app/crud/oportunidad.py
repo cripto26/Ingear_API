@@ -1,7 +1,7 @@
 from typing import Any, Optional
 
 from fastapi import HTTPException
-from sqlalchemy import MetaData, Table, delete, insert, select, update
+from sqlalchemy import MetaData, Table, delete, desc, insert, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -26,7 +26,7 @@ class CRUDOportunidad:
 
     def list(self, db: Session, skip: int = 0, limit: int = 50) -> list[dict[str, Any]]:
         table = self._table(db)
-        stmt = select(table).offset(skip).limit(limit)
+        stmt = select(table).order_by(desc(table.c.id)).offset(skip).limit(limit)
         return [dict(row) for row in db.execute(stmt).mappings().all()]
 
     def create(self, db: Session, obj_in: dict[str, Any]) -> dict[str, Any]:

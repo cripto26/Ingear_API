@@ -12,6 +12,16 @@ REFRESH_COOKIE_NAME=ingear_refresh_token
 REFRESH_COOKIE_PATH=/api/v1/auth
 REFRESH_COOKIE_SECURE=false
 REFRESH_COOKIE_SAMESITE=lax
+TURNSTILE_ENABLED=true
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+LOGIN_RATE_LIMIT_WINDOW_SECONDS=300
+LOGIN_RATE_LIMIT_MAX_ATTEMPTS_PER_IP=20
+LOGIN_RATE_LIMIT_MAX_ATTEMPTS_PER_USER=10
+LOGIN_FAILURE_WINDOW_SECONDS=900
+LOGIN_FAILURE_LOCK_THRESHOLD=5
+LOGIN_FAILURE_LOCK_BASE_SECONDS=60
+LOGIN_FAILURE_LOCK_BACKOFF_MULTIPLIER=2
+LOGIN_FAILURE_LOCK_MAX_SECONDS=900
 
 
 ==================== FILE: D:\IngeArt\API_Ingear\.gitignore ====================
@@ -29,7 +39,6 @@ __pycache__/
 from app.api.desp import (
     get_current_empleado,
     require_roles,
-    require_cargos,
     require_view_permissions,
     require_any_access,
 )
@@ -42,7 +51,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.empleado import Empleado
-from app.core.security import decode_access_token, infer_role, normalize
+from app.core.security import decode_access_token, infer_role
 from app.core.view_permissions import has_view_permission
 
 bearer = HTTPBearer(auto_error=False)
@@ -66,17 +75,6 @@ def require_roles(*roles: str):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No autorizado")
         return current
     return checker
-
-def require_cargos(*cargos: str):
-    allowed = {normalize(cargo) for cargo in cargos}
-
-    def checker(current: Empleado = Depends(get_current_empleado)):
-        if normalize(current.cargo) not in allowed:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No autorizado")
-        return current
-
-    return checker
-
 
 def require_view_permissions(*permissions: str):
     required = {str(permission or "").strip().lower() for permission in permissions}
@@ -134,6 +132,7 @@ from app.api.v1.endpoints import cotizacion
 from app.api.v1.endpoints import despacho
 from app.api.v1.endpoints import empleado
 from app.api.v1.endpoints import fx
+from app.api.v1.endpoints import notificacion
 from app.api.v1.endpoints import oportunidad
 from app.api.v1.endpoints import pais
 from app.api.v1.endpoints import producto
@@ -154,6 +153,11 @@ api_router.include_router(empleado.router, prefix="/empleados", tags=["empleados
 api_router.include_router(fx.router, prefix="/fx", tags=["fx"])
 api_router.include_router(pais.router, prefix="/paises", tags=["paises"])
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
+api_router.include_router(
+    notificacion.router,
+    prefix="/notificaciones",
+    tags=["notificaciones"],
+)
 
 
 ==================== FILE: D:\IngeArt\API_Ingear\app\api\v1\endpoints\auth.py ====================
@@ -185,6 +189,12 @@ from app.services.auth_session_service import (
     revoke_refresh_sessions_for_empleado,
     rotate_refresh_session,
 )
+from app.services.login_protection_service import (
+    extract_client_ip,
+    login_protection_service,
+    normalize_login_key,
+)
+from app.services.turnstile_service import validate_turnstile_token
 
 router = APIRouter()
 
@@ -230,21 +240,44 @@ def get_refresh_token_from_request(request: Request) -> str | None:
 @router.post("/login", response_model=TokenOut)
 def login(
     payload: LoginIn,
+    request: Request,
     response: Response,
     db: Session = Depends(get_db),
 ):
+    client_ip = extract_client_ip(request)
+    login_key = normalize_login_key(payload.username)
+
+    login_protection_service.assert_request_allowed(client_ip, login_key)
+
+    try:
+        validate_turnstile_token(
+            payload.captcha_token,
+            client_ip,
+        )
+    except HTTPException as exc:
+        if exc.status_code == status.HTTP_400_BAD_REQUEST:
+            login_protection_service.register_failure(
+                client_ip,
+                login_key,
+                count_user=False,
+            )
+        raise
+
     empleado = crud_empleado.get_by_login(db, payload.username)
     if not empleado or not verify_password(payload.password, empleado.contrasena):
+        login_protection_service.register_failure(client_ip, login_key)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Credenciales invalidas",
         )
     if (empleado.estado or "").strip().lower() != "activo":
+        login_protection_service.register_failure(client_ip, login_key)
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Cuenta inactiva",
         )
 
+    login_protection_service.register_success(client_ip, login_key)
     access_token = create_access_token(str(empleado.id))
     refresh_token = create_refresh_session(db, empleado.id)
     set_refresh_cookie(response, refresh_token)
@@ -494,12 +527,17 @@ import unicodedata
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.api.deps import require_view_permissions
+from app.api.deps import get_current_empleado, require_view_permissions
+from app.core.security import infer_role
 from app.db.session import get_db
+from app.models.cotizacion import Cotizacion
 from app.models.empleado import Empleado
+from app.models.oportunidad import Oportunidad
 from app.models.producto import Producto
+from app.models.proyecto import Proyecto
 from app.schemas.cotizacion import (
     CotizacionCreate,
     CotizacionEmailIn,
@@ -510,10 +548,30 @@ from app.schemas.cotizacion import (
 from app.crud.cotizacion import crud_cotizacion
 from app.schemas.cotizacion_version import CotizacionVersionOut
 from app.services.gmail_service import decode_pdf_base64, send_email_with_pdf
+from app.services.notificacion_service import (
+    create_notification,
+    resolve_notifications_for_entity,
+)
 
 
 router = APIRouter()
 cotizacion_access = require_view_permissions("comercial.cotizador")
+
+
+def _normalize_stage(value: str | None) -> str:
+    raw = unicodedata.normalize("NFD", (value or "").strip().lower())
+    return "".join(char for char in raw if unicodedata.category(char) != "Mn")
+
+
+def _is_won_stage(value: str | None) -> bool:
+    return _normalize_stage(value) == "ganada"
+
+
+def _normalize_extension(value: str | None, fallback: str = "pdf") -> str:
+    cleaned = "".join(
+        char for char in str(value or fallback).lower() if char.isalnum()
+    )
+    return cleaned or fallback
 
 
 def _serialize_productos(productos):
@@ -536,6 +594,200 @@ def _validar_productos_existentes(db: Session, productos) -> None:
             status_code=400,
             detail=f"Productos no encontrados: {ids_faltantes}",
         )
+
+
+def _resolver_jefe_aprobador(db: Session, empleado: Empleado) -> Empleado | None:
+    jefe_id = getattr(empleado, "jefe_id", None)
+    if not jefe_id:
+        return None
+
+    jefe = db.get(Empleado, jefe_id)
+    if not jefe:
+        return None
+
+    if (jefe.estado or "").strip().lower() != "activo":
+        return None
+
+    return jefe
+
+
+def _build_cotizacion_aprobacion_message(
+    actor: Empleado,
+    cotizacion: Cotizacion,
+) -> str:
+    titulo = (cotizacion.nombre_cotizacion or "").strip()
+    if titulo:
+        return (
+            f"{actor.nombre} creo la cotizacion \"{titulo}\" "
+            "y requiere tu aprobacion."
+        )
+
+    return f"{actor.nombre} creo la cotizacion #{cotizacion.id} y requiere tu aprobacion."
+
+
+def _build_quote_document_base_name(
+    cotizacion_id: int | None,
+    tipo_servicio: str | None,
+    nombre_proyecto: str | None,
+    cliente_nombre: str | None,
+) -> str:
+    service_label = _service_label(tipo_servicio)
+    type_block = f"COT {service_label} INGEAR" if service_label else "COT INGEAR"
+    project_name = _sanitize_filename_segment(
+        nombre_proyecto,
+        "SIN NOMBRE DE PROYECTO",
+    ).upper()
+    client_name = _sanitize_filename_segment(cliente_nombre, "SIN CLIENTE").upper()
+    id_label = _sanitize_filename_segment(
+        str(cotizacion_id) if cotizacion_id else None,
+        "PENDIENTE",
+    )
+
+    return f"{id_label} - {type_block} - {project_name} - {client_name}"
+
+
+def _build_quote_document_filename(
+    cotizacion_id: int | None,
+    tipo_servicio: str | None,
+    nombre_proyecto: str | None,
+    cliente_nombre: str | None,
+    extension: str | None = "pdf",
+) -> str:
+    base_name = _build_quote_document_base_name(
+        cotizacion_id=cotizacion_id,
+        tipo_servicio=tipo_servicio,
+        nombre_proyecto=nombre_proyecto,
+        cliente_nombre=cliente_nombre,
+    )
+    safe_extension = _normalize_extension(extension)
+    return f"{base_name}.{safe_extension}"
+
+
+def _build_oportunidad_cotizaciones_value(
+    cotizacion: Cotizacion,
+    oportunidad: Oportunidad | None,
+) -> str:
+    cliente_nombre = getattr(getattr(oportunidad, "cliente", None), "razon_social", None)
+
+    return _build_quote_document_filename(
+        cotizacion_id=cotizacion.id,
+        tipo_servicio=cotizacion.tipo_servicio or getattr(oportunidad, "tipo_servicio", None),
+        nombre_proyecto=getattr(oportunidad, "nombre_proyecto", None),
+        cliente_nombre=cliente_nombre,
+        extension="xlsx",
+    )
+
+
+def _split_cotizaciones_entries(value: str | None) -> list[str]:
+    seen: set[str] = set()
+    entries: list[str] = []
+
+    normalized_text = str(value or "").replace("\r", "\n")
+    for raw_entry in normalized_text.split("\n"):
+        entry = raw_entry.strip()
+        if not entry or entry in seen:
+            continue
+        seen.add(entry)
+        entries.append(entry)
+
+    return entries
+
+
+def _join_cotizaciones_entries(entries: list[str]) -> str | None:
+    clean_entries = [entry.strip() for entry in entries if entry and entry.strip()]
+    return "\n".join(clean_entries) if clean_entries else None
+
+
+def _upsert_cotizaciones_value(
+    current_text: str | None,
+    next_entry: str,
+    *,
+    previous_entry: str | None = None,
+) -> str:
+    normalized_previous = (previous_entry or "").strip()
+    normalized_next = next_entry.strip()
+    base_entries: list[str] = []
+
+    for entry in _split_cotizaciones_entries(current_text):
+        if normalized_previous and entry == normalized_previous:
+            continue
+        if entry == normalized_next:
+            continue
+        base_entries.append(entry)
+
+    base_entries.append(normalized_next)
+    return _join_cotizaciones_entries(base_entries) or normalized_next
+
+
+def _remove_cotizaciones_entry(
+    current_text: str | None,
+    entry_to_remove: str | None,
+) -> str | None:
+    normalized_remove = (entry_to_remove or "").strip()
+    if not normalized_remove:
+        return _join_cotizaciones_entries(_split_cotizaciones_entries(current_text))
+
+    filtered_entries = [
+        entry
+        for entry in _split_cotizaciones_entries(current_text)
+        if entry != normalized_remove
+    ]
+    return _join_cotizaciones_entries(filtered_entries)
+
+
+def _find_existing_proyecto_for_oportunidad(
+    db: Session,
+    oportunidad_id: int,
+) -> Proyecto | None:
+    stmt = (
+        select(Proyecto)
+        .where(Proyecto.oportunidad_id == oportunidad_id)
+        .order_by(Proyecto.id.asc())
+    )
+    return db.execute(stmt).scalars().first()
+
+
+def _sync_oportunidad_cotizaciones(
+    db: Session,
+    cotizacion: Cotizacion,
+    *,
+    previous_oportunidad_id: int | None = None,
+    previous_cotizaciones_value: str | None = None,
+) -> Oportunidad:
+    oportunidad_id = cotizacion.id_oportunidad
+    if not oportunidad_id:
+        raise HTTPException(
+            status_code=400,
+            detail="La cotizacion debe estar ligada a una oportunidad.",
+        )
+
+    oportunidad = db.get(Oportunidad, oportunidad_id)
+    if not oportunidad:
+        raise HTTPException(
+            status_code=400,
+            detail="La oportunidad asociada a la cotizacion no existe.",
+        )
+
+    next_cotizacion_value = _build_oportunidad_cotizaciones_value(
+        cotizacion,
+        oportunidad,
+    )
+    same_oportunidad = previous_oportunidad_id == oportunidad_id
+    oportunidad.cotizaciones = _upsert_cotizaciones_value(
+        oportunidad.cotizaciones,
+        next_cotizacion_value,
+        previous_entry=previous_cotizaciones_value if same_oportunidad else None,
+    )
+
+    if previous_oportunidad_id and previous_oportunidad_id != oportunidad_id:
+        oportunidad_anterior = db.get(Oportunidad, previous_oportunidad_id)
+        if oportunidad_anterior:
+            oportunidad_anterior.cotizaciones = _remove_cotizaciones_entry(
+                oportunidad_anterior.cotizaciones,
+                previous_cotizaciones_value,
+            )
+
+    return oportunidad
 
 
 @router.get("/", response_model=list[CotizacionOut])
@@ -564,12 +816,49 @@ def obtener(
 def crear(
     payload: CotizacionCreate,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(cotizacion_access),
+    current: Empleado = Depends(cotizacion_access),
 ):
     data = payload.model_dump()
     _validar_productos_existentes(db, data["productos"])
     data["productos"] = _serialize_productos(data["productos"])
-    return crud_cotizacion.create(db, data)
+    data["id_empleado"] = current.id
+
+    jefe_aprobador = _resolver_jefe_aprobador(db, current)
+    data["estado"] = "1" if jefe_aprobador else "2"
+
+    try:
+        cotizacion = Cotizacion(**data)
+        db.add(cotizacion)
+        db.flush()
+        _sync_oportunidad_cotizaciones(db, cotizacion)
+
+        if jefe_aprobador:
+            create_notification(
+                db,
+                destinatario_empleado_id=jefe_aprobador.id,
+                actor_empleado_id=current.id,
+                tipo="cotizacion.aprobacion_requerida",
+                area=current.area,
+                titulo="Cotizacion pendiente de aprobacion",
+                mensaje=_build_cotizacion_aprobacion_message(current, cotizacion),
+                entidad_tipo="cotizacion",
+                entidad_id=cotizacion.id,
+                ruta_destino=f"/cotizador?cotizacionId={cotizacion.id}&approval=1",
+                requiere_accion=True,
+            )
+
+        db.commit()
+        db.refresh(cotizacion)
+        return cotizacion
+    except HTTPException:
+        db.rollback()
+        raise
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail="No fue posible crear la cotizacion.",
+        )
 
 
 @router.put("/{cotizacion_id}", response_model=CotizacionOut)
@@ -584,11 +873,103 @@ def actualizar(
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
 
     data = payload.model_dump(exclude_unset=True)
+    crear_proyecto_ganada = bool(data.pop("crear_proyecto_ganada", False))
     if "productos" in data:
         _validar_productos_existentes(db, data["productos"])
         data["productos"] = _serialize_productos(data["productos"])
 
-    return crud_cotizacion.update(db, obj, data)
+    oportunidad_anterior_id = obj.id_oportunidad
+    oportunidad_anterior = (
+        db.get(Oportunidad, oportunidad_anterior_id)
+        if oportunidad_anterior_id
+        else None
+    )
+    cotizacion_anterior_en_oportunidad = (
+        _build_oportunidad_cotizaciones_value(obj, oportunidad_anterior)
+        if oportunidad_anterior
+        else None
+    )
+    etapa_anterior = obj.etapa_cotizacion
+    etapa_siguiente = data.get("etapa_cotizacion", obj.etapa_cotizacion)
+
+    if crear_proyecto_ganada and (
+        _is_won_stage(etapa_anterior) or not _is_won_stage(etapa_siguiente)
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Solo se puede crear un proyecto cuando la etapa de la "
+                "cotizacion cambia a Ganada."
+            ),
+        )
+
+    proyecto = None
+    proyecto_creado_id = None
+
+    try:
+        for key, value in data.items():
+            setattr(obj, key, value)
+
+        if crear_proyecto_ganada:
+            oportunidad_id = obj.id_oportunidad
+            if not oportunidad_id:
+                raise HTTPException(
+                    status_code=400,
+                    detail=(
+                        "La cotizacion debe estar ligada a una oportunidad para "
+                        "crear el proyecto."
+                    ),
+                )
+
+            oportunidad = db.get(Oportunidad, oportunidad_id)
+            if not oportunidad:
+                raise HTTPException(
+                    status_code=400,
+                    detail="La oportunidad asociada a la cotizacion no existe.",
+                )
+
+            proyecto_existente = _find_existing_proyecto_for_oportunidad(
+                db,
+                oportunidad.id,
+            )
+            if proyecto_existente is None:
+                nombre_proyecto = (oportunidad.nombre_proyecto or "").strip()
+                if not nombre_proyecto:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="La oportunidad asociada no tiene nombre de proyecto.",
+                    )
+
+                proyecto = Proyecto(
+                    nombre=nombre_proyecto,
+                    oportunidad_id=oportunidad.id,
+                )
+                db.add(proyecto)
+
+        _sync_oportunidad_cotizaciones(
+            db,
+            obj,
+            previous_oportunidad_id=oportunidad_anterior_id,
+            previous_cotizaciones_value=cotizacion_anterior_en_oportunidad,
+        )
+
+        db.commit()
+        db.refresh(obj)
+        if proyecto is not None:
+            db.refresh(proyecto)
+            proyecto_creado_id = proyecto.id
+    except HTTPException:
+        db.rollback()
+        raise
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="No fue posible actualizar la cotizacion.",
+        )
+
+    setattr(obj, "proyecto_creado_id", proyecto_creado_id)
+    return obj
 
 
 @router.delete("/{cotizacion_id}", status_code=204)
@@ -601,6 +982,41 @@ def eliminar(
     if not deleted:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
     return None
+
+
+@router.post("/{cotizacion_id}/aprobar", response_model=CotizacionOut)
+def aprobar(
+    cotizacion_id: int,
+    db: Session = Depends(get_db),
+    current: Empleado = Depends(get_current_empleado),
+):
+    cotizacion = crud_cotizacion.get(db, cotizacion_id)
+    if not cotizacion:
+        raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
+
+    jefe_id = getattr(cotizacion.empleado, "jefe_id", None)
+    current_role = infer_role(current.area, current.cargo)
+    can_approve = current.id == jefe_id or current_role == "GERENCIA"
+
+    if not can_approve:
+        raise HTTPException(
+            status_code=403,
+            detail="No tienes permisos para aprobar esta cotizacion.",
+        )
+
+    if (cotizacion.estado or "").strip() != "2":
+        cotizacion.estado = "2"
+
+    resolve_notifications_for_entity(
+        db,
+        entidad_tipo="cotizacion",
+        entidad_id=cotizacion.id,
+        tipo="cotizacion.aprobacion_requerida",
+        destinatario_empleado_id=current.id if current.id == jefe_id else None,
+    )
+    db.commit()
+    db.refresh(cotizacion)
+    return cotizacion
 
 @router.get("/{cotizacion_id}/versiones", response_model=list[CotizacionVersionOut])
 def listar_versiones(
@@ -680,20 +1096,20 @@ def _service_label(value: str | None) -> str:
 
 
 def _default_pdf_filename(cotizacion) -> str:
-    service_label = _service_label(
-        cotizacion.tipo_servicio or getattr(cotizacion.oportunidad, "tipo_servicio", None)
+    return _build_quote_document_filename(
+        cotizacion_id=cotizacion.id,
+        tipo_servicio=(
+            cotizacion.tipo_servicio
+            or getattr(cotizacion.oportunidad, "tipo_servicio", None)
+        ),
+        nombre_proyecto=getattr(cotizacion.oportunidad, "nombre_proyecto", None),
+        cliente_nombre=getattr(
+            getattr(cotizacion.oportunidad, "cliente", None),
+            "razon_social",
+            None,
+        ),
+        extension="pdf",
     )
-    type_block = f"COT {service_label} INGEAR" if service_label else "COT INGEAR"
-    project_name = _sanitize_filename_segment(
-        getattr(cotizacion.oportunidad, "nombre_proyecto", None),
-        "SIN NOMBRE DE PROYECTO",
-    ).upper()
-    client_name = _sanitize_filename_segment(
-        getattr(getattr(cotizacion.oportunidad, "cliente", None), "razon_social", None),
-        "SIN CLIENTE",
-    ).upper()
-
-    return f"{cotizacion.id} - {type_block} - {project_name} - {client_name}.pdf"
 
 
 def _safe_pdf_filename(value: str | None, cotizacion) -> str:
@@ -859,6 +1275,26 @@ employee_catalog_access = require_view_permissions(
 )
 
 
+def validate_jefe_id(
+    db: Session,
+    jefe_id: int | None,
+    *,
+    empleado_id: int | None = None,
+) -> None:
+    if jefe_id is None:
+        return
+
+    if empleado_id is not None and jefe_id == empleado_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Un empleado no puede asignarse como su propio jefe directo.",
+        )
+
+    jefe = crud_empleado.get(db, jefe_id)
+    if not jefe:
+        raise HTTPException(status_code=400, detail="El jefe directo no existe.")
+
+
 @router.get("/", response_model=list[EmpleadoOut])
 def listar(
     skip: int = 0,
@@ -867,8 +1303,6 @@ def listar(
     _current: Empleado = Depends(employee_catalog_access),
 ):
     return crud_empleado.list(db, skip=skip, limit=limit)
-
-
 
 @router.get("/{empleado_id}", response_model=EmpleadoOut)
 def obtener(
@@ -888,6 +1322,8 @@ def crear(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(require_roles("GERENCIA")),
 ):
+    validate_jefe_id(db, payload.jefe_id)
+
     try:
         return crud_empleado.create_secure(db, payload.model_dump())
     except IntegrityError:
@@ -906,8 +1342,15 @@ def actualizar(
     if not obj:
         raise HTTPException(status_code=404, detail="Empleado no encontrado")
 
+    if "jefe_id" in payload.model_fields_set:
+        validate_jefe_id(db, payload.jefe_id, empleado_id=empleado_id)
+
     try:
-        return crud_empleado.update_secure(db, obj, payload.model_dump(exclude_unset=True))
+        return crud_empleado.update_secure(
+            db,
+            obj,
+            payload.model_dump(exclude_unset=True),
+        )
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=400, detail="La cedula ya esta registrada")
@@ -949,6 +1392,103 @@ async def read_fx_rates(current: Empleado = Depends(get_current_empleado)):
         return await get_fx_rates()
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"No se pudo consultar TRM/EUR: {e}")
+
+
+==================== FILE: D:\IngeArt\API_Ingear\app\api\v1\endpoints\notificacion.py ====================
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import desc, select
+from sqlalchemy.orm import Session, joinedload
+
+from app.api.deps import get_current_empleado
+from app.db.session import get_db
+from app.models.empleado import Empleado
+from app.models.notificacion import Notificacion
+from app.schemas.notificacion import NotificacionBatchOut, NotificacionOut
+from app.services.notificacion_service import mark_notification_read
+
+router = APIRouter()
+
+
+def serialize_notification(notification: Notificacion) -> NotificacionOut:
+    return NotificacionOut(
+        id=notification.id,
+        destinatario_empleado_id=notification.destinatario_empleado_id,
+        actor_empleado_id=notification.actor_empleado_id,
+        actor_nombre=notification.actor.nombre if notification.actor else None,
+        tipo=notification.tipo,
+        area=notification.area,
+        titulo=notification.titulo,
+        mensaje=notification.mensaje,
+        entidad_tipo=notification.entidad_tipo,
+        entidad_id=notification.entidad_id,
+        ruta_destino=notification.ruta_destino,
+        requiere_accion=notification.requiere_accion,
+        leida=notification.leida_en is not None,
+        resuelta=notification.resuelta_en is not None,
+        leida_en=notification.leida_en,
+        resuelta_en=notification.resuelta_en,
+        fecha_creacion=notification.fecha_creacion,
+    )
+
+
+@router.get("/", response_model=list[NotificacionOut])
+def listar(
+    solo_no_leidas: bool = False,
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    current: Empleado = Depends(get_current_empleado),
+):
+    safe_limit = max(1, min(limit, 200))
+    stmt = (
+        select(Notificacion)
+        .where(Notificacion.destinatario_empleado_id == current.id)
+        .options(joinedload(Notificacion.actor))
+        .order_by(desc(Notificacion.fecha_creacion))
+        .limit(safe_limit)
+    )
+
+    if solo_no_leidas:
+        stmt = stmt.where(Notificacion.leida_en.is_(None))
+
+    rows = db.execute(stmt).scalars().all()
+    return [serialize_notification(row) for row in rows]
+
+
+@router.post("/{notificacion_id}/leer", response_model=NotificacionOut)
+def marcar_como_leida(
+    notificacion_id: int,
+    db: Session = Depends(get_db),
+    current: Empleado = Depends(get_current_empleado),
+):
+    notification = db.get(Notificacion, notificacion_id)
+    if not notification or notification.destinatario_empleado_id != current.id:
+        raise HTTPException(status_code=404, detail="Notificacion no encontrada")
+
+    mark_notification_read(notification)
+    db.commit()
+    db.refresh(notification)
+    return serialize_notification(notification)
+
+
+@router.post("/marcar-todas-leidas", response_model=NotificacionBatchOut)
+def marcar_todas_como_leidas(
+    db: Session = Depends(get_db),
+    current: Empleado = Depends(get_current_empleado),
+):
+    stmt = select(Notificacion).where(
+        Notificacion.destinatario_empleado_id == current.id,
+        Notificacion.leida_en.is_(None),
+    )
+    notifications = list(db.execute(stmt).scalars().all())
+
+    updated = 0
+    for notification in notifications:
+        if mark_notification_read(notification):
+            updated += 1
+
+    db.commit()
+    return NotificacionBatchOut(updated=updated)
 
 
 ==================== FILE: D:\IngeArt\API_Ingear\app\api\v1\endpoints\oportunidad.py ====================
@@ -1211,11 +1751,14 @@ def eliminar(
 ==================== FILE: D:\IngeArt\API_Ingear\app\api\v1\endpoints\proyecto.py ====================
 
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.api.deps import require_any_access
+from app.models.oportunidad import Oportunidad
 from app.db.session import get_db
 from app.models.empleado import Empleado
+from app.models.proyecto import Proyecto
 from app.schemas.proyecto import ProyectoCreate, ProyectoUpdate, ProyectoOut
 from app.crud.proyecto import crud_proyecto
 
@@ -1224,6 +1767,34 @@ project_access = require_any_access(
     roles=("GERENCIA", "LOGISTICA", "INGENIERIA"),
     permissions=("comercial.cotizador", "comercial.oportunidades"),
 )
+
+
+def _validate_unique_project_link(
+    db: Session,
+    oportunidad_id: int | None,
+    *,
+    exclude_project_id: int | None = None,
+) -> None:
+    if not oportunidad_id:
+        return
+
+    oportunidad = db.get(Oportunidad, oportunidad_id)
+    if not oportunidad:
+        raise HTTPException(
+            status_code=400,
+            detail="La oportunidad asociada no existe.",
+        )
+
+    stmt = select(Proyecto).where(Proyecto.oportunidad_id == oportunidad_id)
+    if exclude_project_id is not None:
+        stmt = stmt.where(Proyecto.id != exclude_project_id)
+
+    proyecto_existente = db.execute(stmt.limit(1)).scalars().first()
+    if proyecto_existente:
+        raise HTTPException(
+            status_code=409,
+            detail="La oportunidad ya tiene un proyecto ligado.",
+        )
 
 
 @router.get("/", response_model=list[ProyectoOut])
@@ -1254,6 +1825,7 @@ def crear(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(project_access),
 ):
+    _validate_unique_project_link(db, payload.oportunidad_id)
     return crud_proyecto.create(db, payload.model_dump())
 
 
@@ -1267,7 +1839,20 @@ def actualizar(
     obj = crud_proyecto.get(db, proyecto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Proyecto no encontrado")
-    return crud_proyecto.update(db, obj, payload.model_dump(exclude_unset=True))
+
+    data = payload.model_dump(exclude_unset=True)
+    target_oportunidad_id = data.get("oportunidad_id")
+    if (
+        target_oportunidad_id
+        and target_oportunidad_id != getattr(obj, "oportunidad_id", None)
+    ):
+        _validate_unique_project_link(
+            db,
+            target_oportunidad_id,
+            exclude_project_id=proyecto_id,
+        )
+
+    return crud_proyecto.update(db, obj, data)
 
 
 @router.delete("/{proyecto_id}", status_code=204)
@@ -1455,6 +2040,19 @@ class Settings(BaseSettings):
     REFRESH_COOKIE_SECURE: bool = False
     REFRESH_COOKIE_SAMESITE: Literal["lax", "strict", "none"] = "lax"
     REFRESH_COOKIE_DOMAIN: Optional[str] = None
+    TURNSTILE_ENABLED: bool = False
+    TURNSTILE_SECRET_KEY: Optional[str] = None
+    TURNSTILE_SITEVERIFY_URL: str = (
+        "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+    )
+    LOGIN_RATE_LIMIT_WINDOW_SECONDS: int = 300
+    LOGIN_RATE_LIMIT_MAX_ATTEMPTS_PER_IP: int = 20
+    LOGIN_RATE_LIMIT_MAX_ATTEMPTS_PER_USER: int = 10
+    LOGIN_FAILURE_WINDOW_SECONDS: int = 900
+    LOGIN_FAILURE_LOCK_THRESHOLD: int = 5
+    LOGIN_FAILURE_LOCK_BASE_SECONDS: int = 60
+    LOGIN_FAILURE_LOCK_BACKOFF_MULTIPLIER: int = 2
+    LOGIN_FAILURE_LOCK_MAX_SECONDS: int = 900
 
 
 
@@ -1619,7 +2217,7 @@ def has_view_permission(
 
 from typing import Any, Generic, Optional, Type, TypeVar
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import desc, select
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
@@ -1634,7 +2232,7 @@ class CRUDBase(Generic[ModelType]):
         return db.get(self.model, id)
 
     def list(self, db: Session, skip: int = 0, limit: int = 50):
-        stmt = select(self.model).offset(skip).limit(limit)
+        stmt = select(self.model).order_by(desc(self.model.id)).offset(skip).limit(limit)
         return list(db.execute(stmt).scalars().all())
 
     def create(self, db: Session, obj_in: dict) -> ModelType:
@@ -1873,7 +2471,7 @@ crud_empleado = CRUDEmpleado(Empleado)
 from typing import Any, Optional
 
 from fastapi import HTTPException
-from sqlalchemy import MetaData, Table, delete, insert, select, update
+from sqlalchemy import MetaData, Table, delete, desc, insert, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -1898,7 +2496,7 @@ class CRUDOportunidad:
 
     def list(self, db: Session, skip: int = 0, limit: int = 50) -> list[dict[str, Any]]:
         table = self._table(db)
-        stmt = select(table).offset(skip).limit(limit)
+        stmt = select(table).order_by(desc(table.c.id)).offset(skip).limit(limit)
         return [dict(row) for row in db.execute(stmt).mappings().all()]
 
     def create(self, db: Session, obj_in: dict[str, Any]) -> dict[str, Any]:
@@ -1998,6 +2596,7 @@ from sqlalchemy import inspect, text
 from sqlalchemy.engine import Engine
 
 from app.models.auth_refresh_session import AuthRefreshSession
+from app.models.notificacion import Notificacion
 
 
 def ensure_empleado_permisos_vistas_column(engine: Engine) -> None:
@@ -2016,8 +2615,53 @@ def ensure_empleado_permisos_vistas_column(engine: Engine) -> None:
         )
 
 
+def ensure_empleado_jefe_id_column(engine: Engine) -> None:
+    inspector = inspect(engine)
+
+    if not inspector.has_table("empleado"):
+        return
+
+    columns = {column["name"] for column in inspector.get_columns("empleado")}
+    if "jefe_id" in columns:
+        return
+
+    with engine.begin() as connection:
+        if "jede_id" in columns:
+            connection.execute(
+                text("ALTER TABLE empleado RENAME COLUMN jede_id TO jefe_id")
+            )
+            return
+
+        connection.execute(text("ALTER TABLE empleado ADD COLUMN jefe_id INTEGER"))
+
+
 def ensure_auth_refresh_session_table(engine: Engine) -> None:
     AuthRefreshSession.__table__.create(bind=engine, checkfirst=True)
+
+
+def ensure_notificacion_table(engine: Engine) -> None:
+    Notificacion.__table__.create(bind=engine, checkfirst=True)
+
+
+def ensure_cotizacion_version_estado_column(engine: Engine) -> None:
+    inspector = inspect(engine)
+
+    if not inspector.has_table("cotizacion_versiones_v2"):
+        return
+
+    columns = {
+        column["name"] for column in inspector.get_columns("cotizacion_versiones_v2")
+    }
+    if "estado" in columns:
+        return
+
+    with engine.begin() as connection:
+        connection.execute(
+            text(
+                "ALTER TABLE cotizacion_versiones_v2 "
+                "ADD COLUMN estado VARCHAR(50)"
+            )
+        )
 
 
 ==================== FILE: D:\IngeArt\API_Ingear\app\db\session.py ====================
@@ -2118,7 +2762,10 @@ from app.core.config import settings
 from app.api.v1.api import api_router
 from app.db.schema_updates import (
     ensure_auth_refresh_session_table,
+    ensure_cotizacion_version_estado_column,
+    ensure_empleado_jefe_id_column,
     ensure_empleado_permisos_vistas_column,
+    ensure_notificacion_table,
 )
 from app.db.session import engine
 
@@ -2156,8 +2803,11 @@ app.include_router(api_router, prefix="/api/v1")
 
 @app.on_event("startup")
 def ensure_schema_updates():
+    ensure_cotizacion_version_estado_column(engine)
+    ensure_empleado_jefe_id_column(engine)
     ensure_empleado_permisos_vistas_column(engine)
     ensure_auth_refresh_session_table(engine)
+    ensure_notificacion_table(engine)
 
 
 @app.get("/")
@@ -2181,6 +2831,7 @@ from app.models.proyecto_cliente import ProyectoCliente
 from app.models.proyecto_despacho import ProyectoDespacho
 from app.models.pais import Pais
 from app.models.cotizacion_version import CotizacionVersion
+from app.models.notificacion import Notificacion
 
 
 __all__ = [
@@ -2198,6 +2849,7 @@ __all__ = [
     "ProyectoDespacho",
     "Pais",
     "CotizacionVersion",
+    "Notificacion",
 
 ]
 
@@ -2317,7 +2969,7 @@ class Cotizacion(Base):
     sub_total = Column(Numeric(14, 2), nullable=True)
     total = Column(Numeric(15, 2), nullable=True)
     productos = Column(Text, nullable=True)
-    estado = Column(String(50), nullable=True)
+    estado = Column(String(50), nullable=True, default="1")
 
     empleado = relationship("Empleado", back_populates="cotizaciones", foreign_keys=[id_empleado])
     oportunidad = relationship("Oportunidad", foreign_keys=[id_oportunidad])
@@ -2375,6 +3027,7 @@ class CotizacionVersion(Base):
     etapa_cotizacion = Column(String(120), nullable=True)
     forma_pago = Column(String(120), nullable=True)
     tipo_servicio = Column(String(50), nullable=True)
+    estado = Column(String(50), nullable=True)
     sub_total = Column(Numeric(14, 2), nullable=True)
     total = Column(Numeric(15, 2), nullable=True)
     productos = Column(Text, nullable=True)
@@ -2418,10 +3071,11 @@ class Despacho(Base):
 
 ==================== FILE: D:\IngeArt\API_Ingear\app\models\empleado.py ====================
 
-from sqlalchemy import String, Integer, Column, UniqueConstraint
+from sqlalchemy import Column, Integer, String, UniqueConstraint
 from app.db.base import Base
 from sqlalchemy.orm import relationship
 from app.db.types import JSONEncodedList
+
 
 class Empleado(Base):
     __tablename__ = "empleado"
@@ -2434,24 +3088,83 @@ class Empleado(Base):
     estado = Column(String(50), nullable=True)
     cedula = Column(String(50), nullable=False, index=True)
     telefono = Column(String(50), nullable=True)
+    jefe_id = Column(Integer, nullable=True)
     permisos_vistas = Column(JSONEncodedList, nullable=True)
     contrasena = Column(String(255), nullable=False)
 
     cotizaciones = relationship("Cotizacion", back_populates="empleado")
 
     oportunidades_responsable = relationship(
-    "Oportunidad",
-    back_populates="responsable",
-    foreign_keys="Oportunidad.numero_empleado",
-)
+        "Oportunidad",
+        back_populates="responsable",
+        foreign_keys="Oportunidad.numero_empleado",
+    )
 
-
-
-    proyectos = relationship("Proyecto", secondary="proyecto_empleado", back_populates="empleados")
+    proyectos = relationship(
+        "Proyecto",
+        secondary="proyecto_empleado",
+        back_populates="empleados",
+    )
 
     __table_args__ = (
         UniqueConstraint("cedula", name="uq_empleado_cedula"),
     )
+
+
+==================== FILE: D:\IngeArt\API_Ingear\app\models\notificacion.py ====================
+
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+
+from app.db.base import Base
+
+
+class Notificacion(Base):
+    __tablename__ = "notificacion"
+
+    id = Column(Integer, primary_key=True, index=True)
+    destinatario_empleado_id = Column(
+        Integer,
+        ForeignKey("empleado.id"),
+        nullable=False,
+        index=True,
+    )
+    actor_empleado_id = Column(
+        Integer,
+        ForeignKey("empleado.id"),
+        nullable=True,
+        index=True,
+    )
+    tipo = Column(String(120), nullable=False, index=True)
+    area = Column(String(120), nullable=True)
+    titulo = Column(String(255), nullable=False)
+    mensaje = Column(Text, nullable=True)
+    entidad_tipo = Column(String(80), nullable=True, index=True)
+    entidad_id = Column(Integer, nullable=True, index=True)
+    ruta_destino = Column(String(500), nullable=True)
+    requiere_accion = Column(Boolean, nullable=False, default=False)
+    leida_en = Column(DateTime(timezone=True), nullable=True)
+    resuelta_en = Column(DateTime(timezone=True), nullable=True)
+    fecha_creacion = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+    )
+
+    destinatario = relationship(
+        "Empleado",
+        foreign_keys=[destinatario_empleado_id],
+    )
+    actor = relationship("Empleado", foreign_keys=[actor_empleado_id])
 
 
 ==================== FILE: D:\IngeArt\API_Ingear\app\models\oportunidad.py ====================
@@ -2508,7 +3221,7 @@ class Oportunidad(Base):
         foreign_keys=[numero_empleado],
     )
 
-    proyecto = relationship("Proyecto", back_populates="oportunidad", uselist=False)
+    proyectos = relationship("Proyecto", back_populates="oportunidad")
 
 
 ==================== FILE: D:\IngeArt\API_Ingear\app\models\pais.py ====================
@@ -2623,7 +3336,7 @@ class Proyecto(Base):
 
     oportunidad_id = Column(Integer, ForeignKey("oportunidad.id"), nullable=True, index=True)
 
-    oportunidad = relationship("Oportunidad", back_populates="proyecto")
+    oportunidad = relationship("Oportunidad", back_populates="proyectos")
 
     # M:N
     empleados = relationship("Empleado", secondary="proyecto_empleado", back_populates="proyectos")
@@ -2678,6 +3391,7 @@ from pydantic import BaseModel, EmailStr
 class LoginIn(BaseModel):
     username: str
     password: str
+    captcha_token: str | None = None
 
 class AuthUserOut(BaseModel):
     id: int
@@ -2701,10 +3415,6 @@ class PasswordChangeOut(TokenOut):
 class ChangePasswordIn(BaseModel):
     current_password: str
     new_password: str
-
-
-class MessageOut(BaseModel):
-    message: str
 
 
 ==================== FILE: D:\IngeArt\API_Ingear\app\schemas\cliente.py ====================
@@ -2834,7 +3544,7 @@ class CotizacionBase(BaseModel):
 
 
 class CotizacionCreate(CotizacionBase):
-    pass
+    estado: Optional[str] = "1"
 
 
 class CotizacionUpdate(BaseModel):
@@ -2859,6 +3569,7 @@ class CotizacionUpdate(BaseModel):
     total: Optional[Decimal] = None
     estado: Optional[str] = None
     productos: Optional[list[CotizacionProductoItem]] = None
+    crear_proyecto_ganada: Optional[bool] = None
 
     @field_validator("productos", mode="before")
     @classmethod
@@ -2869,6 +3580,7 @@ class CotizacionUpdate(BaseModel):
 class CotizacionOut(CotizacionBase):
     id: int
     fecha_creacion: datetime
+    proyecto_creado_id: Optional[int] = None
 
     class Config:
         from_attributes = True
@@ -2960,6 +3672,7 @@ class EmpleadoBase(BaseModel):
     estado: Optional[str] = None
     cedula: Optional[str] = None
     telefono: Optional[str] = None
+    jefe_id: Optional[int] = None
     permisos_vistas: Optional[list[str]] = None
 
     @field_validator("permisos_vistas")
@@ -2990,6 +3703,7 @@ class EmpleadoUpdate(BaseModel):
     estado: Optional[str] = None
     cedula: str
     telefono: Optional[str] = None
+    jefe_id: Optional[int] = None
     permisos_vistas: Optional[list[str]] = None
     contrasena: Optional[str] = None
 
@@ -3033,6 +3747,38 @@ class FxRatesOut(BaseModel):
     eurusd_date: str
     fetched_at: str
     sources: FxSources
+
+
+==================== FILE: D:\IngeArt\API_Ingear\app\schemas\notificacion.py ====================
+
+from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel
+
+
+class NotificacionOut(BaseModel):
+    id: int
+    destinatario_empleado_id: int
+    actor_empleado_id: Optional[int] = None
+    actor_nombre: Optional[str] = None
+    tipo: str
+    area: Optional[str] = None
+    titulo: str
+    mensaje: Optional[str] = None
+    entidad_tipo: Optional[str] = None
+    entidad_id: Optional[int] = None
+    ruta_destino: Optional[str] = None
+    requiere_accion: bool = False
+    leida: bool = False
+    resuelta: bool = False
+    leida_en: Optional[datetime] = None
+    resuelta_en: Optional[datetime] = None
+    fecha_creacion: datetime
+
+
+class NotificacionBatchOut(BaseModel):
+    updated: int
 
 
 ==================== FILE: D:\IngeArt\API_Ingear\app\schemas\oportunidad.py ====================
@@ -3743,6 +4489,302 @@ def send_email_with_pdf(
         ) from exc
 
 
+==================== FILE: D:\IngeArt\API_Ingear\app\services\login_protection_service.py ====================
+
+import math
+import time
+from collections import deque
+from dataclasses import dataclass, field
+from threading import Lock
+
+from fastapi import HTTPException, Request, status
+
+from app.core.config import settings
+
+
+@dataclass
+class FailureState:
+    timestamps: deque[float] = field(default_factory=deque)
+    lock_until: float | None = None
+
+
+def extract_client_ip(request: Request) -> str:
+    forwarded_for = (request.headers.get("x-forwarded-for") or "").strip()
+    if forwarded_for:
+        return forwarded_for.split(",")[0].strip() or "unknown"
+
+    if request.client and request.client.host:
+        return request.client.host
+
+    return "unknown"
+
+
+def normalize_login_key(value: str | None) -> str | None:
+    normalized = (value or "").strip().lower()
+    return normalized or None
+
+
+class LoginProtectionService:
+    def __init__(self) -> None:
+        self._lock = Lock()
+        self._attempts_by_ip: dict[str, deque[float]] = {}
+        self._attempts_by_user: dict[str, deque[float]] = {}
+        self._failures_by_ip: dict[str, FailureState] = {}
+        self._failures_by_user: dict[str, FailureState] = {}
+
+    def assert_request_allowed(self, client_ip: str, login_key: str | None) -> None:
+        now = time.time()
+
+        with self._lock:
+            lock_retry_after = max(
+                self._get_lock_retry_after(self._failures_by_ip, client_ip, now),
+                self._get_lock_retry_after(self._failures_by_user, login_key, now),
+            )
+            if lock_retry_after > 0:
+                raise self._build_http_exception(
+                    "Demasiados intentos fallidos. Espera antes de volver a intentar.",
+                    lock_retry_after,
+                )
+
+            rate_retry_after = max(
+                self._register_attempt_and_get_retry_after(
+                    self._attempts_by_ip,
+                    client_ip,
+                    settings.LOGIN_RATE_LIMIT_WINDOW_SECONDS,
+                    settings.LOGIN_RATE_LIMIT_MAX_ATTEMPTS_PER_IP,
+                    now,
+                ),
+                self._register_attempt_and_get_retry_after(
+                    self._attempts_by_user,
+                    login_key,
+                    settings.LOGIN_RATE_LIMIT_WINDOW_SECONDS,
+                    settings.LOGIN_RATE_LIMIT_MAX_ATTEMPTS_PER_USER,
+                    now,
+                ),
+            )
+            if rate_retry_after > 0:
+                raise self._build_http_exception(
+                    "Demasiados intentos de inicio de sesion. Espera antes de volver a intentar.",
+                    rate_retry_after,
+                )
+
+    def register_failure(
+        self,
+        client_ip: str,
+        login_key: str | None,
+        *,
+        count_user: bool = True,
+    ) -> None:
+        now = time.time()
+
+        with self._lock:
+            self._record_failure(self._failures_by_ip, client_ip, now)
+            if count_user:
+                self._record_failure(self._failures_by_user, login_key, now)
+
+    def register_success(self, client_ip: str, login_key: str | None) -> None:
+        with self._lock:
+            self._failures_by_ip.pop(client_ip, None)
+            if login_key:
+                self._failures_by_user.pop(login_key, None)
+
+    def _record_failure(
+        self,
+        store: dict[str, FailureState],
+        key: str | None,
+        now: float,
+    ) -> None:
+        if not key:
+            return
+
+        state = store.setdefault(key, FailureState())
+        self._prune_failures(state.timestamps, now)
+
+        if state.lock_until and state.lock_until <= now:
+            state.lock_until = None
+
+        state.timestamps.append(now)
+
+        if len(state.timestamps) < settings.LOGIN_FAILURE_LOCK_THRESHOLD:
+            return
+
+        overflow = len(state.timestamps) - settings.LOGIN_FAILURE_LOCK_THRESHOLD
+        lock_seconds = min(
+            settings.LOGIN_FAILURE_LOCK_BASE_SECONDS
+            * (settings.LOGIN_FAILURE_LOCK_BACKOFF_MULTIPLIER ** overflow),
+            settings.LOGIN_FAILURE_LOCK_MAX_SECONDS,
+        )
+        next_lock_until = now + lock_seconds
+        state.lock_until = max(state.lock_until or 0, next_lock_until)
+
+    def _get_lock_retry_after(
+        self,
+        store: dict[str, FailureState],
+        key: str | None,
+        now: float,
+    ) -> int:
+        if not key:
+            return 0
+
+        state = store.get(key)
+        if not state:
+            return 0
+
+        self._prune_failures(state.timestamps, now)
+
+        if state.lock_until and state.lock_until > now:
+            return max(1, math.ceil(state.lock_until - now))
+
+        state.lock_until = None
+        if not state.timestamps:
+            store.pop(key, None)
+        return 0
+
+    def _register_attempt_and_get_retry_after(
+        self,
+        store: dict[str, deque[float]],
+        key: str | None,
+        window_seconds: int,
+        max_attempts: int,
+        now: float,
+    ) -> int:
+        if not key or window_seconds <= 0 or max_attempts <= 0:
+            return 0
+
+        attempts = store.setdefault(key, deque())
+        self._prune_attempts(attempts, now, window_seconds)
+        attempts.append(now)
+
+        if len(attempts) <= max_attempts:
+            return 0
+
+        retry_after = max(1, math.ceil(attempts[0] + window_seconds - now))
+        return retry_after
+
+    def _prune_attempts(
+        self,
+        attempts: deque[float],
+        now: float,
+        window_seconds: int,
+    ) -> None:
+        cutoff = now - window_seconds
+        while attempts and attempts[0] <= cutoff:
+            attempts.popleft()
+
+    def _prune_failures(self, attempts: deque[float], now: float) -> None:
+        cutoff = now - settings.LOGIN_FAILURE_WINDOW_SECONDS
+        while attempts and attempts[0] <= cutoff:
+            attempts.popleft()
+
+    def _build_http_exception(self, detail: str, retry_after: int) -> HTTPException:
+        return HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"{detail} Intenta de nuevo en {retry_after} segundos.",
+            headers={"Retry-After": str(retry_after)},
+        )
+
+
+login_protection_service = LoginProtectionService()
+
+
+==================== FILE: D:\IngeArt\API_Ingear\app\services\notificacion_service.py ====================
+
+from datetime import datetime, timezone
+
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.models.notificacion import Notificacion
+
+
+def utc_now() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def create_notification(
+    db: Session,
+    *,
+    destinatario_empleado_id: int,
+    tipo: str,
+    titulo: str,
+    actor_empleado_id: int | None = None,
+    area: str | None = None,
+    mensaje: str | None = None,
+    entidad_tipo: str | None = None,
+    entidad_id: int | None = None,
+    ruta_destino: str | None = None,
+    requiere_accion: bool = False,
+) -> Notificacion:
+    notification = Notificacion(
+        destinatario_empleado_id=destinatario_empleado_id,
+        actor_empleado_id=actor_empleado_id,
+        tipo=tipo,
+        area=area,
+        titulo=titulo,
+        mensaje=mensaje,
+        entidad_tipo=entidad_tipo,
+        entidad_id=entidad_id,
+        ruta_destino=ruta_destino,
+        requiere_accion=requiere_accion,
+    )
+    db.add(notification)
+    return notification
+
+
+def mark_notification_read(notification: Notificacion) -> bool:
+    if notification.leida_en is not None:
+        return False
+
+    notification.leida_en = utc_now()
+    return True
+
+
+def mark_notification_resolved(notification: Notificacion) -> bool:
+    changed = False
+
+    if notification.resuelta_en is None:
+        notification.resuelta_en = utc_now()
+        changed = True
+
+    if notification.leida_en is None:
+        notification.leida_en = notification.resuelta_en
+        changed = True
+
+    return changed
+
+
+def resolve_notifications_for_entity(
+    db: Session,
+    *,
+    entidad_tipo: str,
+    entidad_id: int,
+    tipo: str | None = None,
+    destinatario_empleado_id: int | None = None,
+) -> int:
+    stmt = select(Notificacion).where(
+        Notificacion.entidad_tipo == entidad_tipo,
+        Notificacion.entidad_id == entidad_id,
+        Notificacion.resuelta_en.is_(None),
+    )
+
+    if tipo:
+        stmt = stmt.where(Notificacion.tipo == tipo)
+
+    if destinatario_empleado_id is not None:
+        stmt = stmt.where(
+            Notificacion.destinatario_empleado_id == destinatario_empleado_id
+        )
+
+    notifications = list(db.execute(stmt).scalars().all())
+    updated = 0
+
+    for notification in notifications:
+        if mark_notification_resolved(notification):
+            updated += 1
+
+    return updated
+
+
 ==================== FILE: D:\IngeArt\API_Ingear\app\services\product_image_service.py ====================
 
 import io
@@ -3833,6 +4875,80 @@ def build_product_thumbnail_from_drive_url(
     file_id = extract_drive_file_id(drive_url)
     original_bytes = download_drive_file(file_id)
     return resize_image_to_box(original_bytes, width=width, height=height)
+
+==================== FILE: D:\IngeArt\API_Ingear\app\services\turnstile_service.py ====================
+
+import logging
+
+import httpx
+from fastapi import HTTPException, status
+
+from app.core.config import settings
+
+logger = logging.getLogger(__name__)
+
+
+def validate_turnstile_token(
+    token: str | None,
+    remote_ip: str | None = None,
+) -> None:
+    if not settings.TURNSTILE_ENABLED:
+        return
+
+    if not settings.TURNSTILE_SECRET_KEY:
+        logger.error("TURNSTILE_ENABLED=true pero TURNSTILE_SECRET_KEY no esta configurada.")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="La verificacion de seguridad no esta disponible.",
+        )
+
+    captcha_token = (token or "").strip()
+    if not captcha_token:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Completa la verificacion de seguridad.",
+        )
+
+    payload = {
+        "secret": settings.TURNSTILE_SECRET_KEY,
+        "response": captcha_token,
+    }
+    if remote_ip:
+        payload["remoteip"] = remote_ip
+
+    try:
+        response = httpx.post(
+            settings.TURNSTILE_SITEVERIFY_URL,
+            data=payload,
+            timeout=8.0,
+        )
+        response.raise_for_status()
+        result = response.json()
+    except httpx.HTTPError as exc:
+        logger.warning("No se pudo validar Turnstile contra Cloudflare: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="No se pudo validar la verificacion de seguridad.",
+        ) from exc
+    except ValueError as exc:
+        logger.warning("Turnstile respondio con un payload invalido: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="No se pudo validar la verificacion de seguridad.",
+        ) from exc
+
+    if result.get("success") is True:
+        return
+
+    logger.info(
+        "Turnstile rechazo el login. error_codes=%s",
+        result.get("error-codes"),
+    )
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="La verificacion de seguridad no fue valida.",
+    )
+
 
 ==================== FILE: D:\IngeArt\API_Ingear\README.md ====================
 

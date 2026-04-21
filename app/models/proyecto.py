@@ -33,12 +33,6 @@ class Proyecto(Base):
     oportunidad_id = Column(Integer, ForeignKey("oportunidad.id"), nullable=True, index=True)
 
     oportunidad = relationship("Oportunidad", back_populates="proyectos")
-    cuentas_cobro = relationship(
-        "CuentaCobro",
-        back_populates="proyecto_ref",
-        cascade="all, delete-orphan",
-    )
-
     # M:N
     empleados = relationship("Empleado", secondary="proyecto_empleado", back_populates="proyectos")
     clientes = relationship("Cliente", secondary="proyecto_cliente", back_populates="proyectos")

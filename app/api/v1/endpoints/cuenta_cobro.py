@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import desc, select
+from sqlalchemy import desc, or_, select
 from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.api.deps import require_any_access
@@ -22,6 +22,126 @@ project_access = require_any_access(
     roles=("GERENCIA", "LOGISTICA", "INGENIERIA"),
     permissions=("comercial.cotizador", "comercial.oportunidades"),
 )
+
+CUENTA_COBRO_STORED_FIELDS = frozenset(
+    {
+        "cliente_id",
+        "cliente_nombre",
+        "nit",
+        "direccion",
+        "telefono",
+        "proyecto",
+        "numero_contrato",
+        "id_cotizacion",
+    }
+)
+
+CUENTA_COBRO_LOCKED_PREFILL_FIELDS = frozenset(
+    {"oportunidad_id", "cliente_id", "id_cotizacion"}
+)
+
+
+def _build_storage_payload(payload: dict) -> dict:
+    return {
+        field: value
+        for field, value in payload.items()
+        if field in CUENTA_COBRO_STORED_FIELDS
+    }
+
+
+def _hydrate_cuenta_cobro_relations(db: Session, cuentas: list) -> list:
+    if not cuentas:
+        return cuentas
+
+    cotizacion_ids = {
+        int(cuenta.id_cotizacion)
+        for cuenta in cuentas
+        if getattr(cuenta, "id_cotizacion", None) is not None
+    }
+    cotizaciones = {}
+    if cotizacion_ids:
+        cotizaciones = {
+            int(cotizacion_id): (
+                int(oportunidad_id) if oportunidad_id is not None else None
+            )
+            for cotizacion_id, oportunidad_id in db.execute(
+                select(Cotizacion.id, Cotizacion.id_oportunidad).where(
+                    Cotizacion.id.in_(cotizacion_ids)
+                )
+            ).all()
+        }
+
+    project_names = {
+        cuenta.proyecto
+        for cuenta in cuentas
+        if getattr(cuenta, "proyecto", None)
+    }
+    opportunity_ids = {
+        oportunidad_id
+        for oportunidad_id in cotizaciones.values()
+        if oportunidad_id is not None
+    }
+
+    proyectos_by_pair = {}
+    proyectos_by_name = {}
+    proyectos_by_opportunity = {}
+    if project_names or opportunity_ids:
+        stmt = select(Proyecto.id, Proyecto.nombre, Proyecto.oportunidad_id)
+        filters = []
+        if project_names:
+            filters.append(Proyecto.nombre.in_(project_names))
+        if opportunity_ids:
+            filters.append(Proyecto.oportunidad_id.in_(opportunity_ids))
+
+        for proyecto_id, nombre, oportunidad_id in db.execute(
+            stmt.where(or_(*filters))
+        ).all():
+            info = {
+                "id": int(proyecto_id),
+                "oportunidad_id": (
+                    int(oportunidad_id) if oportunidad_id is not None else None
+                ),
+            }
+
+            if nombre:
+                proyectos_by_name.setdefault(nombre, info)
+            if oportunidad_id is not None:
+                opportunity_key = int(oportunidad_id)
+                proyectos_by_opportunity.setdefault(opportunity_key, info)
+                if nombre:
+                    proyectos_by_pair.setdefault((opportunity_key, nombre), info)
+
+    for cuenta in cuentas:
+        oportunidad_id = None
+        if getattr(cuenta, "id_cotizacion", None) is not None:
+            oportunidad_id = cotizaciones.get(int(cuenta.id_cotizacion))
+
+        project_info = None
+        project_name = getattr(cuenta, "proyecto", None)
+        if oportunidad_id is not None and project_name:
+            project_info = proyectos_by_pair.get((oportunidad_id, project_name))
+        if project_info is None and oportunidad_id is not None:
+            project_info = proyectos_by_opportunity.get(oportunidad_id)
+        if project_info is None and project_name:
+            project_info = proyectos_by_name.get(project_name)
+
+        cuenta.proyecto_id = project_info["id"] if project_info else None
+        cuenta.oportunidad_id = oportunidad_id
+        if cuenta.oportunidad_id is None and project_info:
+            cuenta.oportunidad_id = project_info["oportunidad_id"]
+
+    return cuentas
+
+
+def _set_virtual_relation_fields(
+    cuenta,
+    *,
+    proyecto_id: int | None,
+    oportunidad_id: int | None,
+):
+    cuenta.proyecto_id = proyecto_id
+    cuenta.oportunidad_id = oportunidad_id
+    return cuenta
 
 
 def _get_project_with_relations(
@@ -109,7 +229,9 @@ def _merge_prefill_defaults(
 
     for field, value in prefill.items():
         current = next_payload.get(field)
-        if current is None:
+        if field in CUENTA_COBRO_LOCKED_PREFILL_FIELDS:
+            next_payload[field] = value
+        elif current is None:
             next_payload[field] = value
 
     return next_payload
@@ -122,7 +244,8 @@ def listar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(project_access),
 ):
-    return crud_cuenta_cobro.list(db, skip=skip, limit=limit)
+    cuentas = crud_cuenta_cobro.list(db, skip=skip, limit=limit)
+    return _hydrate_cuenta_cobro_relations(db, cuentas)
 
 
 @router.get("/prefill/proyecto/{proyecto_id}", response_model=CuentaCobroPrefill)
@@ -149,6 +272,7 @@ def obtener(
         raise HTTPException(
             status_code=404, detail="Cuenta de cobro no encontrada"
         )
+    _hydrate_cuenta_cobro_relations(db, [obj])
     return obj
 
 
@@ -170,7 +294,12 @@ def crear(
         cliente_id=data.get("cliente_id"),
         cotizacion_id=data.get("id_cotizacion"),
     )
-    return crud_cuenta_cobro.create(db, data)
+    obj = crud_cuenta_cobro.create(db, _build_storage_payload(data))
+    return _set_virtual_relation_fields(
+        obj,
+        proyecto_id=data.get("proyecto_id"),
+        oportunidad_id=data.get("oportunidad_id"),
+    )
 
 
 @router.put("/{cuenta_cobro_id}", response_model=CuentaCobroOut)
@@ -185,6 +314,7 @@ def actualizar(
         raise HTTPException(
             status_code=404, detail="Cuenta de cobro no encontrada"
         )
+    _hydrate_cuenta_cobro_relations(db, [obj])
 
     data = payload.model_dump(exclude_unset=True)
     project_changed = (
@@ -214,7 +344,14 @@ def actualizar(
             "id_cotizacion", getattr(obj, "id_cotizacion", None)
         ),
     )
-    return crud_cuenta_cobro.update(db, obj, data)
+    current_project_id = getattr(obj, "proyecto_id", None)
+    current_opportunity_id = getattr(obj, "oportunidad_id", None)
+    updated = crud_cuenta_cobro.update(db, obj, _build_storage_payload(data))
+    return _set_virtual_relation_fields(
+        updated,
+        proyecto_id=data.get("proyecto_id", current_project_id),
+        oportunidad_id=data.get("oportunidad_id", current_opportunity_id),
+    )
 
 
 @router.delete("/{cuenta_cobro_id}", status_code=204)

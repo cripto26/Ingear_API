@@ -1,3 +1,4 @@
+import ipaddress
 import logging
 
 import httpx
@@ -8,11 +9,48 @@ from app.core.config import settings
 logger = logging.getLogger(__name__)
 
 
+def _normalize_request_host(host: str | None) -> str | None:
+    value = str(host or "").strip().lower()
+    if not value:
+        return None
+
+    if value.startswith("["):
+        closing = value.find("]")
+        if closing > 0:
+            return value[1:closing]
+
+    if value.count(":") == 1 and "." in value:
+        return value.rsplit(":", 1)[0].strip() or None
+
+    return value
+
+
+def _is_raw_ip_host(host: str | None) -> bool:
+    normalized = _normalize_request_host(host)
+    if not normalized:
+        return False
+
+    try:
+        ipaddress.ip_address(normalized)
+        return True
+    except ValueError:
+        return False
+
+
 def validate_turnstile_token(
     token: str | None,
     remote_ip: str | None = None,
+    request_host: str | None = None,
 ) -> None:
     if not settings.TURNSTILE_ENABLED:
+        return
+
+    if _is_raw_ip_host(request_host):
+        logger.info(
+            "Turnstile omitido para acceso por IP directa. host=%s remote_ip=%s",
+            request_host,
+            remote_ip,
+        )
         return
 
     if not settings.TURNSTILE_SECRET_KEY:

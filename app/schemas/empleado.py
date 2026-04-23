@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional
 
 from app.core.view_permissions import (
-    COMMERCIAL_VIEW_PERMISSION_SET,
+    COMMERCIAL_VIEW_PERMISSION_ALLOWED_SET,
     normalize_view_permissions,
 )
 
@@ -26,7 +26,9 @@ class EmpleadoBase(BaseModel):
             return None
 
         invalid = [
-            item for item in normalized if item not in COMMERCIAL_VIEW_PERMISSION_SET
+            item
+            for item in normalized
+            if item not in COMMERCIAL_VIEW_PERMISSION_ALLOWED_SET
         ]
         if invalid:
             raise ValueError("Hay permisos de vistas no permitidos.")
@@ -58,7 +60,9 @@ class EmpleadoUpdate(BaseModel):
             return None
 
         invalid = [
-            item for item in normalized if item not in COMMERCIAL_VIEW_PERMISSION_SET
+            item
+            for item in normalized
+            if item not in COMMERCIAL_VIEW_PERMISSION_ALLOWED_SET
         ]
         if invalid:
             raise ValueError("Hay permisos de vistas no permitidos.")

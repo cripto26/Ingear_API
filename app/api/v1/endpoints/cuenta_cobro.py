@@ -18,9 +18,10 @@ from app.schemas.cuenta_cobro import (
 )
 
 router = APIRouter()
+
 project_access = require_any_access(
     roles=("GERENCIA", "LOGISTICA", "INGENIERIA"),
-    permissions=("comercial.cotizador", "comercial.oportunidades"),
+    permissions=("comercial.cuentas-cobro",),
 )
 
 CUENTA_COBRO_STORED_FIELDS = frozenset(

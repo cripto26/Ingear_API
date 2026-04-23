@@ -10,10 +10,6 @@ from app.crud.empleado import crud_empleado
 
 router = APIRouter()
 
-employee_catalog_access = require_view_permissions(
-    "comercial.cotizador",
-    "comercial.oportunidades",
-)
 
 
 def validate_jefe_id(
@@ -41,7 +37,7 @@ def listar(
     skip: int = 0,
     limit: int = 500,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(employee_catalog_access),
+    _current: Empleado = Depends(require_roles("GERENCIA")),
 ):
     return crud_empleado.list(db, skip=skip, limit=limit)
 

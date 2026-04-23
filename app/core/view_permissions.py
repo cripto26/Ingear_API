@@ -3,15 +3,22 @@ from collections.abc import Iterable
 from app.core.security import infer_role, normalize
 
 
+COMMERCIAL_VIEW_PERMISSION_VERSION_MARKER = "comercial.views.v2"
+
 COMMERCIAL_VIEW_PERMISSIONS = (
     "comercial.cotizador",
     "comercial.oportunidades",
+    "comercial.proyectos",
+    "comercial.cuentas-cobro",
     "comercial.clientes",
     "comercial.contactos",
     "comercial.productos",
 )
 
 COMMERCIAL_VIEW_PERMISSION_SET = set(COMMERCIAL_VIEW_PERMISSIONS)
+COMMERCIAL_VIEW_PERMISSION_ALLOWED_SET = COMMERCIAL_VIEW_PERMISSION_SET | {
+    COMMERCIAL_VIEW_PERMISSION_VERSION_MARKER
+}
 
 
 def normalize_view_permissions(
@@ -29,6 +36,55 @@ def normalize_view_permissions(
         dedup[value] = value
 
     return list(dedup.values())
+
+
+def normalize_commercial_view_permissions(
+    permissions: Iterable[str] | None,
+) -> list[str] | None:
+    normalized = normalize_view_permissions(permissions)
+    if normalized is None:
+        return None
+
+    return [
+        permission
+        for permission in normalized
+        if permission in COMMERCIAL_VIEW_PERMISSION_SET
+    ]
+
+
+def has_view_permission_version_marker(
+    permissions: Iterable[str] | None,
+) -> bool:
+    normalized = normalize_view_permissions(permissions) or []
+    return COMMERCIAL_VIEW_PERMISSION_VERSION_MARKER in normalized
+
+
+def expand_legacy_view_permissions(
+    area: str | None,
+    cargo: str | None,
+    permissions: Iterable[str],
+) -> list[str]:
+    role = infer_role(area, cargo)
+    selected = {
+        permission
+        for permission in permissions
+        if permission in COMMERCIAL_VIEW_PERMISSION_SET
+    }
+
+    if (
+        role in {"LOGISTICA", "INGENIERIA"}
+        or "comercial.cotizador" in selected
+        or "comercial.oportunidades" in selected
+    ):
+        selected.update(
+            {"comercial.proyectos", "comercial.cuentas-cobro"}
+        )
+
+    return [
+        permission
+        for permission in COMMERCIAL_VIEW_PERMISSIONS
+        if permission in selected
+    ]
 
 
 def infer_legacy_view_permissions(area: str | None, cargo: str | None) -> list[str]:
@@ -62,7 +118,11 @@ def infer_legacy_view_permissions(area: str | None, cargo: str | None) -> list[s
     if role == "GERENCIA" or cargo_normalized == "analista de costos y presupuestos":
         permissions.append("comercial.productos")
 
-    return normalize_view_permissions(permissions) or []
+    return expand_legacy_view_permissions(
+        area,
+        cargo,
+        normalize_commercial_view_permissions(permissions) or [],
+    )
 
 
 def resolve_view_permissions(
@@ -79,7 +139,11 @@ def resolve_view_permissions(
     if normalized is None:
         return infer_legacy_view_permissions(area, cargo)
 
-    return normalized
+    selected = normalize_commercial_view_permissions(normalized) or []
+    if has_view_permission_version_marker(normalized):
+        return selected
+
+    return expand_legacy_view_permissions(area, cargo, selected)
 
 
 def has_view_permission(

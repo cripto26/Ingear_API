@@ -13,9 +13,8 @@ from app.crud.proyecto import crud_proyecto
 router = APIRouter()
 project_access = require_any_access(
     roles=("GERENCIA", "LOGISTICA", "INGENIERIA"),
-    permissions=("comercial.cotizador", "comercial.oportunidades"),
+    permissions=("comercial.proyectos",),
 )
-
 
 def _validate_unique_project_link(
     db: Session,

@@ -81,6 +81,11 @@ def login(
     db: Session = Depends(get_db),
 ):
     client_ip = extract_client_ip(request)
+    request_host = (
+        request.headers.get("x-forwarded-host")
+        or request.headers.get("host")
+        or request.url.hostname
+    )
     login_key = normalize_login_key(payload.username)
 
     login_protection_service.assert_request_allowed(client_ip, login_key)
@@ -89,6 +94,7 @@ def login(
         validate_turnstile_token(
             payload.captcha_token,
             client_ip,
+            request_host,
         )
     except HTTPException as exc:
         if exc.status_code == status.HTTP_400_BAD_REQUEST:

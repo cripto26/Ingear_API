@@ -532,6 +532,7 @@ def eliminar(
 
 import json
 import unicodedata
+from collections import Counter
 from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -603,6 +604,101 @@ def _validar_productos_existentes(db: Session, productos) -> None:
             status_code=400,
             detail=f"Productos no encontrados: {ids_faltantes}",
         )
+
+
+def _productos_tienen_costo_fabrica_override(productos) -> bool:
+    if not productos:
+        return False
+
+    return any(
+        item.get("costo_fabrica_override") is not None for item in productos
+    )
+
+
+def _build_productos_override_fingerprint(productos) -> list[tuple[int, int, float]]:
+    if not productos:
+        return []
+
+    fingerprint: list[tuple[int, int, float]] = []
+    for item in productos:
+        override = item.get("costo_fabrica_override")
+        if override is None:
+            continue
+
+        fingerprint.append(
+            (
+                int(item.get("id_producto") or 0),
+                int(item.get("particion") or 0),
+                float(override),
+            )
+        )
+
+    return sorted(fingerprint)
+
+
+def _load_serialized_productos(value) -> list[dict]:
+    if value is None or value == "":
+        return []
+
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+        except json.JSONDecodeError:
+            return []
+        return parsed if isinstance(parsed, list) else []
+
+    return value if isinstance(value, list) else []
+
+
+def _validar_permiso_costo_fabrica_override_creacion(
+    current: Empleado,
+    productos,
+) -> None:
+    if not _productos_tienen_costo_fabrica_override(productos):
+        return
+
+    current_role = infer_role(current.area, current.cargo)
+    if current_role == "GERENCIA":
+        return
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=(
+            "Solo gerencia puede modificar el costo fabrica a nivel de "
+            "cotizacion."
+        ),
+    )
+
+
+def _validar_permiso_costo_fabrica_override_actualizacion(
+    current: Empleado,
+    productos_nuevos,
+    productos_actuales,
+) -> None:
+    if not _productos_tienen_costo_fabrica_override(productos_nuevos):
+        return
+
+    current_role = infer_role(current.area, current.cargo)
+    if current_role == "GERENCIA":
+        return
+
+    current_fingerprint = Counter(
+        _build_productos_override_fingerprint(productos_actuales)
+    )
+    next_fingerprint = Counter(
+        _build_productos_override_fingerprint(productos_nuevos)
+    )
+
+    if not (next_fingerprint - current_fingerprint):
+        return
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=(
+            "Solo gerencia puede modificar el costo fabrica a nivel de "
+            "cotizacion."
+        ),
+    )
 
 
 def _resolver_jefe_aprobador(db: Session, empleado: Empleado) -> Empleado | None:
@@ -842,6 +938,7 @@ def crear(
 ):
     data = payload.model_dump()
     fecha_probable_venta = data.pop("fecha_probable_venta", None)
+    _validar_permiso_costo_fabrica_override_creacion(current, data["productos"])
     _validar_productos_existentes(db, data["productos"])
     data["productos"] = _serialize_productos(data["productos"])
     data["id_empleado"] = current.id
@@ -893,7 +990,7 @@ def actualizar(
     cotizacion_id: int,
     payload: CotizacionUpdate,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(cotizacion_access),
+    current: Empleado = Depends(cotizacion_access),
 ):
     obj = crud_cotizacion.get(db, cotizacion_id)
     if not obj:
@@ -903,6 +1000,11 @@ def actualizar(
     fecha_probable_venta = data.pop("fecha_probable_venta", None)
     crear_proyecto_ganada = bool(data.pop("crear_proyecto_ganada", False))
     if "productos" in data:
+        _validar_permiso_costo_fabrica_override_actualizacion(
+            current,
+            data["productos"],
+            _load_serialized_productos(obj.productos),
+        )
         _validar_productos_existentes(db, data["productos"])
         data["productos"] = _serialize_productos(data["productos"])
 
@@ -935,8 +1037,7 @@ def actualizar(
     proyecto_creado_id = None
 
     try:
-        for key, value in data.items():
-            setattr(obj, key, value)
+        obj = crud_cotizacion.update(db, obj, data, commit=False)
 
         if crear_proyecto_ganada:
             oportunidad_id = obj.id_oportunidad
@@ -2038,6 +2139,8 @@ def eliminar(
 ==================== FILE: D:\IngeArt\API_Ingear\app\api\v1\endpoints\producto.py ====================
 
 import io
+import unicodedata
+from decimal import Decimal, ROUND_HALF_UP
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
@@ -2052,6 +2155,45 @@ from app.services.product_image_service import build_product_thumbnail_from_driv
 
 router = APIRouter()
 product_access = require_view_permissions("comercial.productos")
+
+
+def _normalize_lookup(value):
+    return "".join(
+        char
+        for char in unicodedata.normalize("NFD", str(value or "").strip().lower())
+        if unicodedata.category(char) != "Mn"
+    )
+
+
+def _calculate_costo_ingear(precio_pvp, descuento_fabricante):
+    if precio_pvp is None:
+        return None
+
+    pvp = max(Decimal("0"), Decimal(str(precio_pvp)))
+    discount_pct = Decimal(str(descuento_fabricante or 0))
+    discount_pct = min(max(Decimal("0"), discount_pct), Decimal("100"))
+    cost = pvp * (Decimal("1") - (discount_pct / Decimal("100")))
+    return cost.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def _payload_with_calculated_costo_ingear(data: dict, current=None) -> dict:
+    pais_origen = data.get("pais_origen", getattr(current, "pais_origen", None))
+    normalized_country = _normalize_lookup(pais_origen)
+
+    if not normalized_country or normalized_country == "colombia":
+        return data
+
+    precio_pvp = data.get("precio_pvp", getattr(current, "precio_pvp", None))
+    descuento_fabricante = data.get(
+        "descuento_fabricante",
+        getattr(current, "descuento_fabricante", None),
+    )
+    costo_ingear = _calculate_costo_ingear(precio_pvp, descuento_fabricante)
+
+    if costo_ingear is not None:
+        data["costo_ingear"] = costo_ingear
+
+    return data
 
 
 @router.get("/", response_model=list[ProductoOut])
@@ -2118,7 +2260,8 @@ def crear(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(product_access),
 ):
-    return crud_producto.create(db, payload.model_dump())
+    data = _payload_with_calculated_costo_ingear(payload.model_dump())
+    return crud_producto.create(db, data)
 
 
 @router.put("/{producto_id}", response_model=ProductoOut)
@@ -2131,7 +2274,11 @@ def actualizar(
     obj = crud_producto.get(db, producto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
-    return crud_producto.update(db, obj, payload.model_dump(exclude_unset=True))
+    data = _payload_with_calculated_costo_ingear(
+        payload.model_dump(exclude_unset=True),
+        current=obj,
+    )
+    return crud_producto.update(db, obj, data)
 
 
 @router.delete("/{producto_id}", status_code=204)
@@ -2678,7 +2825,7 @@ def has_view_permission(
 
 from typing import Any, Generic, Optional, Type, TypeVar
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, select
+from sqlalchemy import String, desc, inspect, select
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
@@ -2692,8 +2839,27 @@ class CRUDBase(Generic[ModelType]):
     def get(self, db: Session, id: Any) -> Optional[ModelType]:
         return db.get(self.model, id)
 
+    def _resolve_list_ordering(self):
+        if hasattr(self.model, "id"):
+            return self.model.id, True
+
+        primary_keys = inspect(self.model).primary_key
+        if not primary_keys:
+            return None, False
+
+        primary_key = primary_keys[0]
+        order_attr = getattr(self.model, primary_key.key, None)
+        if order_attr is None:
+            return None, False
+
+        return order_attr, not isinstance(primary_key.type, String)
+
     def list(self, db: Session, skip: int = 0, limit: int = 50):
-        stmt = select(self.model).order_by(desc(self.model.id)).offset(skip).limit(limit)
+        stmt = select(self.model)
+        order_attr, descending = self._resolve_list_ordering()
+        if order_attr is not None:
+            stmt = stmt.order_by(desc(order_attr) if descending else order_attr)
+        stmt = stmt.offset(skip).limit(limit)
         return list(db.execute(stmt).scalars().all())
 
     def create(self, db: Session, obj_in: dict) -> ModelType:
@@ -2801,7 +2967,14 @@ class CRUDCotizacion(CRUDBase[Cotizacion]):
             "versiones": numero_version,
         }
 
-    def update(self, db: Session, db_obj: Cotizacion, obj_in: dict) -> Cotizacion:
+    def update(
+        self,
+        db: Session,
+        db_obj: Cotizacion,
+        obj_in: dict,
+        *,
+        commit: bool = True,
+    ) -> Cotizacion:
         if not obj_in:
             return db_obj
 
@@ -2828,8 +3001,11 @@ class CRUDCotizacion(CRUDBase[Cotizacion]):
             for k, v in cambios.items():
                 setattr(db_obj, k, v)
 
-            db.commit()
-            db.refresh(db_obj)
+            if commit:
+                db.commit()
+                db.refresh(db_obj)
+            else:
+                db.flush()
             return db_obj
 
         except IntegrityError as exc:
@@ -4019,6 +4195,23 @@ class CotizacionProductoItem(BaseModel):
     )
     cantidad: int = Field(gt=0)
     particion: int = Field(default=1, ge=1)
+    nombre_particion: str | None = Field(
+        default=None,
+        max_length=120,
+        validation_alias=AliasChoices(
+            "nombre_particion",
+            "nombreParticion",
+            "partition_name",
+        ),
+    )
+    costo_fabrica_override: float | None = Field(
+        default=None,
+        gt=0,
+        validation_alias=AliasChoices(
+            "costo_fabrica_override",
+            "costoFabricaOverride",
+        ),
+    )
 
 
 class CotizacionBase(BaseModel):

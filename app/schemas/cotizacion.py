@@ -29,6 +29,15 @@ class CotizacionProductoItem(BaseModel):
     )
     cantidad: int = Field(gt=0)
     particion: int = Field(default=1, ge=1)
+    nombre_particion: str | None = Field(
+        default=None,
+        max_length=120,
+        validation_alias=AliasChoices(
+            "nombre_particion",
+            "nombreParticion",
+            "partition_name",
+        ),
+    )
     costo_fabrica_override: float | None = Field(
         default=None,
         gt=0,

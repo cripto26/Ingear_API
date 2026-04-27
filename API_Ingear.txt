@@ -247,6 +247,11 @@ def login(
     db: Session = Depends(get_db),
 ):
     client_ip = extract_client_ip(request)
+    request_host = (
+        request.headers.get("x-forwarded-host")
+        or request.headers.get("host")
+        or request.url.hostname
+    )
     login_key = normalize_login_key(payload.username)
 
     login_protection_service.assert_request_allowed(client_ip, login_key)
@@ -255,6 +260,7 @@ def login(
         validate_turnstile_token(
             payload.captcha_token,
             client_ip,
+            request_host,
         )
     except HTTPException as exc:
         if exc.status_code == status.HTTP_400_BAD_REQUEST:
@@ -1227,6 +1233,8 @@ from app.schemas.cuenta_cobro import (
     CuentaCobroPrefill,
     CuentaCobroUpdate,
 )
+
+router = APIRouter()
 
 project_access = require_any_access(
     roles=("GERENCIA", "LOGISTICA", "INGENIERIA"),
@@ -2507,6 +2515,8 @@ from collections.abc import Iterable
 from app.core.security import infer_role, normalize
 
 
+COMMERCIAL_VIEW_PERMISSION_VERSION_MARKER = "comercial.views.v2"
+
 COMMERCIAL_VIEW_PERMISSIONS = (
     "comercial.cotizador",
     "comercial.oportunidades",
@@ -2518,6 +2528,9 @@ COMMERCIAL_VIEW_PERMISSIONS = (
 )
 
 COMMERCIAL_VIEW_PERMISSION_SET = set(COMMERCIAL_VIEW_PERMISSIONS)
+COMMERCIAL_VIEW_PERMISSION_ALLOWED_SET = COMMERCIAL_VIEW_PERMISSION_SET | {
+    COMMERCIAL_VIEW_PERMISSION_VERSION_MARKER
+}
 
 
 def normalize_view_permissions(
@@ -2535,6 +2548,55 @@ def normalize_view_permissions(
         dedup[value] = value
 
     return list(dedup.values())
+
+
+def normalize_commercial_view_permissions(
+    permissions: Iterable[str] | None,
+) -> list[str] | None:
+    normalized = normalize_view_permissions(permissions)
+    if normalized is None:
+        return None
+
+    return [
+        permission
+        for permission in normalized
+        if permission in COMMERCIAL_VIEW_PERMISSION_SET
+    ]
+
+
+def has_view_permission_version_marker(
+    permissions: Iterable[str] | None,
+) -> bool:
+    normalized = normalize_view_permissions(permissions) or []
+    return COMMERCIAL_VIEW_PERMISSION_VERSION_MARKER in normalized
+
+
+def expand_legacy_view_permissions(
+    area: str | None,
+    cargo: str | None,
+    permissions: Iterable[str],
+) -> list[str]:
+    role = infer_role(area, cargo)
+    selected = {
+        permission
+        for permission in permissions
+        if permission in COMMERCIAL_VIEW_PERMISSION_SET
+    }
+
+    if (
+        role in {"LOGISTICA", "INGENIERIA"}
+        or "comercial.cotizador" in selected
+        or "comercial.oportunidades" in selected
+    ):
+        selected.update(
+            {"comercial.proyectos", "comercial.cuentas-cobro"}
+        )
+
+    return [
+        permission
+        for permission in COMMERCIAL_VIEW_PERMISSIONS
+        if permission in selected
+    ]
 
 
 def infer_legacy_view_permissions(area: str | None, cargo: str | None) -> list[str]:
@@ -2568,7 +2630,11 @@ def infer_legacy_view_permissions(area: str | None, cargo: str | None) -> list[s
     if role == "GERENCIA" or cargo_normalized == "analista de costos y presupuestos":
         permissions.append("comercial.productos")
 
-    return normalize_view_permissions(permissions) or []
+    return expand_legacy_view_permissions(
+        area,
+        cargo,
+        normalize_commercial_view_permissions(permissions) or [],
+    )
 
 
 def resolve_view_permissions(
@@ -2585,7 +2651,11 @@ def resolve_view_permissions(
     if normalized is None:
         return infer_legacy_view_permissions(area, cargo)
 
-    return normalized
+    selected = normalize_commercial_view_permissions(normalized) or []
+    if has_view_permission_version_marker(normalized):
+        return selected
+
+    return expand_legacy_view_permissions(area, cargo, selected)
 
 
 def has_view_permission(
@@ -4141,7 +4211,7 @@ from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional
 
 from app.core.view_permissions import (
-    COMMERCIAL_VIEW_PERMISSION_SET,
+    COMMERCIAL_VIEW_PERMISSION_ALLOWED_SET,
     normalize_view_permissions,
 )
 
@@ -4165,7 +4235,9 @@ class EmpleadoBase(BaseModel):
             return None
 
         invalid = [
-            item for item in normalized if item not in COMMERCIAL_VIEW_PERMISSION_SET
+            item
+            for item in normalized
+            if item not in COMMERCIAL_VIEW_PERMISSION_ALLOWED_SET
         ]
         if invalid:
             raise ValueError("Hay permisos de vistas no permitidos.")
@@ -4197,7 +4269,9 @@ class EmpleadoUpdate(BaseModel):
             return None
 
         invalid = [
-            item for item in normalized if item not in COMMERCIAL_VIEW_PERMISSION_SET
+            item
+            for item in normalized
+            if item not in COMMERCIAL_VIEW_PERMISSION_ALLOWED_SET
         ]
         if invalid:
             raise ValueError("Hay permisos de vistas no permitidos.")
@@ -5359,6 +5433,7 @@ def build_product_thumbnail_from_drive_url(
 
 ==================== FILE: D:\IngeArt\API_Ingear\app\services\turnstile_service.py ====================
 
+import ipaddress
 import logging
 
 import httpx
@@ -5369,11 +5444,48 @@ from app.core.config import settings
 logger = logging.getLogger(__name__)
 
 
+def _normalize_request_host(host: str | None) -> str | None:
+    value = str(host or "").strip().lower()
+    if not value:
+        return None
+
+    if value.startswith("["):
+        closing = value.find("]")
+        if closing > 0:
+            return value[1:closing]
+
+    if value.count(":") == 1 and "." in value:
+        return value.rsplit(":", 1)[0].strip() or None
+
+    return value
+
+
+def _is_raw_ip_host(host: str | None) -> bool:
+    normalized = _normalize_request_host(host)
+    if not normalized:
+        return False
+
+    try:
+        ipaddress.ip_address(normalized)
+        return True
+    except ValueError:
+        return False
+
+
 def validate_turnstile_token(
     token: str | None,
     remote_ip: str | None = None,
+    request_host: str | None = None,
 ) -> None:
     if not settings.TURNSTILE_ENABLED:
+        return
+
+    if _is_raw_ip_host(request_host):
+        logger.info(
+            "Turnstile omitido para acceso por IP directa. host=%s remote_ip=%s",
+            request_host,
+            remote_ip,
+        )
         return
 
     if not settings.TURNSTILE_SECRET_KEY:

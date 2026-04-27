@@ -48,7 +48,14 @@ class CRUDCotizacion(CRUDBase[Cotizacion]):
             "versiones": numero_version,
         }
 
-    def update(self, db: Session, db_obj: Cotizacion, obj_in: dict) -> Cotizacion:
+    def update(
+        self,
+        db: Session,
+        db_obj: Cotizacion,
+        obj_in: dict,
+        *,
+        commit: bool = True,
+    ) -> Cotizacion:
         if not obj_in:
             return db_obj
 
@@ -75,8 +82,11 @@ class CRUDCotizacion(CRUDBase[Cotizacion]):
             for k, v in cambios.items():
                 setattr(db_obj, k, v)
 
-            db.commit()
-            db.refresh(db_obj)
+            if commit:
+                db.commit()
+                db.refresh(db_obj)
+            else:
+                db.flush()
             return db_obj
 
         except IntegrityError as exc:

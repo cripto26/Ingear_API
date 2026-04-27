@@ -1,4 +1,6 @@
 import io
+import unicodedata
+from decimal import Decimal, ROUND_HALF_UP
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
@@ -13,6 +15,45 @@ from app.services.product_image_service import build_product_thumbnail_from_driv
 
 router = APIRouter()
 product_access = require_view_permissions("comercial.productos")
+
+
+def _normalize_lookup(value):
+    return "".join(
+        char
+        for char in unicodedata.normalize("NFD", str(value or "").strip().lower())
+        if unicodedata.category(char) != "Mn"
+    )
+
+
+def _calculate_costo_ingear(precio_pvp, descuento_fabricante):
+    if precio_pvp is None:
+        return None
+
+    pvp = max(Decimal("0"), Decimal(str(precio_pvp)))
+    discount_pct = Decimal(str(descuento_fabricante or 0))
+    discount_pct = min(max(Decimal("0"), discount_pct), Decimal("100"))
+    cost = pvp * (Decimal("1") - (discount_pct / Decimal("100")))
+    return cost.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def _payload_with_calculated_costo_ingear(data: dict, current=None) -> dict:
+    pais_origen = data.get("pais_origen", getattr(current, "pais_origen", None))
+    normalized_country = _normalize_lookup(pais_origen)
+
+    if not normalized_country or normalized_country == "colombia":
+        return data
+
+    precio_pvp = data.get("precio_pvp", getattr(current, "precio_pvp", None))
+    descuento_fabricante = data.get(
+        "descuento_fabricante",
+        getattr(current, "descuento_fabricante", None),
+    )
+    costo_ingear = _calculate_costo_ingear(precio_pvp, descuento_fabricante)
+
+    if costo_ingear is not None:
+        data["costo_ingear"] = costo_ingear
+
+    return data
 
 
 @router.get("/", response_model=list[ProductoOut])
@@ -79,7 +120,8 @@ def crear(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(product_access),
 ):
-    return crud_producto.create(db, payload.model_dump())
+    data = _payload_with_calculated_costo_ingear(payload.model_dump())
+    return crud_producto.create(db, data)
 
 
 @router.put("/{producto_id}", response_model=ProductoOut)
@@ -92,7 +134,11 @@ def actualizar(
     obj = crud_producto.get(db, producto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
-    return crud_producto.update(db, obj, payload.model_dump(exclude_unset=True))
+    data = _payload_with_calculated_costo_ingear(
+        payload.model_dump(exclude_unset=True),
+        current=obj,
+    )
+    return crud_producto.update(db, obj, data)
 
 
 @router.delete("/{producto_id}", status_code=204)

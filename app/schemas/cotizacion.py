@@ -29,6 +29,14 @@ class CotizacionProductoItem(BaseModel):
     )
     cantidad: int = Field(gt=0)
     particion: int = Field(default=1, ge=1)
+    costo_fabrica_override: float | None = Field(
+        default=None,
+        gt=0,
+        validation_alias=AliasChoices(
+            "costo_fabrica_override",
+            "costoFabricaOverride",
+        ),
+    )
 
 
 class CotizacionBase(BaseModel):

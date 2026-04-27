@@ -1,6 +1,6 @@
 from typing import Any, Generic, Optional, Type, TypeVar
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, select
+from sqlalchemy import String, desc, inspect, select
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
@@ -14,8 +14,27 @@ class CRUDBase(Generic[ModelType]):
     def get(self, db: Session, id: Any) -> Optional[ModelType]:
         return db.get(self.model, id)
 
+    def _resolve_list_ordering(self):
+        if hasattr(self.model, "id"):
+            return self.model.id, True
+
+        primary_keys = inspect(self.model).primary_key
+        if not primary_keys:
+            return None, False
+
+        primary_key = primary_keys[0]
+        order_attr = getattr(self.model, primary_key.key, None)
+        if order_attr is None:
+            return None, False
+
+        return order_attr, not isinstance(primary_key.type, String)
+
     def list(self, db: Session, skip: int = 0, limit: int = 50):
-        stmt = select(self.model).order_by(desc(self.model.id)).offset(skip).limit(limit)
+        stmt = select(self.model)
+        order_attr, descending = self._resolve_list_ordering()
+        if order_attr is not None:
+            stmt = stmt.order_by(desc(order_attr) if descending else order_attr)
+        stmt = stmt.offset(skip).limit(limit)
         return list(db.execute(stmt).scalars().all())
 
     def create(self, db: Session, obj_in: dict) -> ModelType:

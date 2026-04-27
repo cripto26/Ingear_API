@@ -1,5 +1,6 @@
 import json
 import unicodedata
+from collections import Counter
 from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -71,6 +72,101 @@ def _validar_productos_existentes(db: Session, productos) -> None:
             status_code=400,
             detail=f"Productos no encontrados: {ids_faltantes}",
         )
+
+
+def _productos_tienen_costo_fabrica_override(productos) -> bool:
+    if not productos:
+        return False
+
+    return any(
+        item.get("costo_fabrica_override") is not None for item in productos
+    )
+
+
+def _build_productos_override_fingerprint(productos) -> list[tuple[int, int, float]]:
+    if not productos:
+        return []
+
+    fingerprint: list[tuple[int, int, float]] = []
+    for item in productos:
+        override = item.get("costo_fabrica_override")
+        if override is None:
+            continue
+
+        fingerprint.append(
+            (
+                int(item.get("id_producto") or 0),
+                int(item.get("particion") or 0),
+                float(override),
+            )
+        )
+
+    return sorted(fingerprint)
+
+
+def _load_serialized_productos(value) -> list[dict]:
+    if value is None or value == "":
+        return []
+
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+        except json.JSONDecodeError:
+            return []
+        return parsed if isinstance(parsed, list) else []
+
+    return value if isinstance(value, list) else []
+
+
+def _validar_permiso_costo_fabrica_override_creacion(
+    current: Empleado,
+    productos,
+) -> None:
+    if not _productos_tienen_costo_fabrica_override(productos):
+        return
+
+    current_role = infer_role(current.area, current.cargo)
+    if current_role == "GERENCIA":
+        return
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=(
+            "Solo gerencia puede modificar el costo fabrica a nivel de "
+            "cotizacion."
+        ),
+    )
+
+
+def _validar_permiso_costo_fabrica_override_actualizacion(
+    current: Empleado,
+    productos_nuevos,
+    productos_actuales,
+) -> None:
+    if not _productos_tienen_costo_fabrica_override(productos_nuevos):
+        return
+
+    current_role = infer_role(current.area, current.cargo)
+    if current_role == "GERENCIA":
+        return
+
+    current_fingerprint = Counter(
+        _build_productos_override_fingerprint(productos_actuales)
+    )
+    next_fingerprint = Counter(
+        _build_productos_override_fingerprint(productos_nuevos)
+    )
+
+    if not (next_fingerprint - current_fingerprint):
+        return
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=(
+            "Solo gerencia puede modificar el costo fabrica a nivel de "
+            "cotizacion."
+        ),
+    )
 
 
 def _resolver_jefe_aprobador(db: Session, empleado: Empleado) -> Empleado | None:
@@ -310,6 +406,7 @@ def crear(
 ):
     data = payload.model_dump()
     fecha_probable_venta = data.pop("fecha_probable_venta", None)
+    _validar_permiso_costo_fabrica_override_creacion(current, data["productos"])
     _validar_productos_existentes(db, data["productos"])
     data["productos"] = _serialize_productos(data["productos"])
     data["id_empleado"] = current.id
@@ -361,7 +458,7 @@ def actualizar(
     cotizacion_id: int,
     payload: CotizacionUpdate,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(cotizacion_access),
+    current: Empleado = Depends(cotizacion_access),
 ):
     obj = crud_cotizacion.get(db, cotizacion_id)
     if not obj:
@@ -371,6 +468,11 @@ def actualizar(
     fecha_probable_venta = data.pop("fecha_probable_venta", None)
     crear_proyecto_ganada = bool(data.pop("crear_proyecto_ganada", False))
     if "productos" in data:
+        _validar_permiso_costo_fabrica_override_actualizacion(
+            current,
+            data["productos"],
+            _load_serialized_productos(obj.productos),
+        )
         _validar_productos_existentes(db, data["productos"])
         data["productos"] = _serialize_productos(data["productos"])
 
@@ -403,8 +505,7 @@ def actualizar(
     proyecto_creado_id = None
 
     try:
-        for key, value in data.items():
-            setattr(obj, key, value)
+        obj = crud_cotizacion.update(db, obj, data, commit=False)
 
         if crear_proyecto_ganada:
             oportunidad_id = obj.id_oportunidad

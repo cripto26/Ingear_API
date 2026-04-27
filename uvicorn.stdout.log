@@ -1,0 +1,5 @@
+INFO:     127.0.0.1:57285 - "OPTIONS /api/v1/notificaciones?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57949 - "GET /api/v1/notificaciones?limit=50 HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:57285 - "OPTIONS /api/v1/notificaciones/?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57949 - "GET /api/v1/notificaciones/?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57949 - "GET /api/v1/fx/rates HTTP/1.1" 200 OK

@@ -4,11 +4,13 @@ from decimal import Decimal, ROUND_HALF_UP
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.api.deps import require_view_permissions
 from app.db.session import get_db
 from app.models.empleado import Empleado
+from app.models.producto import Producto
 from app.schemas.producto import ProductoCreate, ProductoUpdate, ProductoOut
 from app.crud.producto import crud_producto
 from app.services.product_image_service import build_product_thumbnail_from_drive_url
@@ -34,6 +36,41 @@ def _calculate_costo_ingear(precio_pvp, descuento_fabricante):
     discount_pct = min(max(Decimal("0"), discount_pct), Decimal("100"))
     cost = pvp * (Decimal("1") - (discount_pct / Decimal("100")))
     return cost.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def _normalize_product_code(value) -> str:
+    return str(value or "").strip()
+
+
+def _build_duplicate_code_message(code: str) -> str:
+    return f"Ya existe otro producto con el codigo '{code}'. Usa un codigo diferente."
+
+
+def _validate_unique_product_code(
+    db: Session,
+    codigo_producto,
+    *,
+    exclude_id: int | None = None,
+) -> str:
+    normalized_code = _normalize_product_code(codigo_producto)
+    if not normalized_code:
+        raise HTTPException(
+            status_code=422,
+            detail="Debes completar el codigo del producto.",
+        )
+
+    stmt = select(Producto.id).where(Producto.codigo_producto == normalized_code)
+    if exclude_id is not None:
+        stmt = stmt.where(Producto.id != exclude_id)
+
+    existing_id = db.execute(stmt.limit(1)).scalar_one_or_none()
+    if existing_id is not None:
+        raise HTTPException(
+            status_code=409,
+            detail=_build_duplicate_code_message(normalized_code),
+        )
+
+    return normalized_code
 
 
 def _payload_with_calculated_costo_ingear(data: dict, current=None) -> dict:
@@ -121,7 +158,19 @@ def crear(
     _current: Empleado = Depends(product_access),
 ):
     data = _payload_with_calculated_costo_ingear(payload.model_dump())
-    return crud_producto.create(db, data)
+    data["codigo_producto"] = _validate_unique_product_code(
+        db,
+        data.get("codigo_producto"),
+    )
+    try:
+        return crud_producto.create(db, data)
+    except HTTPException as exc:
+        if exc.status_code == 409:
+            raise HTTPException(
+                status_code=409,
+                detail=_build_duplicate_code_message(data["codigo_producto"]),
+            ) from exc
+        raise
 
 
 @router.put("/{producto_id}", response_model=ProductoOut)
@@ -138,7 +187,24 @@ def actualizar(
         payload.model_dump(exclude_unset=True),
         current=obj,
     )
-    return crud_producto.update(db, obj, data)
+    if "codigo_producto" in data:
+        data["codigo_producto"] = _validate_unique_product_code(
+            db,
+            data.get("codigo_producto"),
+            exclude_id=producto_id,
+        )
+    try:
+        return crud_producto.update(db, obj, data)
+    except HTTPException as exc:
+        if exc.status_code == 409:
+            conflict_code = _normalize_product_code(
+                data.get("codigo_producto", obj.codigo_producto)
+            )
+            raise HTTPException(
+                status_code=409,
+                detail=_build_duplicate_code_message(conflict_code),
+            ) from exc
+        raise
 
 
 @router.delete("/{producto_id}", status_code=204)

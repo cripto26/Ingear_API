@@ -36,6 +36,144 @@ router = APIRouter()
 cotizacion_access = require_view_permissions("comercial.cotizador")
 
 
+def _normalize_team_lookup(value: str | None) -> str:
+    raw = unicodedata.normalize("NFD", (value or "").strip().lower())
+    return "".join(char for char in raw if unicodedata.category(char) != "Mn")
+
+
+def _is_management_employee(empleado: Empleado | None) -> bool:
+    if empleado is None:
+        return False
+    return infer_role(empleado.area, empleado.cargo) == "GERENCIA"
+
+
+def _looks_like_commercial_team_leader(empleado: Empleado | None) -> bool:
+    if empleado is None:
+        return False
+
+    cargo = _normalize_team_lookup(empleado.cargo)
+    if not cargo:
+        return False
+
+    return "lider" in cargo and "proyect" in cargo
+
+
+def _build_team_anchor_by_empleado_id(empleados: list[Empleado]) -> dict[int, int]:
+    direct_manager_ids = {
+        int(empleado.jefe_id)
+        for empleado in empleados
+        if empleado.jefe_id is not None
+    }
+    team_anchor_by_id: dict[int, int] = {}
+
+    for empleado in empleados:
+        if _is_management_employee(empleado):
+            team_anchor_by_id[empleado.id] = empleado.id
+            continue
+
+        if (
+            _looks_like_commercial_team_leader(empleado)
+            or empleado.id in direct_manager_ids
+        ):
+            team_anchor_by_id[empleado.id] = empleado.id
+            continue
+
+        if empleado.jefe_id is not None:
+            team_anchor_by_id[empleado.id] = int(empleado.jefe_id)
+            continue
+
+        team_anchor_by_id[empleado.id] = empleado.id
+
+    return team_anchor_by_id
+
+
+def _load_empleado_directory(
+    db: Session,
+) -> tuple[dict[int, Empleado], dict[int, int]]:
+    empleados = list(db.execute(select(Empleado)).scalars().all())
+    empleados_by_id = {empleado.id: empleado for empleado in empleados}
+    team_anchor_by_id = _build_team_anchor_by_empleado_id(empleados)
+    return empleados_by_id, team_anchor_by_id
+
+
+def _can_edit_cotizacion(
+    current: Empleado,
+    owner: Empleado | None,
+    team_anchor_by_id: dict[int, int],
+) -> bool:
+    if _is_management_employee(current):
+        return True
+
+    if owner is None:
+        return False
+
+    if current.id == owner.id:
+        return True
+
+    current_anchor = team_anchor_by_id.get(current.id, current.id)
+    owner_anchor = team_anchor_by_id.get(owner.id, owner.id)
+    return current_anchor == owner_anchor
+
+
+def _annotate_cotizacion_permissions(
+    db: Session,
+    current: Empleado,
+    cotizaciones: Cotizacion | list[Cotizacion],
+):
+    rows = cotizaciones if isinstance(cotizaciones, list) else [cotizaciones]
+
+    if _is_management_employee(current):
+        for row in rows:
+            setattr(row, "can_edit", True)
+            setattr(row, "can_duplicate", True)
+        return cotizaciones
+
+    if all(current.id == row.id_empleado for row in rows):
+        for row in rows:
+            setattr(row, "can_edit", True)
+            setattr(row, "can_duplicate", True)
+        return cotizaciones
+
+    empleados_by_id, team_anchor_by_id = _load_empleado_directory(db)
+    empleados_by_id.setdefault(current.id, current)
+
+    for row in rows:
+        owner = empleados_by_id.get(row.id_empleado)
+        setattr(
+            row,
+            "can_edit",
+            _can_edit_cotizacion(current, owner, team_anchor_by_id),
+        )
+        setattr(row, "can_duplicate", True)
+
+    return cotizaciones
+
+
+def _assert_can_edit_cotizacion(
+    db: Session,
+    current: Empleado,
+    cotizacion: Cotizacion,
+) -> None:
+    if _is_management_employee(current) or current.id == cotizacion.id_empleado:
+        return
+
+    empleados_by_id, team_anchor_by_id = _load_empleado_directory(db)
+    empleados_by_id.setdefault(current.id, current)
+    owner = empleados_by_id.get(cotizacion.id_empleado)
+
+    if _can_edit_cotizacion(current, owner, team_anchor_by_id):
+        return
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=(
+            "No tienes permisos para editar esta cotizacion. Solo puedes "
+            "editar cotizaciones de tu equipo comercial. Si pertenece a otro "
+            "equipo, debes duplicarla."
+        ),
+    )
+
+
 def _normalize_stage(value: str | None) -> str:
     raw = unicodedata.normalize("NFD", (value or "").strip().lower())
     return "".join(char for char in raw if unicodedata.category(char) != "Mn")
@@ -381,21 +519,22 @@ def listar(
     skip: int = 0,
     limit: int = 50,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(cotizacion_access),
+    current: Empleado = Depends(cotizacion_access),
 ):
-    return crud_cotizacion.list(db, skip=skip, limit=limit)
+    rows = crud_cotizacion.list(db, skip=skip, limit=limit)
+    return _annotate_cotizacion_permissions(db, current, rows)
 
 
 @router.get("/{cotizacion_id}", response_model=CotizacionOut)
 def obtener(
     cotizacion_id: int,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(cotizacion_access),
+    current: Empleado = Depends(cotizacion_access),
 ):
     obj = crud_cotizacion.get(db, cotizacion_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
-    return obj
+    return _annotate_cotizacion_permissions(db, current, obj)
 
 
 @router.post("/", response_model=CotizacionOut, status_code=201)
@@ -441,6 +580,8 @@ def crear(
 
         db.commit()
         db.refresh(cotizacion)
+        setattr(cotizacion, "can_edit", True)
+        setattr(cotizacion, "can_duplicate", True)
         return cotizacion
     except HTTPException:
         db.rollback()
@@ -463,6 +604,7 @@ def actualizar(
     obj = crud_cotizacion.get(db, cotizacion_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
+    _assert_can_edit_cotizacion(db, current, obj)
 
     data = payload.model_dump(exclude_unset=True)
     fecha_probable_venta = data.pop("fecha_probable_venta", None)
@@ -567,6 +709,8 @@ def actualizar(
         )
 
     setattr(obj, "proyecto_creado_id", proyecto_creado_id)
+    setattr(obj, "can_edit", True)
+    setattr(obj, "can_duplicate", True)
     return obj
 
 
@@ -574,8 +718,12 @@ def actualizar(
 def eliminar(
     cotizacion_id: int,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(cotizacion_access),
+    current: Empleado = Depends(cotizacion_access),
 ):
+    obj = crud_cotizacion.get(db, cotizacion_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
+    _assert_can_edit_cotizacion(db, current, obj)
     deleted = crud_cotizacion.remove(db, cotizacion_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
@@ -614,6 +762,8 @@ def aprobar(
     )
     db.commit()
     db.refresh(cotizacion)
+    setattr(cotizacion, "can_edit", True)
+    setattr(cotizacion, "can_duplicate", True)
     return cotizacion
 
 @router.get("/{cotizacion_id}/versiones", response_model=list[CotizacionVersionOut])

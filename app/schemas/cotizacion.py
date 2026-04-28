@@ -112,6 +112,8 @@ class CotizacionOut(CotizacionBase):
     id: int
     fecha_creacion: datetime
     proyecto_creado_id: Optional[int] = None
+    can_edit: bool = True
+    can_duplicate: bool = True
 
     class Config:
         from_attributes = True

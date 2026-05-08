@@ -23,6 +23,16 @@ class Settings(BaseSettings):
     TURNSTILE_SITEVERIFY_URL: str = (
         "https://challenges.cloudflare.com/turnstile/v0/siteverify"
     )
+    WORLD_OFFICE_ENABLED: bool = False
+    WORLD_OFFICE_SERVER: Optional[str] = None
+    WORLD_OFFICE_DATABASE: str = "WData"
+    WORLD_OFFICE_USERNAME: Optional[str] = None
+    WORLD_OFFICE_PASSWORD: Optional[str] = None
+    WORLD_OFFICE_ODBC_DRIVER: str = "SQL Server"
+    WORLD_OFFICE_CONNECTION_TIMEOUT_SECONDS: int = 5
+    WORLD_OFFICE_QUERY_TIMEOUT_SECONDS: int = 20
+    WORLD_OFFICE_INVENTORY_CACHE_SECONDS: int = 300
+    WORLD_OFFICE_BODEGA_CODIGO: Optional[str] = None
     LOGIN_RATE_LIMIT_WINDOW_SECONDS: int = 300
     LOGIN_RATE_LIMIT_MAX_ATTEMPTS_PER_IP: int = 20
     LOGIN_RATE_LIMIT_MAX_ATTEMPTS_PER_USER: int = 10

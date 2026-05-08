@@ -67,3 +67,21 @@ class ProductoOut(ProductoBase):
 
     class Config:
         from_attributes = True
+
+
+class WorldOfficeInventoryStatusOut(BaseModel):
+    enabled: bool
+    configured: bool
+    connected: bool
+    database: Optional[str] = None
+    bodega_codigo: Optional[str] = None
+    error: Optional[str] = None
+
+
+class WorldOfficeInventorySyncOut(BaseModel):
+    total_productos: int
+    matched_productos: int
+    unmatched_productos: int
+    updated_productos: int
+    database: Optional[str] = None
+    bodega_codigo: Optional[str] = None

@@ -11,9 +11,21 @@ from app.api.deps import require_view_permissions
 from app.db.session import get_db
 from app.models.empleado import Empleado
 from app.models.producto import Producto
-from app.schemas.producto import ProductoCreate, ProductoUpdate, ProductoOut
+from app.schemas.producto import (
+    ProductoCreate,
+    ProductoUpdate,
+    ProductoOut,
+    WorldOfficeInventoryStatusOut,
+    WorldOfficeInventorySyncOut,
+)
 from app.crud.producto import crud_producto
 from app.services.product_image_service import build_product_thumbnail_from_drive_url
+from app.services.world_office_inventory_service import (
+    WorldOfficeInventoryError,
+    apply_world_office_inventory,
+    get_world_office_inventory_status,
+    sync_world_office_inventory_to_products,
+)
 
 router = APIRouter()
 product_access = require_view_permissions("comercial.productos")
@@ -100,7 +112,37 @@ def listar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(product_access),
 ):
-    return crud_producto.list(db, skip=skip, limit=limit)
+    rows = crud_producto.list(db, skip=skip, limit=limit)
+    apply_world_office_inventory(rows)
+    return rows
+
+
+@router.get(
+    "/world-office/estado",
+    response_model=WorldOfficeInventoryStatusOut,
+)
+def estado_world_office(
+    _current: Empleado = Depends(product_access),
+):
+    return get_world_office_inventory_status()
+
+
+@router.post(
+    "/world-office/sync",
+    response_model=WorldOfficeInventorySyncOut,
+)
+def sincronizar_inventario_world_office(
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(product_access),
+):
+    productos = list(db.execute(select(Producto)).scalars().all())
+    try:
+        stats = sync_world_office_inventory_to_products(productos)
+    except WorldOfficeInventoryError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+
+    db.commit()
+    return stats
 
 
 @router.get("/{producto_id}", response_model=ProductoOut)
@@ -112,6 +154,7 @@ def obtener(
     obj = crud_producto.get(db, producto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
+    apply_world_office_inventory([obj])
     return obj
 
 

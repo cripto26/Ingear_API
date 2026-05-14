@@ -1,0 +1,3983 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Informe Técnico API Ingear v2</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Courier;
+	panose-1:2 7 4 9 2 2 5 2 4 4;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:12.0pt;
+	font-family:"Arial",sans-serif;}
+.MsoChpDefault
+	{font-family:"Cambria",serif;}
+.MsoPapDefault
+	{margin-bottom:10.0pt;
+	line-height:115%;}
+ /* Page Definitions */
+ @page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:62.35pt 2.0cm 2.0cm 65.2pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=ES-CO style='word-wrap:break-word'>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='margin-bottom:24.0pt;text-align:center'><span
+lang=EN-US><img width=346 height=191 id="Picture 1"
+src="INFORME_TECNICO_API_v2_estilo_v1_IngeAr_wordcheck_archivos/image001.png"></span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:12.0pt;text-align:center'><b><span
+lang=EN-US style='font-size:28.0pt;line-height:115%;font-family:"Calibri",sans-serif;
+color:#004051'>INFORME TÉCNICO / SISTEMAS</span></b></p>
+
+<p class=MsoNormal align=center style='margin-bottom:24.0pt;text-align:center'><span
+lang=EN-US style='font-size:18.0pt;line-height:115%;color:#004051'>API v.2</span></p>
+
+<div align=center>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=653
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=230 style='width:172.8pt;border:solid #B0B0B0 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Área</span></b></p>
+  </td>
+  <td width=422 style='width:316.8pt;border:solid #B0B0B0 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Ingeniería</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=230 style='width:172.8pt;border:solid #B0B0B0 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Elaborado por</span></b></p>
+  </td>
+  <td width=422 style='width:316.8pt;border-top:none;border-left:none;
+  border-bottom:solid #B0B0B0 1.0pt;border-right:solid #B0B0B0 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Daniel Quiroz</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=230 style='width:172.8pt;border:solid #B0B0B0 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Revisado por</span></b></p>
+  </td>
+  <td width=422 style='width:316.8pt;border-top:none;border-left:none;
+  border-bottom:solid #B0B0B0 1.0pt;border-right:solid #B0B0B0 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Gerencia</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=230 style='width:172.8pt;border:solid #B0B0B0 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Versión</span></b></p>
+  </td>
+  <td width=422 style='width:316.8pt;border-top:none;border-left:none;
+  border-bottom:solid #B0B0B0 1.0pt;border-right:solid #B0B0B0 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>v2.0</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=230 style='width:172.8pt;border:solid #B0B0B0 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Fecha</span></b></p>
+  </td>
+  <td width=422 style='width:316.8pt;border-top:none;border-left:none;
+  border-bottom:solid #B0B0B0 1.0pt;border-right:solid #B0B0B0 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>12/05/2026</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=230 style='width:172.8pt;border:solid #B0B0B0 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Documento base</span></b></p>
+  </td>
+  <td width=422 style='width:316.8pt;border-top:none;border-left:none;
+  border-bottom:solid #B0B0B0 1.0pt;border-right:solid #B0B0B0 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>INFORME TÉCNICO API v.1.docx</span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='margin-top:3.0pt;margin-right:0cm;
+margin-bottom:6.0pt;margin-left:0cm;text-align:center'><span lang=EN-US
+style='font-size:9.0pt;line-height:115%;font-family:"Calibri",sans-serif;
+color:#5A5A5A'>Clasificación: [Confidencial]</span></p>
+
+<span lang=EN-US style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'><br
+clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>Este informe documenta la version 2 de la API del proyecto
+Ingear. La estructura visual, membrete, tipografia, tablas y colores se
+mantienen alineados con el informe tecnico API v.1, pero el contenido fue
+actualizado con la revision del codigo fuente actual.</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>1. Alcance
+funcional (negocio)</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>La API soporta el flujo principal:</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Gestion de clientes,
+contactos y datos tributarios.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Gestion de
+oportunidades comerciales vinculadas a clientes.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Creacion, seguimiento
+y cierre de proyectos.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Generacion,
+aprobacion, versionamiento y envio de cotizaciones.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Catalogo de productos
+con costos, imagenes e inventario.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Administracion de
+cuentas de cobro y despachos.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Autenticacion,
+sesiones refresh, permisos por vista y notificaciones.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Integraciones con
+Gmail, World Office, BanRep y Banco Central Europeo.</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>2. Tecnologías,
+librerías y estándares</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>Estándares y convenciones implementadas:</span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=653
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=226 style='width:169.2pt;border:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Clave</span></b></p>
+  </td>
+  <td width=427 style='width:320.4pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Descripción</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=226 style='width:169.2pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Framework API</span></p>
+  </td>
+  <td width=427 style='width:320.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>FastAPI sobre ASGI.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=226 style='width:169.2pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Servidor</span></p>
+  </td>
+  <td width=427 style='width:320.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Uvicorn en desarrollo y compatible con despliegue ASGI.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=226 style='width:169.2pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>ORM</span></p>
+  </td>
+  <td width=427 style='width:320.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>SQLAlchemy 2.x con DeclarativeBase y SessionLocal.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=226 style='width:169.2pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Validación</span></p>
+  </td>
+  <td width=427 style='width:320.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Pydantic v2 con schemas Create, Update y Out.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=226 style='width:169.2pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Base de datos</span></p>
+  </td>
+  <td width=427 style='width:320.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>PostgreSQL como destino principal; soporte SQLite para
+  desarrollo rapido.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=226 style='width:169.2pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Seguridad</span></p>
+  </td>
+  <td width=427 style='width:320.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>JWT Bearer, refresh token HttpOnly, hashing bcrypt y
+  bloqueo por intentos fallidos.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=226 style='width:169.2pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Integraciones</span></p>
+  </td>
+  <td width=427 style='width:320.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Gmail API, World Office por ODBC, BanRep y BCE para tasas
+  de cambio.</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>3. Estructura
+del proyecto (modulos)</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>Estructura y responsabilidad por capa:</span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=653
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Ruta</span></b></p>
+  </td>
+  <td width=432 style='width:324.0pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Responsabilidad</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>app/main.py</span></p>
+  </td>
+  <td width=432 style='width:324.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Inicializa FastAPI, CORS, rutas v1 y actualizaciones de
+  esquema en startup.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>app/api/v1/api.py</span></p>
+  </td>
+  <td width=432 style='width:324.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Consolida routers por modulo bajo el prefijo /api/v1.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>app/api/v1/endpoints</span></p>
+  </td>
+  <td width=432 style='width:324.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Define endpoints REST, dependencias de seguridad y reglas
+  HTTP.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>app/crud</span></p>
+  </td>
+  <td width=432 style='width:324.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Centraliza operaciones de persistencia y consultas por
+  entidad.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>app/models</span></p>
+  </td>
+  <td width=432 style='width:324.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Mapeo SQLAlchemy de tablas, relaciones, indices y
+  restricciones.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>app/schemas</span></p>
+  </td>
+  <td width=432 style='width:324.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Contratos Pydantic de entrada y salida.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>app/services</span></p>
+  </td>
+  <td width=432 style='width:324.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Integraciones externas y servicios de dominio.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>app/core</span></p>
+  </td>
+  <td width=432 style='width:324.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Configuración, seguridad JWT y permisos por vista.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>app/db</span></p>
+  </td>
+  <td width=432 style='width:324.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Sesion, base declarativa y migraciones ligeras de
+  startup.</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>4. Configuración
+y variables de entorno</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>La configuracion se carga desde Settings en
+app/core/config.py. Las variables marcadas como requeridas deben existir en el
+entorno o en el archivo .env antes de iniciar la API.</span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=658
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=211 style='width:158.4pt;border:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Variable</span></b></p>
+  </td>
+  <td width=96 style='width:72.0pt;border:solid #4F81BD 1.0pt;border-left:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Tipo</span></b></p>
+  </td>
+  <td width=62 style='width:46.8pt;border:solid #4F81BD 1.0pt;border-left:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Req.</span></b></p>
+  </td>
+  <td width=288 style='width:216.0pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Valor por defecto / uso</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=211 style='width:158.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DATABASE_URL</span></p>
+  </td>
+  <td width=96 style='width:72.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>str</span></p>
+  </td>
+  <td width=62 style='width:46.8pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Si</span></p>
+  </td>
+  <td width=288 style='width:216.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Requerida</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=211 style='width:158.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>SECRET_KEY</span></p>
+  </td>
+  <td width=96 style='width:72.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>str</span></p>
+  </td>
+  <td width=62 style='width:46.8pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Si</span></p>
+  </td>
+  <td width=288 style='width:216.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Requerida</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=211 style='width:158.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>ACCESS_TOKEN_EXPIRE_MINUTES</span></p>
+  </td>
+  <td width=96 style='width:72.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>int</span></p>
+  </td>
+  <td width=62 style='width:46.8pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>No</span></p>
+  </td>
+  <td width=288 style='width:216.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>30</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=211 style='width:158.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>TURNSTILE_SECRET_KEY</span></p>
+  </td>
+  <td width=96 style='width:72.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Optional[str]</span></p>
+  </td>
+  <td width=62 style='width:46.8pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>No</span></p>
+  </td>
+  <td width=288 style='width:216.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>None</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=211 style='width:158.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>GOOGLE_SERVICE_ACCOUNT_FILE</span></p>
+  </td>
+  <td width=96 style='width:72.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>str</span></p>
+  </td>
+  <td width=62 style='width:46.8pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Si</span></p>
+  </td>
+  <td width=288 style='width:216.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Requerida</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=211 style='width:158.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>WORLD_OFFICE_ENABLED</span></p>
+  </td>
+  <td width=96 style='width:72.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>bool</span></p>
+  </td>
+  <td width=62 style='width:46.8pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>No</span></p>
+  </td>
+  <td width=288 style='width:216.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>False</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>Adicionalmente se parametrizan CORS, cookies seguras,
+SameSite, algoritmo JWT, credenciales de integraciones y umbrales de bloqueo
+por login.</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>5. Base de datos
+y modelo de persistencia</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>El modelo de datos mantiene entidades comerciales,
+logisticas, de autenticacion y tablas puente para relaciones muchos-a-muchos.
+Las tablas principales identificadas son:</span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=653
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Tabla</span></b></p>
+  </td>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Clase</span></b></p>
+  </td>
+  <td width=211 style='width:158.4pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Uso</span></b></p>
+  </td>
+  <td width=144 style='width:108.0pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Campos clave</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>auth_refresh_session</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>AuthRefreshSession</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Sesiones refresh con
+  hash de token, expiracion y revocacion.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, empleado_id,
+  token_hash, expires_at, created_at, last_used_at, revoked_at</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>cliente</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Cliente</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Maestro de clientes,
+  datos tributarios y atributos comerciales.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, razon_social, nit,
+  telefono, email, direccion, ciudad, world_office_id, ...</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>contacto</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Contacto</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Contactos asociados al
+  cliente u oportunidad.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, cliente_id, empresa,
+  nombre, telefono, email, ciudad</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>cotizacion</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Cotizacion</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Cotizaciones
+  comerciales, aprobacion, envio y estado del negocio.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, id_empleado,
+  id_oportunidad, url_cotizacion, tiempo_entrega, nombre_cotizacion,
+  fecha_creacion, tipo_cotizacion, ...</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>cotizacion_versiones_v2</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>CotizacionVersion</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Historial de versiones
+  antes de cada cambio de cotizacion.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, cotizacion_id,
+  id_empleado, id_oportunidad, url_cotizacion, tiempo_entrega,
+  nombre_cotizacion, fecha_creacion, ...</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>cuenta_cobro</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>CuentaCobro</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Cuentas de cobro
+  vinculadas a proyecto, cliente u oportunidad.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, cliente_id,
+  cliente_nombre, nit, direccion, telefono, proyecto, numero_contrato, ...</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>despachos</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Despacho</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Registros logisticos y
+  trazabilidad de despacho.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, fecha,
+  transportadora, guia, valor_flete_seguro, valor_mercancia, ciudad_origen,
+  contacto, ...</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>empleado</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Empleado</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Usuarios internos, area,
+  cargo, jefe directo y permisos.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, nombre, email,
+  cargo, area, estado, cedula, telefono, ...</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>notificacion</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Notificacion</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Notificaciones por
+  usuario autenticado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id,
+  destinatario_empleado_id, actor_empleado_id, tipo, area, titulo, mensaje,
+  entidad_tipo, ...</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>oportunidad</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Oportunidad</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Oportunidades
+  comerciales y enlace con cliente/cotizacion/proyecto.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, cliente_id,
+  nombre_proyecto, tipo_contacto, ciudad, tipo_servicio,
+  responsable_cotizacion, marca_predominante, ...</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>pais</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Pais</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Catalogo de paises.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>pais,
+  valor_peso_kilogramo, gasto_en_origen</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>producto</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Producto</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Catalogo
+  tecnico-comercial, costos, inventario e imagen.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, codigo_producto,
+  marca, descripcion, costo_instalacion, costo_fabrica, descuento_fabricante,
+  pais_origen, ...</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>proyecto</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Proyecto</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Proyectos derivados de
+  oportunidades ganadas.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id, nombre,
+  url_cuenta_cobro, anticipo, fecha_inicio, estado_logistica, estado_contable,
+  estado_ingenieria, ...</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>proyecto_cliente</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>ProyectoCliente</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Relacion muchos-a-muchos
+  entre proyectos y clientes.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id_cliente, id_proyecto</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>proyecto_despacho</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>ProyectoDespacho</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Relacion muchos-a-muchos
+  entre proyectos y despachos.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id_despacho, id_proyecto</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=149 style='width:111.6pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>proyecto_empleado</span></p>
+  </td>
+  <td width=149 style='width:111.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>ProyectoEmpleado</span></p>
+  </td>
+  <td width=211 style='width:158.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>Relacion muchos-a-muchos
+  entre proyectos y empleados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:9.0pt;line-height:115%;color:black'>id_empleado, id_proyecto</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>Relaciones destacadas: cliente-contacto,
+cliente-oportunidad, oportunidad-cotización, oportunidad-proyecto,
+cotización-versiones, proyecto-cliente, proyecto-empleado y proyecto-despacho.</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>6. Endpoints
+REST documentados</span></b></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=658
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Módulo</span></b></p>
+  </td>
+  <td width=120 style='width:90.0pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Métodos</span></b></p>
+  </td>
+  <td width=67 style='width:50.35pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Cant.</span></b></p>
+  </td>
+  <td width=307 style='width:230.4pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>Prefijo principal</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>auth</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>GET, POST</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>5</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/auth</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>clientes</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, GET, POST, PUT</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>5</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/clientes</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>contactos</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, GET, POST, PUT</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>5</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/contactos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>cotizaciones</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, GET, POST, PUT</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>9</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/cotizaciones</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>cuentas-cobro</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, GET, POST, PUT</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>6</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/cuentas-cobro</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>despachos</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, GET, POST, PUT</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>5</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/despachos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>empleados</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, GET, POST, PUT</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>5</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/empleados</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>fx</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>1</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/fx</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>notificaciones</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>GET, POST</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>3</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/notificaciones</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>oportunidades</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, GET, POST, PUT</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>5</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>paises</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, GET, POST, PUT</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>5</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/paises</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>productos</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, GET, POST, PUT</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>8</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/productos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>proyectos</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, GET, POST, PUT</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>5</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/proyectos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=163 style='width:122.4pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>proyectos-relaciones</span></p>
+  </td>
+  <td width=120 style='width:90.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>DELETE, POST</span></p>
+  </td>
+  <td width=67 style='width:50.35pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>6</span></p>
+  </td>
+  <td width=307 style='width:230.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:10.5pt;line-height:115%;color:black'>/api/v1/proyectos</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:2.0pt;
+margin-left:0cm'><b><span lang=EN-US style='color:black'>6.1 Catalogo de rutas</span></b></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=653
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Método</span></b></p>
+  </td>
+  <td width=221 style='width:165.55pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Ruta</span></b></p>
+  </td>
+  <td width=216 style='width:162.0pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Descripción</span></b></p>
+  </td>
+  <td width=144 style='width:108.0pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Seguridad</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/auth/change-password</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Cambia la contrasena,
+  revoca sesiones activas y entrega una nueva sesion.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/auth/login</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Inicio de sesion con
+  usuario/cedula/email, clave, Turnstile opcional y proteccion contra fuerza
+  bruta.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Credenciales; Turnstile
+  opcional; rate limit</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/auth/logout</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Revoca la sesion de
+  refresh actual y limpia la cookie del cliente.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Cookie HttpOnly de
+  refresh</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/auth/me</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Devuelve el empleado
+  autenticado, su rol inferido y permisos de vista.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/auth/refresh</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Rota la sesion de
+  refresh desde cookie HttpOnly y emite un nuevo access token.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Cookie HttpOnly de
+  refresh</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/clientes</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.clientes</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/clientes</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Crea un recurso o
+  ejecuta una accion del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.clientes</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/clientes/clientes</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.clientes</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/clientes/{cliente_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Elimina la relacion o el
+  recurso indicado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.clientes</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>PUT</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/clientes/{cliente_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Actualiza parcialmente
+  el recurso usando campos enviados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.clientes</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/contactos</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.contactos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/contactos</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Crea un recurso o
+  ejecuta una accion del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.contactos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/contactos/{contacto_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Elimina la relacion o el
+  recurso indicado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.contactos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/contactos/{contacto_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta el detalle del
+  recurso solicitado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.contactos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>PUT</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/contactos/{contacto_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Actualiza parcialmente
+  el recurso usando campos enviados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.contactos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cotizaciones</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.cotizador</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cotizaciones</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Crea un recurso o
+  ejecuta una accion del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.cotizador</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cotizaciones/{cotizacion_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Elimina la relacion o el
+  recurso indicado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.cotizador</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cotizaciones/{cotizacion_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta el detalle del
+  recurso solicitado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.cotizador</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>PUT</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cotizaciones/{cotizacion_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Actualiza parcialmente
+  el recurso usando campos enviados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.cotizador</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cotizaciones/{cotizacion_id}/aprobar</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Aprueba una cotizacion
+  pendiente si el usuario es jefe directo o Gerencia.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + jefe directo o
+  Gerencia</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cotizaciones/{cotizacion_id}/enviar-email</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Envia la cotizacion PDF
+  por Gmail usando delegacion del empleado autenticado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.cotizador</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cotizaciones/{cotizacion_id}/versiones</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista el historial de
+  versiones guardado antes de cada actualizacion.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.cotizador</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cotizaciones/{cotizacion_id}/versiones/{numero_version}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta una version
+  especifica del historial de la cotizacion.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.cotizador</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cuentas-cobro</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.cuentas-cobro</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cuentas-cobro</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Crea un recurso o
+  ejecuta una accion del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.cuentas-cobro</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cuentas-cobro/prefill/proyecto/{proyecto_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Calcula datos sugeridos
+  para una cuenta de cobro a partir de proyecto, oportunidad, cliente y ultima
+  cotizacion.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.cuentas-cobro</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cuentas-cobro/{cuenta_cobro_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Elimina la relacion o el
+  recurso indicado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.cuentas-cobro</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cuentas-cobro/{cuenta_cobro_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta el detalle del
+  recurso solicitado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.cuentas-cobro</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>PUT</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/cuentas-cobro/{cuenta_cobro_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Actualiza parcialmente
+  el recurso usando campos enviados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.cuentas-cobro</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/despachos</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + rol Gerencia o
+  Logistica</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/despachos</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Crea un recurso o
+  ejecuta una accion del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + rol Gerencia o
+  Logistica</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/despachos/{despacho_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Elimina la relacion o el
+  recurso indicado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + rol Gerencia o
+  Logistica</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/despachos/{despacho_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta el detalle del
+  recurso solicitado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + rol Gerencia o
+  Logistica</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>PUT</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/despachos/{despacho_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Actualiza parcialmente
+  el recurso usando campos enviados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + rol Gerencia o
+  Logistica</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/empleados</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + rol Gerencia</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/empleados</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Crea un recurso o
+  ejecuta una accion del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + rol Gerencia</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/empleados/{empleado_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Elimina la relacion o el
+  recurso indicado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + rol Gerencia</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/empleados/{empleado_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta el detalle del
+  recurso solicitado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + rol Gerencia</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>PUT</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/empleados/{empleado_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Actualiza parcialmente
+  el recurso usando campos enviados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + rol Gerencia</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/fx/rates</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta TRM USD/COP y
+  calcula EUR/COP con fuentes BanRep y BCE.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/notificaciones</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/notificaciones/marcar-todas-leidas</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Marca como leidas todas
+  las notificaciones pendientes del usuario autenticado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/notificaciones/{notificacion_id}/leer</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Marca una notificacion
+  propia como leida.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/oportunidades</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/oportunidades</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Crea un recurso o
+  ejecuta una accion del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/oportunidades/{oportunidad_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Elimina la relacion o el
+  recurso indicado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/oportunidades/{oportunidad_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta el detalle del
+  recurso solicitado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>PUT</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/oportunidades/{oportunidad_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Actualiza parcialmente
+  el recurso usando campos enviados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/paises</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/paises</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Crea un recurso o
+  ejecuta una accion del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/paises/{pais}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Elimina la relacion o el
+  recurso indicado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/paises/{pais}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta el detalle del
+  recurso solicitado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>PUT</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/paises/{pais}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Actualiza parcialmente
+  el recurso usando campos enviados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer autenticado</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/productos</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.productos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/productos</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Crea un recurso o
+  ejecuta una accion del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.productos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/productos/world-office/estado</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta si la
+  integracion World Office esta habilitada, configurada y conectada.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.productos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/productos/world-office/sync</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Sincroniza existencias
+  de World Office sobre el catalogo local de productos.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.productos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/productos/{producto_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Elimina la relacion o el
+  recurso indicado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.productos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/productos/{producto_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta el detalle del
+  recurso solicitado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.productos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>PUT</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/productos/{producto_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Actualiza parcialmente
+  el recurso usando campos enviados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.productos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/productos/{producto_id}/imagen</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Genera y entrega un
+  thumbnail JPEG desde la URL de imagen configurada para el producto.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer + permiso
+  comercial.productos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Lista recursos con
+  paginacion o filtros del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.proyectos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Crea un recurso o
+  ejecuta una accion del modulo.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.proyectos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos/{proyecto_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Elimina la relacion o el
+  recurso indicado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.proyectos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>GET</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos/{proyecto_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Consulta el detalle del
+  recurso solicitado.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.proyectos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>PUT</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos/{proyecto_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Actualiza parcialmente
+  el recurso usando campos enviados.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permiso comercial.proyectos</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos/{proyecto_id}/clientes</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Administra una relacion
+  muchos-a-muchos asociada al proyecto.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permisos comercial.cotizador/oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos/{proyecto_id}/clientes/{cliente_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Administra una relacion
+  muchos-a-muchos asociada al proyecto.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permisos comercial.cotizador/oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos/{proyecto_id}/despachos</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Administra una relacion
+  muchos-a-muchos asociada al proyecto.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permisos comercial.cotizador/oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos/{proyecto_id}/despachos/{despacho_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Administra una relacion
+  muchos-a-muchos asociada al proyecto.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permisos comercial.cotizador/oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>POST</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos/{proyecto_id}/empleados</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Administra una relacion
+  muchos-a-muchos asociada al proyecto.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permisos comercial.cotizador/oportunidades</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=72 style='width:54.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>DELETE</span></p>
+  </td>
+  <td width=221 style='width:165.55pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>/api/v1/proyectos/{proyecto_id}/empleados/{empleado_id}</span></p>
+  </td>
+  <td width=216 style='width:162.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Administra una relacion
+  muchos-a-muchos asociada al proyecto.</span></p>
+  </td>
+  <td width=144 style='width:108.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='font-size:8.0pt;line-height:115%;color:black'>Bearer +
+  Gerencia/Logistica/Ingenieria o permisos comercial.cotizador/oportunidades</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>7. Seguridad,
+autenticación y permisos</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>La API utiliza access tokens JWT para autorizacion y
+refresh tokens persistidos como hash en base de datos. El refresh se transporta
+mediante cookie HttpOnly y se revoca en logout, cambio de clave o expiracion.</span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=653
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=192 style='width:144.0pt;border:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Componente</span></b></p>
+  </td>
+  <td width=461 style='width:345.6pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Comportamiento</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=192 style='width:144.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Login</span></p>
+  </td>
+  <td width=461 style='width:345.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>POST /api/v1/auth/login valida credenciales, Turnstile
+  opcional y politicas anti fuerza bruta.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=192 style='width:144.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Refresh</span></p>
+  </td>
+  <td width=461 style='width:345.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>POST /api/v1/auth/refresh rota la sesion y emite un nuevo
+  access token.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=192 style='width:144.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Logout</span></p>
+  </td>
+  <td width=461 style='width:345.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>POST /api/v1/auth/logout revoca la sesion vigente y
+  limpia la cookie.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=192 style='width:144.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Usuario actual</span></p>
+  </td>
+  <td width=461 style='width:345.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>GET /api/v1/auth/me entrega empleado, rol inferido y
+  permisos de vista.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=192 style='width:144.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Permisos</span></p>
+  </td>
+  <td width=461 style='width:345.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>La autorizacion combina rol/cargo/area con
+  permisos_vistas y marcador comercial.views.v2.</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>Permisos identificados: comercial.cotizador,
+comercial.oportunidades, comercial.proyectos, comercial.cuentas-cobro,
+comercial.clientes, comercial.contactos y comercial.productos.</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>8. Reglas de
+negocio e integraciones</span></b></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=653
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=158 style='width:118.8pt;border:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Módulo</span></b></p>
+  </td>
+  <td width=494 style='width:370.8pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Regla / integración</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=158 style='width:118.8pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Cotizaciones</span></p>
+  </td>
+  <td width=494 style='width:370.8pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>El propietario es el usuario autenticado; se versiona
+  antes de actualizar; la aprobacion requiere jefe directo o Gerencia.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=158 style='width:118.8pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Productos</span></p>
+  </td>
+  <td width=494 style='width:370.8pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>codigo_producto es unico; se calculan costos y se
+  sincronizan existencias desde World Office cuando esta habilitado.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=158 style='width:118.8pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Oportunidades</span></p>
+  </td>
+  <td width=494 style='width:370.8pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Pueden convertirse en proyecto cuando el estado comercial
+  lo permite.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=158 style='width:118.8pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Proyectos</span></p>
+  </td>
+  <td width=494 style='width:370.8pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Concentran relaciones con empleados, clientes y despachos
+  mediante tablas puente.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=158 style='width:118.8pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Cuentas de cobro</span></p>
+  </td>
+  <td width=494 style='width:370.8pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Se pueden prefijar con datos de proyecto, oportunidad,
+  cliente y ultima cotizacion relacionada.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=158 style='width:118.8pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Gmail</span></p>
+  </td>
+  <td width=494 style='width:370.8pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>El envio de cotizacion PDF usa cuenta de servicio y
+  delegacion del empleado autenticado.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=158 style='width:118.8pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>FX</span></p>
+  </td>
+  <td width=494 style='width:370.8pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Consulta TRM USD/COP y calcula EUR/COP con BanRep y Banco
+  Central Europeo.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=158 style='width:118.8pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Notificaciones</span></p>
+  </td>
+  <td width=494 style='width:370.8pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Se listan, cuentan y marcan como leidas por usuario
+  autenticado.</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>9. Validación,
+errores y troubleshooting</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US
+style='color:black'>Los payloads se validan con Pydantic. Las respuestas HTTP
+mantienen codigos semanticos para autenticacion, autorizacion, duplicidad,
+integraciones y validacion de datos.</span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=653
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=106 style='width:79.2pt;border:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Código</span></b></p>
+  </td>
+  <td width=547 style='width:410.4pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Causa y acción</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=106 style='width:79.2pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>401</span></p>
+  </td>
+  <td width=547 style='width:410.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Token ausente, expirado o invalido. Renovar por refresh o
+  iniciar sesion.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=106 style='width:79.2pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>403</span></p>
+  </td>
+  <td width=547 style='width:410.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Usuario autenticado sin rol, cargo, area o permiso
+  suficiente.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=106 style='width:79.2pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>409</span></p>
+  </td>
+  <td width=547 style='width:410.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Conflicto por codigo unico, relacion duplicada o regla de
+  negocio.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=106 style='width:79.2pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>422</span></p>
+  </td>
+  <td width=547 style='width:410.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Payload no cumple tipo, obligatoriedad o formato esperado
+  por schema.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=106 style='width:79.2pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>502</span></p>
+  </td>
+  <td width=547 style='width:410.4pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Fallo de integracion externa como Gmail, World Office,
+  BanRep o BCE.</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>10. Cambios
+incorporados frente a v1</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Se agrego
+autenticacion completa con JWT, refresh token, logout, cambio de clave y
+usuario actual.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Se documento control
+de permisos por vista y roles operativos.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Se incorporaron
+cuentas de cobro, notificaciones y relaciones de proyecto.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Se agrego
+versionamiento de cotizaciones y flujo de aprobacion.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Se documentaron
+integraciones con Gmail, World Office, BanRep y Banco Central Europeo.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Se incluyo catalogo
+de rutas actual, modelo de datos y variables de entorno relevantes.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>Se agregaron
+recomendaciones operativas para despliegue, monitoreo y respaldo.</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>11.
+Recomendaciones</span></b></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=653
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=144 style='width:108.0pt;border:solid #4F81BD 1.0pt;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Área</span></b></p>
+  </td>
+  <td width=509 style='width:381.6pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN-US
+  style='color:black'>Recomendación</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=144 style='width:108.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Produccion</span></p>
+  </td>
+  <td width=509 style='width:381.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Ejecutar bajo HTTPS, restringir CORS y activar cookies
+  Secure/SameSite segun dominio final.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=144 style='width:108.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Base de datos</span></p>
+  </td>
+  <td width=509 style='width:381.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Administrar migraciones formales y backups periodicos de
+  PostgreSQL.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=144 style='width:108.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Secretos</span></p>
+  </td>
+  <td width=509 style='width:381.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Guardar JWT, Gmail, Turnstile y World Office en un gestor
+  de secretos.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=144 style='width:108.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Observabilidad</span></p>
+  </td>
+  <td width=509 style='width:381.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Persistir logs estructurados, latencia, errores 4xx/5xx y
+  fallos de integracion.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=144 style='width:108.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Pruebas</span></p>
+  </td>
+  <td width=509 style='width:381.6pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:4.5pt 4.5pt 4.5pt 4.5pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN-US
+  style='color:black'>Agregar pruebas de CRUD, auth, permisos, cotizaciones,
+  cuentas de cobro e integraciones simuladas.</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt;margin-right:0cm;margin-bottom:
+4.0pt;margin-left:0cm'><b><span lang=EN-US style='color:black'>12. Fuentes
+revisadas</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>C:\Users\dante\Downloads\INFORME
+TÉCNICO API v.1.docx</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>D:\IngeArt\API_Ingear\app\main.py</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>D:\IngeArt\API_Ingear\app\api\v1\api.py</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>D:\IngeArt\API_Ingear\app\api\v1\endpoints</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>D:\IngeArt\API_Ingear\app\models</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>D:\IngeArt\API_Ingear\app\schemas</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>D:\IngeArt\API_Ingear\app\services</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>D:\IngeArt\API_Ingear\app\core\config.py</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:12.95pt'><span lang=EN-US style='color:black'>D:\IngeArt\API_Ingear\requirements.txt</span></p>
+
+</div>
+
+</body>
+
+</html>

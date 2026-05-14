@@ -1,0 +1,3205 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Informe Técnico API Ingear v2</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Courier;
+	panose-1:2 7 4 9 2 2 5 2 4 4;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Consolas;
+	panose-1:2 11 6 9 2 2 4 3 2 4;}
+@font-face
+	{font-family:Cambria;
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:"Noto Sans Symbols";}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+h1
+	{mso-style-link:"Título 1 Car";
+	margin-top:24.0pt;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:0cm;
+	line-height:115%;
+	page-break-after:avoid;
+	font-size:14.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#366091;}
+h2
+	{mso-style-link:"Título 2 Car";
+	margin-top:10.0pt;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:0cm;
+	line-height:115%;
+	page-break-after:avoid;
+	font-size:13.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#4F81BD;}
+h3
+	{mso-style-link:"Título 3 Car";
+	margin-top:10.0pt;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:0cm;
+	line-height:115%;
+	page-break-after:avoid;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#4F81BD;}
+p.MsoListBullet, li.MsoListBullet, div.MsoListBullet
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBulletCxSpFirst, li.MsoListBulletCxSpFirst, div.MsoListBulletCxSpFirst
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBulletCxSpMiddle, li.MsoListBulletCxSpMiddle, div.MsoListBulletCxSpMiddle
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBulletCxSpLast, li.MsoListBulletCxSpLast, div.MsoListBulletCxSpLast
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListNumber, li.MsoListNumber, div.MsoListNumber
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:18.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListNumberCxSpFirst, li.MsoListNumberCxSpFirst, div.MsoListNumberCxSpFirst
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:18.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListNumberCxSpMiddle, li.MsoListNumberCxSpMiddle, div.MsoListNumberCxSpMiddle
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:18.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListNumberCxSpLast, li.MsoListNumberCxSpLast, div.MsoListNumberCxSpLast
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:18.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBullet2, li.MsoListBullet2, div.MsoListBullet2
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBullet2CxSpFirst, li.MsoListBullet2CxSpFirst, div.MsoListBullet2CxSpFirst
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBullet2CxSpMiddle, li.MsoListBullet2CxSpMiddle, div.MsoListBullet2CxSpMiddle
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBullet2CxSpLast, li.MsoListBullet2CxSpLast, div.MsoListBullet2CxSpLast
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBullet3, li.MsoListBullet3, div.MsoListBullet3
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBullet3CxSpFirst, li.MsoListBullet3CxSpFirst, div.MsoListBullet3CxSpFirst
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBullet3CxSpMiddle, li.MsoListBullet3CxSpMiddle, div.MsoListBullet3CxSpMiddle
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListBullet3CxSpLast, li.MsoListBullet3CxSpLast, div.MsoListBullet3CxSpLast
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	text-indent:-18.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+span.Ttulo1Car
+	{mso-style-name:"Título 1 Car";
+	mso-style-link:"Título 1";
+	font-family:"Calibri",sans-serif;
+	color:#365F91;
+	font-weight:bold;}
+span.Ttulo2Car
+	{mso-style-name:"Título 2 Car";
+	mso-style-link:"Título 2";
+	font-family:"Calibri",sans-serif;
+	color:#4F81BD;
+	font-weight:bold;}
+span.Ttulo3Car
+	{mso-style-name:"Título 3 Car";
+	mso-style-link:"Título 3";
+	font-family:"Calibri",sans-serif;
+	color:#4F81BD;
+	font-weight:bold;}
+.MsoChpDefault
+	{font-family:"Calibri",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:10.0pt;
+	line-height:115%;}
+ /* Page Definitions */
+ @page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:62.35pt 2.0cm 2.0cm 65.2pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=ES-CO style='word-wrap:break-word'>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><span lang=EN><img
+width=346 height=191
+src="INFORME_TECNICO_API_v2_continuacion_v1_wordcheck_archivos/image001.gif"></span></p>
+
+<p class=MsoNormal><span lang=EN>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:12.0pt;text-align:center;
+border:none'><b><span lang=EN style='font-size:28.0pt;line-height:115%;
+color:#004051'>INFORME TÉCNICO / SISTEMAS</span></b></p>
+
+<p class=MsoNormal align=center style='margin-bottom:24.0pt;text-align:center;
+border:none'><span lang=EN style='font-size:18.0pt;line-height:115%;font-family:
+"Arial",sans-serif;color:#004051'>API v.2</span></p>
+
+<div align=center>
+
+<table class=a border=1 cellspacing=0 cellpadding=0 width=653 style='border-collapse:
+ collapse;border:none'>
+ <tr>
+  <td width=327 valign=top style='width:245.05pt;border:solid #B0B0B0 1.0pt;
+  padding:0cm 5.75pt 0cm 5.75pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span lang=EN
+  style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Área</span></b></p>
+  </td>
+  <td width=327 valign=top style='width:245.05pt;border:solid #B0B0B0 1.0pt;
+  border-left:none;padding:0cm 5.75pt 0cm 5.75pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span lang=EN
+  style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Ingenieria</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=327 valign=top style='width:245.05pt;border:solid #B0B0B0 1.0pt;
+  border-top:none;padding:0cm 5.75pt 0cm 5.75pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span lang=EN
+  style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Elaborado
+  por</span></b></p>
+  </td>
+  <td width=327 valign=top style='width:245.05pt;border-top:none;border-left:
+  none;border-bottom:solid #B0B0B0 1.0pt;border-right:solid #B0B0B0 1.0pt;
+  padding:0cm 5.75pt 0cm 5.75pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span lang=EN
+  style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Daniel
+  Quiroz</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=327 valign=top style='width:245.05pt;border:solid #B0B0B0 1.0pt;
+  border-top:none;padding:0cm 5.75pt 0cm 5.75pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span lang=EN
+  style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Revisado
+  por</span></b></p>
+  </td>
+  <td width=327 valign=top style='width:245.05pt;border-top:none;border-left:
+  none;border-bottom:solid #B0B0B0 1.0pt;border-right:solid #B0B0B0 1.0pt;
+  padding:0cm 5.75pt 0cm 5.75pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span lang=EN
+  style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Gerencia</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=327 valign=top style='width:245.05pt;border:solid #B0B0B0 1.0pt;
+  border-top:none;padding:0cm 5.75pt 0cm 5.75pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span lang=EN
+  style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Versión</span></b></p>
+  </td>
+  <td width=327 style='width:245.05pt;border-top:none;border-left:none;
+  border-bottom:solid #B0B0B0 1.0pt;border-right:solid #B0B0B0 1.0pt;
+  padding:0cm 5.75pt 0cm 5.75pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  12.0pt;line-height:115%;font-family:"Arial",sans-serif'>v2.0</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=327 valign=top style='width:245.05pt;border:solid #B0B0B0 1.0pt;
+  border-top:none;padding:0cm 5.75pt 0cm 5.75pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span lang=EN
+  style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Fecha</span></b></p>
+  </td>
+  <td width=327 style='width:245.05pt;border-top:none;border-left:none;
+  border-bottom:solid #B0B0B0 1.0pt;border-right:solid #B0B0B0 1.0pt;
+  padding:0cm 5.75pt 0cm 5.75pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  12.0pt;line-height:115%;font-family:"Arial",sans-serif'>12/05/2026</span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'><br>
+<br>
+</span></p>
+
+<p class=MsoNormal align=center style='margin-top:3.0pt;margin-right:0cm;
+margin-bottom:6.0pt;margin-left:0cm;text-align:center;border:none'><span
+lang=EN style='font-size:9.0pt;line-height:115%;color:#5A5A5A'>Clasificación:
+[Confidencial]</span></p>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm'><span lang=EN style='font-size:9.0pt;line-height:115%;
+color:#5A5A5A'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm'><span lang=EN style='font-size:9.0pt;line-height:115%;
+color:#5A5A5A'>&nbsp;</span></p>
+
+<h2 style='margin-top:18.0pt;margin-right:0cm;margin-bottom:4.0pt;margin-left:
+0cm;page-break-after:auto'><a name="_heading=h.lq111h7zvti2"></a><span lang=EN
+style='font-size:17.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>&nbsp;</span></h2>
+
+<h2 style='margin-top:18.0pt;margin-right:0cm;margin-bottom:4.0pt;margin-left:
+0cm;page-break-after:auto'><a name="_heading=h.qoqdvs90w6pl"></a><span lang=EN
+style='font-size:17.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>&nbsp;</span></h2>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Este informe documenta
+de manera detallada la API del proyecto Ingear. Se cubren arquitectura,
+configuración, contrato de datos (schemas), modelo de persistencia
+(SQLAlchemy), endpoints REST (CRUD y relaciones M:N), manejo de errores,
+consideraciones de integración con el front y recomendaciones para
+endurecimiento (producción). Esta versión continúa el mismo informe y agrega
+los cambios funcionales y técnicos incorporados en la API v.2.</span></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>1. Alcance funcional (negocio)</span></b></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>La API soporta el flujo principal:</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Gestión
+de clientes (datos tributarios y de contacto).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Gestión
+de oportunidades comerciales vinculadas a clientes.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Creación
+y seguimiento de proyectos (estados por áreas).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Generación
+y administración de cotizaciones asociadas a proyectos.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Catálogo
+de productos (costos, inventario y metadatos).</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Gestión
+de despachos y asignación de despachos a proyectos.</span></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>2. Tecnologías, librerías y estándares</span></b></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Estándares y convenciones implementadas:</span></p>
+
+<table class=a0 border=1 cellspacing=0 cellpadding=0 width=642
+ style='margin-left:-5.4pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=321 valign=top style='width:240.8pt;border-top:solid #4F81BD 1.0pt;
+  border-left:solid #4F81BD 1.0pt;border-bottom:none;border-right:none;
+  background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif;color:white'>Clave</span></b></p>
+  </td>
+  <td width=321 valign=top style='width:240.8pt;border-top:solid #4F81BD 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid #4F81BD 1.0pt;
+  background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif;color:white'>Descripción</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 valign=top style='width:240.8pt;border:solid #4F81BD 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Framework API</span></b></p>
+  </td>
+  <td width=321 valign=top style='width:240.8pt;border:solid #4F81BD 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>FastAPI
+  (ASGI).</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 valign=top style='width:240.8pt;border:none;border-left:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Servidor</span></b></p>
+  </td>
+  <td width=321 valign=top style='width:240.8pt;border:none;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Uvicorn (modo
+  --reload en desarrollo).</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 valign=top style='width:240.8pt;border:solid #4F81BD 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>ORM</span></b></p>
+  </td>
+  <td width=321 valign=top style='width:240.8pt;border:solid #4F81BD 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>SQLAlchemy
+  2.x (DeclarativeBase, SessionLocal).</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 valign=top style='width:240.8pt;border:none;border-left:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Validación</span></b></p>
+  </td>
+  <td width=321 valign=top style='width:240.8pt;border:none;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Pydantic v2
+  (schemas Create/Update/Out).</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 valign=top style='width:240.8pt;border:solid #4F81BD 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>DB Drivers</span></b></p>
+  </td>
+  <td width=321 valign=top style='width:240.8pt;border:solid #4F81BD 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>psycopg
+  (PostgreSQL) o SQLite (para desarrollo rápido).</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 style='width:240.8pt;border:none;border-left:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Autenticación</span></p>
+  </td>
+  <td width=321 style='width:240.8pt;border:none;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>JWT Bearer,
+  refresh token persistido como hash y cookie HttpOnly.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 style='width:240.8pt;border:solid #4F81BD 1.0pt;border-right:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Autorización</span></p>
+  </td>
+  <td width=321 style='width:240.8pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Permisos por
+  vista comercial y roles operativos por área/cargo.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 style='width:240.8pt;border:none;border-left:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Integración
+  Gmail</span></p>
+  </td>
+  <td width=321 style='width:240.8pt;border:none;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Envío de
+  cotizaciones PDF usando service account y delegación.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 style='width:240.8pt;border:solid #4F81BD 1.0pt;border-right:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Integración
+  World Office</span></p>
+  </td>
+  <td width=321 style='width:240.8pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Consulta/sincronización
+  de inventario por ODBC.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 style='width:240.8pt;border:none;border-left:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Tasas FX</span></p>
+  </td>
+  <td width=321 style='width:240.8pt;border:none;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>TRM BanRep y
+  cálculo EUR/COP con Banco Central Europeo.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 style='width:240.8pt;border:solid #4F81BD 1.0pt;border-right:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Notificaciones</span></p>
+  </td>
+  <td width=321 style='width:240.8pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-size:12.0pt;font-family:"Arial",sans-serif'>Notificaciones
+  internas por usuario autenticado.</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>3. Estructura del proyecto (módulos)</span></b></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Estructura y responsabilidad por capa:</span></p>
+
+<table class=a1 border=1 cellspacing=0 cellpadding=0 width=653
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span lang=EN>Capa</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  border-left:none;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>Ruta</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  border-left:none;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>Responsabilidad</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>Entrada</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>app/main.py</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>Crea FastAPI, configura CORS, incluye router
+  /api/v1, endpoint raíz /.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>Routing</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>app/api/v1/api.py</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>Agrupa routers por recurso (clientes,
+  productos, etc.).</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>Endpoints</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>app/api/v1/endpoints/*</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>Controladores HTTP: validación de entrada,
+  respuestas y errores.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>Schemas</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>app/schemas/*</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>Contrato de datos (Create/Update/Out) usando
+  Pydantic.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>Modelos</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>app/models/*</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>Modelo relacional SQLAlchemy: tablas,
+  relaciones, constraints.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>CRUD</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>app/crud/*</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>Operaciones de BD reutilizables; manejo de
+  IntegrityError &#8594; HTTP 409.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>DB</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>app/db/session.py</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>Engine, SessionLocal, dependencia get_db().</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=218 valign=top style='width:163.35pt;border:solid black 1.0pt;
+  border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=EN>Config</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>app/core/config.py, .env</span></p>
+  </td>
+  <td width=218 valign=top style='width:163.35pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN>APP_NAME, DATABASE_URL vía
+  pydantic-settings.</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;
+margin-left:0cm'><span lang=EN style='font-size:9.5pt;line-height:115%;
+font-family:Consolas'>ingear_api/<br>
+&#9492;&#9472; app/<br>
+   &#9500;&#9472; main.py<br>
+   &#9500;&#9472; core/<br>
+   &#9474;  &#9492;&#9472; config.py<br>
+   &#9500;&#9472; db/<br>
+   &#9474;  &#9500;&#9472; base.py<br>
+   &#9474;  &#9492;&#9472; session.py<br>
+   &#9500;&#9472; models/          # Modelos SQLAlchemy (tablas)<br>
+   &#9500;&#9472; schemas/         # Modelos Pydantic (request/response)<br>
+   &#9500;&#9472; crud/            # CRUD base y CRUD por entidad<br>
+   &#9492;&#9472; api/v1/<br>
+      &#9500;&#9472; api.py        # Enrutador principal<br>
+      &#9492;&#9472; endpoints/    # Rutas por entidad + relaciones del
+proyecto</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>4.Configuración y variables de entorno</span></b></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Crea un archivo .env en la raíz del proyecto
+(junto a requirements.txt). Ejemplos:</span></p>
+
+<h2 style='margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN
+style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black;font-weight:normal'>&#9679;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif;color:black'>Ejemplo con PostgreSQL</span></h2>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;
+margin-left:0cm;text-indent:36.0pt'><span lang=EN style='font-size:9.5pt;
+line-height:115%;font-family:Consolas'>DATABASE_URL=postgresql+psycopg://USUARIO:CLAVE@localhost:5432/ingear_db<br>
+       APP_NAME=Ingear API</span></p>
+
+<h2 style='margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN
+style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black;font-weight:normal'>&#9679;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif;color:black'>Ejemplo con SQLite (rápido para
+desarrollo)</span></h2>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;
+margin-left:0cm;text-indent:36.0pt'><span lang=EN style='font-size:9.5pt;
+line-height:115%;font-family:Consolas'>DATABASE_URL=sqlite:///./ingear.db<br>
+       APP_NAME=Ingear API</span></p>
+
+<h2 style='margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN
+style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black;font-weight:normal'>&#9679;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif;color:black'>Comandos de ejecución (local)</span></h2>
+
+<h2 style='text-indent:36.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Arial",sans-serif;color:black'> Instalar
+dependencias</span></h2>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;
+margin-left:0cm;text-indent:36.0pt'><span lang=EN style='font-size:9.5pt;
+line-height:115%;font-family:Consolas'>python -m pip install -r
+requirements.txt</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Arial",sans-serif'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Crear y activar venv.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Arial",sans-serif'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>pip install -r requirements.txt</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Arial",sans-serif'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Configurar DATABASE_URL en .env (PostgreSQL).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Arial",sans-serif'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>uvicorn app.main:app --reload --host 127.0.0.1
+--port 8000</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Abrir
+documentación: http://127.0.0.1:8000/docs</span></p>
+
+<h2><a name="_heading=h.dghnsp6i7z7v"></a><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Arial",sans-serif;color:black'>CORS (integración
+con front Vite/React)</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>La API habilita CORS para orígenes de
+desarrollo típicos (localhost/127.0.0.1 en puertos 5173 y 5174). Se permiten
+métodos y headers arbitrarios para facilitar consumo desde el front.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>Notas importantes</span></h2>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>En
+Windows, asegúrate de usar barras normales en DATABASE_URL (no rutas de
+archivo).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Si
+usas PostgreSQL, verifica que el servicio esté corriendo y que el puerto 5432
+esté abierto.</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Si
+cambias de PostgreSQL a SQLite (o viceversa), elimina/crea la DB según
+corresponda para evitar inconsistencias.</span></p>
+
+<h1><a name="_heading=h.3jny9il5tmy0"></a><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Arial",sans-serif;color:black'>5. Base de datos y
+modelo de datos</span></h1>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>El proyecto usa SQLAlchemy con modelos
+declarativos. En desarrollo se crean tablas automáticamente al iniciar la
+aplicación (Base.metadata.create_all). En producción se recomienda usar
+migraciones con Alembic.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>5.1. Tablas principales</span></h2>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>cliente</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>empleado</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>oportunidad</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>proyecto</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>cotizacion</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>producto</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>despachos</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>5.2. Tablas puente (relaciones M:N)</span></h2>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>proyecto_empleado
+(proyecto &lt;-&gt; empleado)</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>proyecto_cliente
+(proyecto &lt;-&gt; cliente)</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>proyecto_despacho
+(proyecto &lt;-&gt; despacho)</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>5.3. Relaciones relevantes (resumen)</span></h2>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Cliente
+1:N Oportunidad (cliente.oportunidades).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Empleado
+1:N Cotizacion (empleado.cotizaciones).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Proyecto
+1:N Cotizacion (proyecto.cotizaciones).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Oportunidad
+1:1 (opcional) Proyecto (proyecto.oportunidad_id).</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Proyecto
+M:N Empleado / Cliente / Despacho vía tablas puente.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>5.4. Restricciones y unicidad</span></h2>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>cliente.nit
+es único (uq_cliente_nit).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>empleado.cedula
+es único (uq_empleado_cedula).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>cotizacion.consecutivo
+es único (uq_cotizacion_consecutivo).</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>producto.codigo_producto
+es único (uq_producto_codigo).</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>5.5. Actualización v2: integración World Office</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>La advertencia de la versión 1 queda
+actualizada: el backend actual no depende de una tabla world_oficce para crear
+el esquema base. La integración con World Office se administra por
+configuración ODBC y servicios de sincronización de inventario.</span></p>
+
+<h2><a name="_heading=h.1y3kxijjzg2f"></a><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Arial",sans-serif;color:black'>5.6. Diccionario
+de datos (campos principales)</span></h2>
+
+<h3><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>Cliente</span></h3>
+
+<table class=a2 border=1 cellspacing=0 cellpadding=0 width=642
+ style='margin-left:-5.4pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:solid #C0504D 1.0pt;border-bottom:none;border-right:none;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Campo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-top:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Tipo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Notas</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>id</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>PK</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>razon_social</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(255)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Requerido</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>nit</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(50)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Único; index</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>telefono</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(50)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>email</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>EmailStr</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional (validación Pydantic)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>direccion</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(255)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>ciudad</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(120)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:none;border-left:
+  solid #C0504D 1.0pt;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>world_office_id</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-bottom:
+  solid #C0504D 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(80)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:none;border-left:
+  none;border-bottom:solid #C0504D 1.0pt;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>FK -&gt; world_oficce.id
+  (requerido en el modelo actual)</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<h3><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>Empleado</span></h3>
+
+<table class=a3 border=1 cellspacing=0 cellpadding=0 width=642
+ style='margin-left:-5.4pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:solid #C0504D 1.0pt;border-bottom:none;border-right:none;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Campo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-top:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Tipo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Notas</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>id</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>PK</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>nombre</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(200)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Requerido</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>email</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>EmailStr</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>cargo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(120)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>area</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(120)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>estado</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(50)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>cedula</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(50)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Único; index</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:none;border-left:
+  solid #C0504D 1.0pt;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>telefono</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-bottom:
+  solid #C0504D 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(50)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:none;border-left:
+  none;border-bottom:solid #C0504D 1.0pt;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<h3><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>Oportunidad</span></h3>
+
+<table class=a4 border=1 cellspacing=0 cellpadding=0 width=642
+ style='margin-left:-5.4pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:solid #C0504D 1.0pt;border-bottom:none;border-right:none;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Campo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-top:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Tipo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Notas</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>id</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>PK</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>cliente_id</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>FK -&gt; cliente.id</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>responsable_cotizacion</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>FK -&gt; empleado.id</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>fecha_oportunidad</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>date</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Requerido en el modelo</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>fecha_cotizacion</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>date</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>porcentaje_cierre</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>numeric(5,2)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>fecha_cierre</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>date</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<h3><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>Proyecto</span></h3>
+
+<table class=a5 border=1 cellspacing=0 cellpadding=0 width=642
+ style='margin-left:-5.4pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:solid #C0504D 1.0pt;border-bottom:none;border-right:none;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Campo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-top:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Tipo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Notas</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>id</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>PK</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>nombre</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(255)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Requerido</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>url_cuenta_cobro</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(500)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>anticipo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>numeric(14,2)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>fecha_inicio</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>date</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>estado_logistica/contable/ingenieria/factura</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(80)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>observacion</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>text</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:none;border-left:
+  solid #C0504D 1.0pt;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>oportunidad_id</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-bottom:
+  solid #C0504D 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:none;border-left:
+  none;border-bottom:solid #C0504D 1.0pt;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>FK -&gt; oportunidad.id
+  (opcional)</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<h3><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>Cotizacion</span></h3>
+
+<table class=a6 border=1 cellspacing=0 cellpadding=0 width=642
+ style='margin-left:-5.4pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:solid #C0504D 1.0pt;border-bottom:none;border-right:none;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Campo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-top:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Tipo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Notas</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>id</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>PK</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>consecutivo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(60)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Único; index</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>id_cotizador</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>FK -&gt; empleado.id</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>id_proyecto</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>FK -&gt; proyecto.id</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>url_cotizacion</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(500)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>tiempo_entrega</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(120)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>fecha_creacion</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>datetime</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>server_default=now()</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:none;border-left:
+  solid #C0504D 1.0pt;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>total</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-bottom:
+  solid #C0504D 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>numeric(14,2)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:none;border-left:
+  none;border-bottom:solid #C0504D 1.0pt;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<h3><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>Producto</span></h3>
+
+<table class=a7 border=1 cellspacing=0 cellpadding=0 width=642
+ style='margin-left:-5.4pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:solid #C0504D 1.0pt;border-bottom:none;border-right:none;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Campo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-top:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Tipo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Notas</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>id</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>PK</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>codigo_producto</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(80)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Único; index</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>marca</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(120)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>descripcion</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(500)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>cantidad_inventario</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Default=0</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:none;border-left:
+  solid #C0504D 1.0pt;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>url_imagen / url_ficha_tecnica</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-bottom:
+  solid #C0504D 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(500)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:none;border-left:
+  none;border-bottom:solid #C0504D 1.0pt;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<h3><a name="_heading=h.f94nwp7jgwqe"></a><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Arial",sans-serif;color:black'>Despacho</span></h3>
+
+<table class=a8 border=1 cellspacing=0 cellpadding=0 width=642
+ style='margin-left:-5.4pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:solid #C0504D 1.0pt;border-bottom:none;border-right:none;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Campo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-top:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Tipo</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid #C0504D 1.0pt;
+  background:#C0504D;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:black'>Notas</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>id</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>int</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>PK</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>fecha</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>date</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Requerido en el modelo</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>transportadora</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(120)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>guia</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(120)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>valor_flete_seguro</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>numeric(14,2)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>ciudad_origen / ciudad_destino</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(120)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #C0504D 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>estado</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #C0504D 1.0pt;
+  border-left:none;border-bottom:solid #C0504D 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>string(80)</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #C0504D 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>Opcional</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><b><span lang=EN style='font-size:14.0pt;line-height:115%'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span lang=EN style='font-size:14.0pt;line-height:115%'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span lang=EN style='font-size:14.0pt;line-height:115%'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span lang=EN style='font-size:14.0pt;line-height:115%'>&nbsp;</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span lang=EN><a
+href="https://drive.google.com/file/d/1C22Y0JznHTpWMtCcO3UBF-4tVG-5mdBG/view?usp=sharing"><b><span
+style='font-size:14.0pt;line-height:115%;color:#1155CC'><img border=0
+width=653 height=525 id=image1.jpg
+src="INFORME_TECNICO_API_v2_continuacion_v1_wordcheck_archivos/image002.jpg"></span></b></a></span></p>
+
+<p class=MsoNormal><b><span lang=EN style='font-size:14.0pt;line-height:115%'>&nbsp;</span></b></p>
+
+<h1><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>7. Endpoints (API v1)</span></h1>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Prefijo base de la API: /api/v1</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>7.1. Endpoints CRUD por entidad</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Todas las entidades principales siguen el mismo
+patrón de rutas: GET (lista), GET (por id), POST (crear), PUT (actualizar),
+DELETE (eliminar). La lista soporta paginación por query params: skip y limit.</span></p>
+
+<table class=a9 border=1 cellspacing=0 cellpadding=0 width=642
+ style='margin-left:-5.4pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #9BBB59 1.0pt;
+  border-left:solid #9BBB59 1.0pt;border-bottom:none;border-right:none;
+  background:#9BBB59;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:white'>Recurso</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-top:solid #9BBB59 1.0pt;
+  background:#9BBB59;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:white'>Base path</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #9BBB59 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid #9BBB59 1.0pt;
+  background:#9BBB59;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:white'>Schemas</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #9BBB59 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>Clientes</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #9BBB59 1.0pt;
+  border-left:none;border-bottom:solid #9BBB59 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/clientes</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #9BBB59 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>ClienteCreate / ClienteUpdate /
+  ClienteOut</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #9BBB59 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>Empleados</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/empleados</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #9BBB59 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>EmpleadoCreate / EmpleadoUpdate /
+  EmpleadoOut</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #9BBB59 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>Oportunidades</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #9BBB59 1.0pt;
+  border-left:none;border-bottom:solid #9BBB59 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/oportunidades</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #9BBB59 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>OportunidadCreate /
+  OportunidadUpdate / OportunidadOut</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #9BBB59 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>Cotizaciones</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/cotizaciones</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #9BBB59 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>CotizacionCreate /
+  CotizacionUpdate / CotizacionOut</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #9BBB59 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>Proyectos</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #9BBB59 1.0pt;
+  border-left:none;border-bottom:solid #9BBB59 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/proyectos</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #9BBB59 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>ProyectoCreate / ProyectoUpdate /
+  ProyectoOut</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-left:solid #9BBB59 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>Productos</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/productos</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:none;border-right:solid #9BBB59 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>ProductoCreate / ProductoUpdate /
+  ProductoOut</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=214 valign=top style='width:160.55pt;border:solid #9BBB59 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>Despachos</span></b></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border-top:solid #9BBB59 1.0pt;
+  border-left:none;border-bottom:solid #9BBB59 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/despachos</span></p>
+  </td>
+  <td width=214 valign=top style='width:160.55pt;border:solid #9BBB59 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>DespachoCreate / DespachoUpdate /
+  DespachoOut</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-family:"Cambria",serif'>Ejemplos
+(clientes):</span></p>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;
+margin-left:0cm'><span lang=EN style='font-size:9.5pt;line-height:115%;
+font-family:Consolas'># Listar<br>
+curl http://127.0.0.1:8000/api/v1/clientes?skip=0&amp;limit=50<br>
+<br>
+# Obtener por id<br>
+curl http://127.0.0.1:8000/api/v1/clientes/1<br>
+<br>
+# Crear<br>
+curl -X POST http://127.0.0.1:8000/api/v1/clientes ^<br>
+  -H &quot;Content-Type: application/json&quot; ^<br>
+  -d
+&quot;{&quot;razon_social&quot;:&quot;ACME&quot;,&quot;nit&quot;:&quot;900123&quot;,&quot;world_office_id&quot;:&quot;WO-001&quot;}&quot;
+</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>7.2. Relaciones del proyecto (M:N)</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Las relaciones se gestionan bajo el prefijo
+/api/v1/proyectos/{proyecto_id}/... y operan sobre tablas puente. Al asignar,
+si la relación ya existe se responde 409.</span></p>
+
+<table class=aa border=1 cellspacing=0 cellpadding=0 width=642
+ style='margin-left:-5.4pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=161 valign=top style='width:120.4pt;border-top:solid #4F81BD 1.0pt;
+  border-left:solid #4F81BD 1.0pt;border-bottom:none;border-right:none;
+  background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:white'>Relación</span></b></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border:none;border-top:solid #4F81BD 1.0pt;
+  background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:white'>Asignar (POST)</span></b></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border:none;border-top:solid #4F81BD 1.0pt;
+  background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:white'>Quitar (DELETE)</span></b></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border-top:solid #4F81BD 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid #4F81BD 1.0pt;
+  background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif;color:white'>Body (POST)</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=161 valign=top style='width:120.4pt;border:solid #4F81BD 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>Proyecto - Empleado</span></b></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border-top:solid #4F81BD 1.0pt;
+  border-left:none;border-bottom:solid #4F81BD 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/proyectos/{proyecto_id}/empleados</span></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border-top:solid #4F81BD 1.0pt;
+  border-left:none;border-bottom:solid #4F81BD 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/proyectos/{proyecto_id}/empleados/{empleado_id}</span></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border:solid #4F81BD 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>{ &quot;id_empleado&quot;: 1 }</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=161 valign=top style='width:120.4pt;border:none;border-left:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>Proyecto - Cliente</span></b></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/proyectos/{proyecto_id}/clientes</span></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/proyectos/{proyecto_id}/clientes/{cliente_id}</span></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border:none;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>{ &quot;id_cliente&quot;: 10 }</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=161 valign=top style='width:120.4pt;border:solid #4F81BD 1.0pt;
+  border-right:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
+  lang=EN style='font-family:"Cambria",serif'>Proyecto - Despacho</span></b></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border-top:solid #4F81BD 1.0pt;
+  border-left:none;border-bottom:solid #4F81BD 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/proyectos/{proyecto_id}/despachos</span></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border-top:solid #4F81BD 1.0pt;
+  border-left:none;border-bottom:solid #4F81BD 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>/api/v1/proyectos/{proyecto_id}/despachos/{despacho_id}</span></p>
+  </td>
+  <td width=161 valign=top style='width:120.4pt;border:solid #4F81BD 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
+  lang=EN style='font-family:"Cambria",serif'>{ &quot;id_despacho&quot;: 5 }</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Ejemplo asignación empleado a proyecto:</span></p>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;
+margin-left:0cm'><span lang=EN style='font-size:9.5pt;line-height:115%;
+font-family:Consolas'>curl -X POST
+http://127.0.0.1:8000/api/v1/proyectos/1/empleados ^<br>
+  -H &quot;Content-Type: application/json&quot; ^<br>
+  -d &quot;{&quot;id_empleado&quot;: 3}&quot;</span></p>
+
+<h1><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>8. Validación, errores y códigos de respuesta</span></h1>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>8.1. Códigos de respuesta típicos</span></h2>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>200
+OK: lectura/actualización exitosa.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>201
+Created: creación exitosa (POST).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>204
+No Content: eliminación exitosa (DELETE).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>404
+Not Found: recurso no existe (mensajes: 'Cliente no encontrado', etc.).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>409
+Conflict: relación duplicada (proyecto-empleado / proyecto-cliente /
+proyecto-despacho) o colisión de unicidad en DB.</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>422
+Unprocessable Entity: validación Pydantic fallida (faltan campos requeridos o
+tipos incorrectos).</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>8.2. Validación con Pydantic</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Cada recurso tiene tres esquemas Pydantic:<br>
+- *Create*: campos requeridos para crear.<br>
+- *Update*: campos opcionales (exclude_unset=True) para actualizar
+parcialmente.<br>
+- *Out*: modelo de respuesta con id (y campos de auditoría si aplica).</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>8.3. Paginación</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Los endpoints de listado soportan parámetros
+query:<br>
+- skip (int): offset (por defecto 0)<br>
+- limit (int): máximo de registros (por defecto 50)<br>
+Ejemplo: GET /api/v1/productos?skip=100&amp;limit=50</span></p>
+
+<h1><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>9. Buenas prácticas y recomendaciones</span></h1>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>9.1. Migraciones con Alembic</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Actualmente el proyecto crea tablas
+automáticamente al iniciar. Esto es útil en desarrollo, pero en producción es
+mejor controlar cambios del esquema con migraciones. Recomendación:<br>
+1) Integrar Alembic.<br>
+2) Desactivar create_all en producción.<br>
+3) Ejecutar migraciones en el pipeline de despliegue.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>9.2. Seguridad</span></h2>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>La
+versión 2 ya incorpora autenticación JWT, refresh token en cookie HttpOnly,
+logout, cambio de contraseña y control de sesiones.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Mantener
+CORS controlado por entorno, especialmente al pasar de localhost a dominio de
+producción.</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Registrar
+auditoría (quién cambia qué) para operaciones críticas.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>9.3. Calidad de código y pruebas</span></h2>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Agregar
+pruebas con pytest (unitarias para CRUD y de integración para endpoints).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Separar
+configuración por entornos (dev/staging/prod).</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Definir
+linters (ruff/flake8) y formateo (black) para consistencia.</span></p>
+
+<h1><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>10. Publicación en GitHub (flujo recomendado)</span></h1>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Para subir el proyecto al repositorio,
+necesitas tener Git instalado y accesible desde la terminal. Si al ejecutar
+'git status' aparece 'git no se reconoce', instala Git for Windows y reinicia
+la terminal.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>10.1. Instalación y verificación de Git</span></h2>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;
+margin-left:0cm'><span lang=EN style='font-size:9.5pt;line-height:115%;
+font-family:Consolas'># Verificar instalación<br>
+git --version<br>
+<br>
+# Configurar identidad (una sola vez)<br>
+git config --global user.name &quot;Tu Nombre&quot;<br>
+git config --global user.email &quot;tuemail@dominio.com&quot;</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>10.2. Subir proyecto al repo existente</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Opción A: clonar el repo y copiar tu código
+dentro (recomendado si el repo ya existe).</span></p>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;
+margin-left:0cm'><span lang=EN style='font-size:9.5pt;line-height:115%;
+font-family:Consolas'>cd D:\<br>
+git clone https://github.com/cripto26/api_ingear.git<br>
+cd api_ingear<br>
+<br>
+# Copia aquí el contenido de D:\API_Ingear (excepto .venv)<br>
+# Luego:<br>
+git add .<br>
+git commit -m &quot;Initial commit: Ingear API (FastAPI + SQLAlchemy)&quot;<br>
+git push origin main</span></p>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Opción B: inicializar Git en tu carpeta actual
+y enlazar al remoto (si no has clonado).</span></p>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;
+margin-left:0cm'><span lang=EN style='font-size:9.5pt;line-height:115%;
+font-family:Consolas'>cd D:\API_Ingear<br>
+git init<br>
+git branch -M main<br>
+git remote add origin https://github.com/cripto26/api_ingear.git<br>
+<br>
+# Recomendado: crear .gitignore (ver sección 10.3)<br>
+git add .<br>
+git commit -m &quot;Initial commit&quot;<br>
+git push -u origin main</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>10.3. .gitignore recomendado</span></h2>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;
+margin-left:0cm'><span lang=EN style='font-size:9.5pt;line-height:115%;
+font-family:Consolas'># Python<br>
+__pycache__/<br>
+*.pyc<br>
+*.pyo<br>
+*.pyd<br>
+.venv/<br>
+env/<br>
+venv/<br>
+<br>
+# VS Code / IDE<br>
+.vscode/<br>
+<br>
+# DB local<br>
+*.db<br>
+<br>
+# Logs<br>
+*.log<br>
+<br>
+# Env<br>
+.env</span></p>
+
+<h1><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>11. Solución de problemas (troubleshooting)</span></h1>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>11.1. ERR_CONNECTION_REFUSED en /docs</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Causa típica: el proceso de Uvicorn se cae
+durante startup. Revisa la consola donde ejecutaste uvicorn y corrige el error
+antes de volver a intentar.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>11.2. Errores de conexión a PostgreSQL</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Síntomas comunes: ConnectionTimeout,
+getaddrinfo failed, o Test-NetConnection al puerto 5432 falla.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Verifica
+que PostgreSQL esté instalado y el servicio esté iniciado.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Confirma
+usuario/clave/DB en DATABASE_URL.</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Noto Sans Symbols"'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Asegura
+que el puerto 5432 esté escuchando (y no bloqueado por firewall).</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>11.3. NoReferencedTableError (ForeignKey)</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Si ves un error como 'could not find table ...
+with which to generate a foreign key', hay una FK apuntando a una tabla que no
+existe o está mal escrita. En esta base, el caso más común es
+Cliente.world_office_id -&gt; world_oficce.id.</span></p>
+
+<h2><a name="_heading=h.kbgxyccvv0o8"></a><span lang=EN style='font-size:12.0pt;
+line-height:115%;font-family:"Arial",sans-serif;color:black'>11.4. Conflictos
+409 en relaciones</span></h2>
+
+<p class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+font-family:"Arial",sans-serif'>Al asignar un empleado/cliente/despacho a un
+proyecto, si la relación ya existe se devuelve 409. Solución: no repetir
+asignación, o eliminar primero la relación y volver a crearla.</span></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><b><span lang=EN
+style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;border:none'><b><span lang=EN
+style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif'>&nbsp;</span></b></p>
+
+<span lang=EN style='font-size:11.0pt;line-height:115%;font-family:"Calibri",sans-serif'><br
+clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span lang=EN>&nbsp;</span></p>
+
+<h1><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>12. Actualización técnica API v.2</span></h1>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Esta sección se agrega
+como continuación directa del informe v1. Mantiene el mismo formato del
+documento original y consolida los cambios detectados en el backend actual.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>12.1. Cambios funcionales incorporados</span></h2>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Autenticación completa
+con login, refresh, logout, usuario actual y cambio de contraseña.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Control de permisos por
+vista comercial: cotizador, oportunidades, proyectos, cuentas de cobro,
+clientes, contactos y productos.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Versionamiento
+histórico de cotizaciones antes de cada actualización.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Flujo de aprobación de
+cotizaciones por jefe directo o Gerencia.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Envío de cotizaciones
+por correo mediante Gmail API.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Precarga de cuentas de
+cobro desde proyecto, oportunidad, cliente y última cotización.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Notificaciones internas
+por usuario autenticado.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Consulta de tasas de
+cambio USD/COP y EUR/COP.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Sincronización de
+existencias desde World Office.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>12.2. Módulos y endpoints agregados o ampliados</span></h2>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=627
+ style='width:470.0pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=113 style='width:85.0pt;border:solid #4F81BD 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN
+  style='font-size:10.5pt;line-height:115%;font-family:"Arial",sans-serif'>Módulo</span></b></p>
+  </td>
+  <td width=147 style='width:110.0pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN
+  style='font-size:10.5pt;line-height:115%;font-family:"Arial",sans-serif'>Prefijo</span></b></p>
+  </td>
+  <td width=80 style='width:60.0pt;border:solid #4F81BD 1.0pt;border-left:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN
+  style='font-size:10.5pt;line-height:115%;font-family:"Arial",sans-serif'>Métodos</span></b></p>
+  </td>
+  <td width=287 style='width:215.0pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN
+  style='font-size:10.5pt;line-height:115%;font-family:"Arial",sans-serif'>Cambio
+  documentado</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=113 style='width:85.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>auth</span></p>
+  </td>
+  <td width=147 style='width:110.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>/api/v1/auth</span></p>
+  </td>
+  <td width=80 style='width:60.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>GET, POST</span></p>
+  </td>
+  <td width=287 style='width:215.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Login, refresh,
+  logout, usuario actual y cambio de contraseña.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=113 style='width:85.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>cotizaciones</span></p>
+  </td>
+  <td width=147 style='width:110.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>/api/v1/cotizaciones</span></p>
+  </td>
+  <td width=80 style='width:60.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>DELETE, GET, POST,
+  PUT</span></p>
+  </td>
+  <td width=287 style='width:215.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Versionamiento,
+  aprobación, envío por correo y creación de proyecto.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=113 style='width:85.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>cuentas-cobro</span></p>
+  </td>
+  <td width=147 style='width:110.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>/api/v1/cuentas-cobro</span></p>
+  </td>
+  <td width=80 style='width:60.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>DELETE, GET, POST,
+  PUT</span></p>
+  </td>
+  <td width=287 style='width:215.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Gestión y precarga
+  desde proyecto, oportunidad, cliente y cotización.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=113 style='width:85.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>fx</span></p>
+  </td>
+  <td width=147 style='width:110.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>/api/v1/fx</span></p>
+  </td>
+  <td width=80 style='width:60.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>GET</span></p>
+  </td>
+  <td width=287 style='width:215.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Consulta de tasas
+  USD/COP y EUR/COP con BanRep y BCE.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=113 style='width:85.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>notificaciones</span></p>
+  </td>
+  <td width=147 style='width:110.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>/api/v1/notificaciones</span></p>
+  </td>
+  <td width=80 style='width:60.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>GET, POST</span></p>
+  </td>
+  <td width=287 style='width:215.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Listado, conteo y
+  marcado de notificaciones por usuario.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=113 style='width:85.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>productos</span></p>
+  </td>
+  <td width=147 style='width:110.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>/api/v1/productos</span></p>
+  </td>
+  <td width=80 style='width:60.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>DELETE, GET, POST,
+  PUT</span></p>
+  </td>
+  <td width=287 style='width:215.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Catálogo, imagen,
+  costos e inventario World Office.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=113 style='width:85.0pt;border:solid #4F81BD 1.0pt;border-top:none;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>proyectos-relaciones</span></p>
+  </td>
+  <td width=147 style='width:110.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>/api/v1/proyectos</span></p>
+  </td>
+  <td width=80 style='width:60.0pt;border-top:none;border-left:none;border-bottom:
+  solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>DELETE, POST</span></p>
+  </td>
+  <td width=287 style='width:215.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Relaciones M:N de
+  proyectos con clientes, despachos y empleados.</span></p>
+  </td>
+ </tr>
+</table>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>12.3. Seguridad y sesiones</span></h2>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>El acceso protegido se
+realiza con token Bearer. La sesión persistente utiliza refresh token en cookie
+HttpOnly y una tabla auth_refresh_session con hash del token, fechas de
+expiración, último uso y revocación.</span></p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>El login puede validar
+Cloudflare Turnstile y aplica protección contra fuerza bruta mediante límites
+por usuario/IP, ventana de fallos y bloqueo temporal.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>12.4. Cambios en persistencia</span></h2>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Se agregan tablas para
+auth_refresh_session, cuenta_cobro y notificacion.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Se conserva el modelo
+principal cliente, contacto, oportunidad, cotizacion, proyecto, producto,
+despacho y empleado.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Se mantiene el uso de
+tablas puente proyecto_cliente, proyecto_empleado y proyecto_despacho.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Se agrega historial de
+cotización en cotizacion_versiones_v2.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Se actualizan columnas
+de empleado para permisos_vistas y jefe_id cuando el esquema lo requiere.</span></p>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>12.5. Variables de entorno nuevas o relevantes</span></h2>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=653
+ style='width:490.0pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=213 style='width:160.0pt;border:solid #4F81BD 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN
+  style='font-size:10.5pt;line-height:115%;font-family:"Arial",sans-serif'>Variable</span></b></p>
+  </td>
+  <td width=440 style='width:330.0pt;border:solid #4F81BD 1.0pt;border-left:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><b><span lang=EN
+  style='font-size:10.5pt;line-height:115%;font-family:"Arial",sans-serif'>Uso</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=213 style='width:160.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>SECRET_KEY</span></p>
+  </td>
+  <td width=440 style='width:330.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Firma de access
+  tokens JWT.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=213 style='width:160.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>GOOGLE_SERVICE_ACCOUNT_FILE</span></p>
+  </td>
+  <td width=440 style='width:330.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Ruta de credenciales
+  para Gmail/Google APIs.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=213 style='width:160.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>TURNSTILE_SECRET_KEY</span></p>
+  </td>
+  <td width=440 style='width:330.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Validación opcional
+  de Turnstile en login.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=213 style='width:160.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>WORLD_OFFICE_ENABLED</span></p>
+  </td>
+  <td width=440 style='width:330.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Activa la
+  consulta/sincronización de inventario.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=213 style='width:160.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>WORLD_OFFICE_ODBC_DRIVER</span></p>
+  </td>
+  <td width=440 style='width:330.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Driver ODBC instalado
+  en el servidor.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=213 style='width:160.0pt;border:solid #4F81BD 1.0pt;border-top:
+  none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>LOGIN_FAILURE_LOCK_THRESHOLD</span></p>
+  </td>
+  <td width=440 style='width:330.0pt;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+  10.0pt;line-height:115%;font-family:"Arial",sans-serif'>Número de fallos
+  requeridos para bloquear.</span></p>
+  </td>
+ </tr>
+</table>
+
+<h2><span lang=EN style='font-size:12.0pt;line-height:115%;font-family:"Arial",sans-serif;
+color:black'>12.6. Recomendaciones actualizadas</span></h2>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Usar HTTPS y cookies
+Secure/SameSite en producción.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Proteger SECRET_KEY,
+credenciales Google, Turnstile y World Office fuera del repositorio.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Agregar migraciones
+formales con Alembic para cambios de esquema.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Registrar auditoría de
+acciones críticas: aprobación, envío de cotización, cambio de estado y cuentas
+de cobro.</span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm'><span lang=EN style='font-size:
+12.0pt;line-height:115%;font-family:"Arial",sans-serif'>Agregar pruebas de
+endpoints para autenticación, permisos, cotizaciones, cuentas de cobro e
+integraciones simuladas.</span></p>
+
+</div>
+
+</body>
+
+</html>

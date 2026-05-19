@@ -1,6 +1,7 @@
 from sqlalchemy import inspect, text
 from sqlalchemy.engine import Engine
 
+from app.models.apu import Apu
 from app.models.auth_refresh_session import AuthRefreshSession
 from app.models.cuenta_cobro import CuentaCobro
 from app.models.notificacion import Notificacion
@@ -44,6 +45,10 @@ def ensure_empleado_jefe_id_column(engine: Engine) -> None:
 
 def ensure_auth_refresh_session_table(engine: Engine) -> None:
     AuthRefreshSession.__table__.create(bind=engine, checkfirst=True)
+
+
+def ensure_apu_table(engine: Engine) -> None:
+    Apu.__table__.create(bind=engine, checkfirst=True)
 
 
 def ensure_notificacion_table(engine: Engine) -> None:

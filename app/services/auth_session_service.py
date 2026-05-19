@@ -59,10 +59,13 @@ def find_active_refresh_session(
     return session
 
 
-def rotate_refresh_session(db: Session, session: AuthRefreshSession) -> str:
-    raw_token = token_urlsafe(48)
-    session.token_hash = hash_refresh_token(raw_token)
+def touch_refresh_session(
+    db: Session,
+    session: AuthRefreshSession,
+    raw_token: str,
+) -> str:
     session.last_used_at = utc_now()
+    session.expires_at = build_refresh_expiry()
     db.add(session)
     db.commit()
     return raw_token

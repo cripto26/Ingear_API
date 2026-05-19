@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from app.api.v1.endpoints import apu
 from app.api.v1.endpoints import auth
 from app.api.v1.endpoints import cliente
 from app.api.v1.endpoints import contacto
@@ -17,6 +18,7 @@ from app.api.v1.endpoints import relaciones_proyecto
 
 api_router = APIRouter()
 
+api_router.include_router(apu.router, prefix="/apu", tags=["apu"])
 api_router.include_router(producto.router, prefix="/productos", tags=["productos"])
 api_router.include_router(cliente.router, prefix="/clientes", tags=["clientes"])
 api_router.include_router(contacto.router, prefix="/contactos", tags=["contactos"])

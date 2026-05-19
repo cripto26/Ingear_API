@@ -23,7 +23,7 @@ from app.services.auth_session_service import (
     find_active_refresh_session,
     revoke_refresh_session,
     revoke_refresh_sessions_for_empleado,
-    rotate_refresh_session,
+    touch_refresh_session,
 )
 from app.services.login_protection_service import (
     extract_client_ip,
@@ -152,7 +152,7 @@ def refresh_session(
             detail="Sesion no valida",
         )
 
-    next_refresh_token = rotate_refresh_session(db, session)
+    next_refresh_token = touch_refresh_session(db, session, refresh_token)
     set_refresh_cookie(response, next_refresh_token)
 
     return TokenOut(

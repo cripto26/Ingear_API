@@ -59,6 +59,22 @@ def ensure_cuenta_cobro_table(engine: Engine) -> None:
     CuentaCobro.__table__.create(bind=engine, checkfirst=True)
 
 
+def ensure_producto_precio_inventario_column(engine: Engine) -> None:
+    inspector = inspect(engine)
+
+    if not inspector.has_table("producto"):
+        return
+
+    columns = {column["name"] for column in inspector.get_columns("producto")}
+    if "precio_inventario" in columns:
+        return
+
+    with engine.begin() as connection:
+        connection.execute(
+            text("ALTER TABLE producto ADD COLUMN precio_inventario NUMERIC(14, 2)")
+        )
+
+
 def ensure_cotizacion_version_estado_column(engine: Engine) -> None:
     inspector = inspect(engine)
 

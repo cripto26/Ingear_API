@@ -7,12 +7,14 @@ COMMERCIAL_VIEW_PERMISSION_VERSION_MARKER = "comercial.views.v2"
 
 COMMERCIAL_VIEW_PERMISSIONS = (
     "comercial.cotizador",
+    "comercial.cotizador.trm-manual",
     "comercial.oportunidades",
     "comercial.proyectos",
     "comercial.cuentas-cobro",
     "comercial.clientes",
     "comercial.contactos",
     "comercial.productos",
+    "comercial.productos.valores-edicion",
 )
 
 COMMERCIAL_VIEW_PERMISSION_SET = set(COMMERCIAL_VIEW_PERMISSIONS)

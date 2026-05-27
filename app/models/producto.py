@@ -36,6 +36,7 @@ class Producto(Base):
     volumen = Column(Numeric(12, 4), nullable=True)
 
     valor_inventario = Column(Numeric(14, 2), nullable=True)
+    precio_inventario = Column(Numeric(14, 2), nullable=True)
 
     tipo_producto = Column(String(120), nullable=True)
     subtipo = Column(String(120), nullable=True)

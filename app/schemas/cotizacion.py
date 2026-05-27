@@ -38,6 +38,15 @@ class CotizacionProductoItem(BaseModel):
             "partition_name",
         ),
     )
+    tipo_importacion: str | None = Field(
+        default=None,
+        max_length=20,
+        validation_alias=AliasChoices(
+            "tipo_importacion",
+            "tipoImportacion",
+            "importType",
+        ),
+    )
     costo_fabrica_override: float | None = Field(
         default=None,
         gt=0,

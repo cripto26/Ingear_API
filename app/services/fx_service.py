@@ -1,6 +1,7 @@
 # app/services/fx_service.py
 
 import asyncio
+import json
 import time
 from datetime import datetime, timezone
 from typing import Dict, Tuple, Optional
@@ -35,6 +36,9 @@ ECB_EXR_CSV_URL = (
     "https://data-api.ecb.europa.eu/service/data/EXR/"
     "D.USD.EUR.SP00.A?lastNObservations=1&format=csvdata"
 )
+
+# Datos Abiertos Colombia: TRM certificada por Superfinanciera.
+DATOS_ABIERTOS_TRM_URL = "https://www.datos.gov.co/resource/32sa-8pi3.json"
 
 
 def _now_iso() -> str:
@@ -137,6 +141,24 @@ def _parse_ecb_csv_for_last_obs(csv_text: str) -> Tuple[str, float]:
     return date, val  # USD por 1 EUR
 
 
+def _parse_datos_abiertos_trm_json(json_text: str) -> Tuple[str, float]:
+    rows = json.loads(json_text or "[]")
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("Respuesta de Datos Abiertos sin TRM.")
+
+    row = rows[0]
+    if not isinstance(row, dict):
+        raise ValueError("Formato de TRM invalido en Datos Abiertos.")
+
+    raw_date = str(row.get("vigenciadesde") or "").strip()
+    raw_value = str(row.get("valor") or "").strip().replace(",", ".")
+
+    if not raw_date or not raw_value:
+        raise ValueError("Datos Abiertos no retorno vigencia/valor de TRM.")
+
+    return _normalize_date(raw_date[:10]), float(raw_value)
+
+
 def _urllib_get(url: str, params: Optional[dict] = None, timeout: int = 20) -> Tuple[bytes, str]:
     """
     GET con stdlib. Retorna (bytes, text-decoded).
@@ -187,6 +209,31 @@ async def _fetch_usd_cop_trm_banrep(client=None) -> Tuple[str, float]:
     return _parse_sdmx_generic_xml_for_last_obs(data)
 
 
+async def _fetch_usd_cop_trm_datos_abiertos(client=None) -> Tuple[str, float]:
+    params = {"$limit": "1", "$order": "vigenciadesde DESC"}
+
+    if _HAS_HTTPX:
+        assert client is not None, "httpx client requerido cuando httpx estÃ¡ disponible"
+        r = await client.get(DATOS_ABIERTOS_TRM_URL, params=params, timeout=20)
+        r.raise_for_status()
+        return _parse_datos_abiertos_trm_json(r.text)
+
+    _, text = await asyncio.to_thread(
+        _urllib_get,
+        DATOS_ABIERTOS_TRM_URL,
+        params,
+        20,
+    )
+    return _parse_datos_abiertos_trm_json(text)
+
+
+async def _fetch_usd_cop_trm(client=None) -> Tuple[str, float]:
+    try:
+        return await _fetch_usd_cop_trm_banrep(client)
+    except Exception:
+        return await _fetch_usd_cop_trm_datos_abiertos(client)
+
+
 async def _fetch_usd_per_eur_ecb(client=None) -> Tuple[str, float]:
     if _HAS_HTTPX:
         assert client is not None, "httpx client requerido cuando httpx está disponible"
@@ -207,12 +254,12 @@ async def get_fx_rates() -> FxRatesOut:
     if _HAS_HTTPX:
         async with httpx.AsyncClient() as client:  # type: ignore
             (trm_date, usd_cop), (eurusd_date, usd_per_eur) = await asyncio.gather(
-                _fetch_usd_cop_trm_banrep(client),
+                _fetch_usd_cop_trm(client),
                 _fetch_usd_per_eur_ecb(client),
             )
     else:
         (trm_date, usd_cop), (eurusd_date, usd_per_eur) = await asyncio.gather(
-            _fetch_usd_cop_trm_banrep(None),
+            _fetch_usd_cop_trm(None),
             _fetch_usd_per_eur_ecb(None),
         )
 
@@ -225,7 +272,10 @@ async def get_fx_rates() -> FxRatesOut:
         eurusd_date=eurusd_date,
         fetched_at=_now_iso(),
         sources=FxSources(
-            usd_cop="BanRep SDMX (DF_TRM_DAILY_LATEST)",
+            usd_cop=(
+                "BanRep SDMX (DF_TRM_DAILY_LATEST); "
+                "fallback Datos Abiertos Colombia/Superfinanciera"
+            ),
             usd_per_eur="ECB Data API (EXR D.USD.EUR.SP00.A)",
             note="EUR/COP calculado = (USD/COP TRM) * (USD por 1 EUR)",
         ),

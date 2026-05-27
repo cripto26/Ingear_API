@@ -22,6 +22,7 @@ class ProductoBase(BaseModel):
     peso_kg: Optional[Decimal] = None
     volumen: Optional[Decimal] = None
     valor_inventario: Optional[Decimal] = None
+    precio_inventario: Optional[Decimal] = None
     tipo_producto: Optional[str] = None
     subtipo: Optional[str] = None
     moneda: Optional[str] = None
@@ -53,6 +54,7 @@ class ProductoUpdate(BaseModel):
     peso_kg: Optional[Decimal] = None
     volumen: Optional[Decimal] = None
     valor_inventario: Optional[Decimal] = None
+    precio_inventario: Optional[Decimal] = None
     tipo_producto: Optional[str] = None
     subtipo: Optional[str] = None
     moneda: Optional[str] = None
@@ -83,5 +85,15 @@ class WorldOfficeInventorySyncOut(BaseModel):
     matched_productos: int
     unmatched_productos: int
     updated_productos: int
+    updated_cantidades: int
+    updated_precios: int
+    database: Optional[str] = None
+    bodega_codigo: Optional[str] = None
+
+
+class WorldOfficeProductImportOut(BaseModel):
+    productos_worldoffice: int
+    productos_existentes: int
+    productos_importados: int
     database: Optional[str] = None
     bodega_codigo: Optional[str] = None

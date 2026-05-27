@@ -30,6 +30,7 @@ from app.services.notificacion_service import (
     create_notification,
     resolve_notifications_for_entity,
 )
+from app.services.oportunidad_totals import sync_oportunidad_rubro_sin_iva
 
 
 router = APIRouter()
@@ -503,6 +504,8 @@ def _sync_oportunidad_cotizaciones(
     if oportunidad.fecha_cierre is None and fecha_probable_venta is not None:
         oportunidad.fecha_cierre = fecha_probable_venta
 
+    sync_oportunidad_rubro_sin_iva(db, oportunidad_id)
+
     if previous_oportunidad_id and previous_oportunidad_id != oportunidad_id:
         oportunidad_anterior = db.get(Oportunidad, previous_oportunidad_id)
         if oportunidad_anterior:
@@ -510,6 +513,7 @@ def _sync_oportunidad_cotizaciones(
                 oportunidad_anterior.cotizaciones,
                 previous_cotizaciones_value,
             )
+            sync_oportunidad_rubro_sin_iva(db, previous_oportunidad_id)
 
     return oportunidad
 
@@ -724,9 +728,32 @@ def eliminar(
     if not obj:
         raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
     _assert_can_edit_cotizacion(db, current, obj)
-    deleted = crud_cotizacion.remove(db, cotizacion_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Cotizacion no encontrada")
+
+    oportunidad_id = obj.id_oportunidad
+    oportunidad = db.get(Oportunidad, oportunidad_id) if oportunidad_id else None
+    cotizacion_en_oportunidad = (
+        _build_oportunidad_cotizaciones_value(obj, oportunidad)
+        if oportunidad
+        else None
+    )
+
+    try:
+        db.delete(obj)
+        if oportunidad:
+            oportunidad.cotizaciones = _remove_cotizaciones_entry(
+                oportunidad.cotizaciones,
+                cotizacion_en_oportunidad,
+            )
+        db.flush()
+        sync_oportunidad_rubro_sin_iva(db, oportunidad_id)
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="No fue posible eliminar la cotizacion.",
+        )
+
     return None
 
 

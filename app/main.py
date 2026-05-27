@@ -11,6 +11,7 @@ from app.db.schema_updates import (
     ensure_empleado_jefe_id_column,
     ensure_empleado_permisos_vistas_column,
     ensure_notificacion_table,
+    ensure_producto_precio_inventario_column,
 )
 from app.db.session import engine
 
@@ -55,6 +56,7 @@ def ensure_schema_updates():
     ensure_apu_table(engine)
     ensure_cuenta_cobro_table(engine)
     ensure_notificacion_table(engine)
+    ensure_producto_precio_inventario_column(engine)
 
 
 @app.get("/")

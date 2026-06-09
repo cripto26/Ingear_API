@@ -6,10 +6,7 @@ from app.db.session import get_db
 from app.models.empleado import Empleado
 from app.schemas.oportunidad import OportunidadCreate, OportunidadUpdate, OportunidadOut
 from app.crud.oportunidad import crud_oportunidad
-from app.services.oportunidad_totals import (
-    apply_oportunidades_rubro_sin_iva,
-    sync_oportunidad_rubro_sin_iva,
-)
+from app.services.oportunidad_totals import apply_oportunidades_rubro_sin_iva
 
 router = APIRouter()
 
@@ -47,10 +44,7 @@ def crear(
     data.pop("rubro_sin_iva", None)
 
     oportunidad = crud_oportunidad.create(db, data)
-    sync_oportunidad_rubro_sin_iva(db, oportunidad.id)
-    db.commit()
-    db.refresh(oportunidad)
-    return oportunidad
+    return apply_oportunidades_rubro_sin_iva(db, [oportunidad])[0]
 
 @router.put("/{oportunidad_id}", response_model=OportunidadOut)
 def actualizar(
@@ -67,10 +61,7 @@ def actualizar(
     data.pop("rubro_sin_iva", None)
 
     oportunidad = crud_oportunidad.update(db, obj, data)
-    sync_oportunidad_rubro_sin_iva(db, oportunidad.id)
-    db.commit()
-    db.refresh(oportunidad)
-    return oportunidad
+    return apply_oportunidades_rubro_sin_iva(db, [oportunidad])[0]
 
 @router.delete("/{oportunidad_id}", status_code=204)
 def eliminar(

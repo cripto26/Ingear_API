@@ -94,3 +94,29 @@ def ensure_cotizacion_version_estado_column(engine: Engine) -> None:
                 "ADD COLUMN estado VARCHAR(50)"
             )
         )
+
+
+def ensure_cotizacion_trm_columns(engine: Engine) -> None:
+    inspector = inspect(engine)
+    table_names = ("cotizacion", "cotizacion_versiones_v2")
+    missing_tables = [
+        table_name for table_name in table_names if not inspector.has_table(table_name)
+    ]
+    if missing_tables:
+        return
+
+    columns_by_table = {
+        table_name: {
+            column["name"] for column in inspector.get_columns(table_name)
+        }
+        for table_name in table_names
+    }
+
+    with engine.begin() as connection:
+        for table_name in table_names:
+            if "trm" in columns_by_table[table_name]:
+                continue
+
+            connection.execute(
+                text(f"ALTER TABLE {table_name} ADD COLUMN trm NUMERIC(14, 4)")
+            )

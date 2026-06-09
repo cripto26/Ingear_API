@@ -389,6 +389,28 @@ def obtener(
     return _serialize_product_for_permissions(obj, current)
 
 
+@router.get("/{producto_id}/datos-cotizador", response_model=ProductoOut)
+def obtener_datos_cotizador(
+    producto_id: int,
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(product_data_request_access),
+):
+    obj = crud_producto.get(db, producto_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    apply_world_office_inventory([obj])
+    if not _product_missing_quote_fields(obj):
+        resolved = resolve_notifications_for_entity(
+            db,
+            entidad_tipo="producto",
+            entidad_id=producto_id,
+            tipo="producto.datos_faltantes",
+        )
+        if resolved:
+            db.commit()
+    return obj
+
+
 @router.get("/{producto_id}/imagen")
 def obtener_imagen_producto(
     producto_id: int,

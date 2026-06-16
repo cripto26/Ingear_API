@@ -1,0 +1,14 @@
+{
+  "dry_run": false,
+  "excel_path": "C:\\Users\\dante\\OneDrive\\Desktop\\productos nuevos.xlsx",
+  "source_rows_valid": 1295,
+  "unique_codes_loaded": 1160,
+  "conflicting_duplicate_codes": 38,
+  "conflicting_duplicate_rows": 111,
+  "invalid_rows": 0,
+  "updated_existing": 7,
+  "inserted_new": 1153,
+  "verified_in_db": 1160,
+  "conflict_report": "D:\\IngeArt\\API_Ingear\\tmp\\productos_nuevos_conflictos.csv",
+  "invalid_report": null
+}

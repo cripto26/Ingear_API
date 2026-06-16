@@ -69,6 +69,16 @@ class CRUDBase(Generic[ModelType]):
         obj = self.get(db, id)
         if not obj:
             return None
-        db.delete(obj)
-        db.commit()
+        try:
+            db.delete(obj)
+            db.commit()
+        except IntegrityError:
+            db.rollback()
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "No se puede borrar el registro porque tiene datos "
+                    "relacionados."
+                ),
+            )
         return obj

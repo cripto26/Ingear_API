@@ -78,8 +78,18 @@ class CRUDOportunidad:
             return None
 
         table = self._table(db)
-        db.execute(delete(table).where(table.c.id == id))
-        db.commit()
+        try:
+            db.execute(delete(table).where(table.c.id == id))
+            db.commit()
+        except IntegrityError:
+            db.rollback()
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    "No se puede borrar la oportunidad porque tiene "
+                    "cotizaciones, proyectos u otros datos relacionados."
+                ),
+            )
         return obj
 
 

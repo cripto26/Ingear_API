@@ -55,6 +55,21 @@ class CotizacionProductoItem(BaseModel):
             "costoFabricaOverride",
         ),
     )
+    costo_instalacion: float | None = Field(
+        default=None,
+        ge=0,
+        validation_alias=AliasChoices(
+            "costo_instalacion",
+            "costoInstalacion",
+        ),
+    )
+    incluye_instalacion: bool = Field(
+        default=False,
+        validation_alias=AliasChoices(
+            "incluye_instalacion",
+            "incluyeInstalacion",
+        ),
+    )
 
 
 class CotizacionBase(BaseModel):

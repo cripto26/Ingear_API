@@ -19,8 +19,10 @@ def _normalize_request_host(host: str | None) -> str | None:
         if closing > 0:
             return value[1:closing]
 
-    if value.count(":") == 1 and "." in value:
-        return value.rsplit(":", 1)[0].strip() or None
+    if value.count(":") == 1:
+        host_part, port_part = value.rsplit(":", 1)
+        if port_part.isdigit():
+            return host_part.strip() or None
 
     return value
 
@@ -37,6 +39,11 @@ def _is_raw_ip_host(host: str | None) -> bool:
         return False
 
 
+def _is_turnstile_bypass_host(host: str | None) -> bool:
+    normalized = _normalize_request_host(host)
+    return normalized == "localhost" or _is_raw_ip_host(normalized)
+
+
 def validate_turnstile_token(
     token: str | None,
     remote_ip: str | None = None,
@@ -45,9 +52,9 @@ def validate_turnstile_token(
     if not settings.TURNSTILE_ENABLED:
         return
 
-    if _is_raw_ip_host(request_host):
+    if _is_turnstile_bypass_host(request_host):
         logger.info(
-            "Turnstile omitido para acceso por IP directa. host=%s remote_ip=%s",
+            "Turnstile omitido para acceso local/directo. host=%s remote_ip=%s",
             request_host,
             remote_ip,
         )

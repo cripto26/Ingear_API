@@ -1,7 +1,19 @@
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, model_validator
+from typing import Any, Optional
 from datetime import date
 from decimal import Decimal
+
+
+def _normalize_producto_field_names(value: Any) -> Any:
+    if not isinstance(value, dict) or "subtipo" not in value:
+        return value
+
+    data = dict(value)
+    old_tipo_producto = data.get("tipo_producto")
+    old_subtipo = data.pop("subtipo", None)
+    data["categoria"] = old_tipo_producto
+    data["tipo_producto"] = old_subtipo
+    return data
 
 
 class ProductoBase(BaseModel):
@@ -23,13 +35,17 @@ class ProductoBase(BaseModel):
     volumen: Optional[Decimal] = None
     valor_inventario: Optional[Decimal] = None
     precio_inventario: Optional[Decimal] = None
+    categoria: Optional[str] = None
     tipo_producto: Optional[str] = None
-    subtipo: Optional[str] = None
     moneda: Optional[str] = None
     arancel: Optional[Decimal] = None
     cantidad_inventario: int = 0
     referencia: Optional[str] = None
-    categoria: Optional[str] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_legacy_field_names(cls, value: Any) -> Any:
+        return _normalize_producto_field_names(value)
 
 
 class ProductoCreate(ProductoBase):
@@ -55,13 +71,17 @@ class ProductoUpdate(BaseModel):
     volumen: Optional[Decimal] = None
     valor_inventario: Optional[Decimal] = None
     precio_inventario: Optional[Decimal] = None
+    categoria: Optional[str] = None
     tipo_producto: Optional[str] = None
-    subtipo: Optional[str] = None
     moneda: Optional[str] = None
     arancel: Optional[Decimal] = None
     cantidad_inventario: Optional[int] = None
     referencia: Optional[str] = None
-    categoria: Optional[str] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_legacy_field_names(cls, value: Any) -> Any:
+        return _normalize_producto_field_names(value)
 
 
 class ProductoOut(ProductoBase):

@@ -1,7 +1,14 @@
 from decimal import Decimal
 from typing import Any
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import (
+    AliasChoices,
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_validator,
+)
 
 
 class ApuItem(BaseModel):
@@ -32,16 +39,29 @@ class ApuItem(BaseModel):
 
 
 class ApuBase(BaseModel):
-    subtipo: str
+    model_config = ConfigDict(populate_by_name=True)
+
+    tipo_producto: str = Field(
+        validation_alias=AliasChoices("tipo_producto", "subtipo")
+    )
+    categoria: str | None = None
     items: list[ApuItem] = Field(min_length=1)
 
-    @field_validator("subtipo")
+    @field_validator("tipo_producto")
     @classmethod
-    def validate_subtipo(cls, value: str) -> str:
+    def validate_tipo_producto(cls, value: str) -> str:
         normalized = str(value or "").strip()
         if not normalized:
-            raise ValueError("El subtipo es obligatorio.")
+            raise ValueError("El tipo de producto es obligatorio.")
         return normalized
+
+    @field_validator("categoria")
+    @classmethod
+    def validate_categoria(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        normalized = str(value or "").strip()
+        return normalized or None
 
 
 class ApuCreate(ApuBase):
@@ -49,18 +69,32 @@ class ApuCreate(ApuBase):
 
 
 class ApuUpdate(BaseModel):
-    subtipo: str | None = None
+    model_config = ConfigDict(populate_by_name=True)
+
+    tipo_producto: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("tipo_producto", "subtipo"),
+    )
+    categoria: str | None = None
     items: list[ApuItem] | None = Field(default=None, min_length=1)
 
-    @field_validator("subtipo")
+    @field_validator("tipo_producto")
     @classmethod
-    def validate_subtipo(cls, value: str | None) -> str | None:
+    def validate_tipo_producto(cls, value: str | None) -> str | None:
         if value is None:
             return None
         normalized = str(value or "").strip()
         if not normalized:
-            raise ValueError("El subtipo es obligatorio.")
+            raise ValueError("El tipo de producto es obligatorio.")
         return normalized
+
+    @field_validator("categoria")
+    @classmethod
+    def validate_categoria(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        normalized = str(value or "").strip()
+        return normalized or None
 
 
 class ApuOut(ApuBase):

@@ -4,7 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.v1.api import api_router
 from app.db.schema_updates import (
+    ensure_apu_categoria_column,
     ensure_apu_table,
+    ensure_apu_tipo_producto_column,
     ensure_auth_refresh_session_table,
     ensure_cuenta_cobro_table,
     ensure_cotizacion_version_estado_column,
@@ -12,7 +14,11 @@ from app.db.schema_updates import (
     ensure_empleado_jefe_id_column,
     ensure_empleado_permisos_vistas_column,
     ensure_notificacion_table,
+    ensure_producto_categoria_tipo_producto_columns,
     ensure_producto_precio_inventario_column,
+    normalize_business_text_uppercase,
+    normalize_producto_codes_uppercase,
+    normalize_producto_pais_origen_shenzhen,
 )
 from app.db.session import engine
 
@@ -56,9 +62,15 @@ def ensure_schema_updates():
     ensure_empleado_permisos_vistas_column(engine)
     ensure_auth_refresh_session_table(engine)
     ensure_apu_table(engine)
+    ensure_apu_tipo_producto_column(engine)
+    ensure_apu_categoria_column(engine)
     ensure_cuenta_cobro_table(engine)
     ensure_notificacion_table(engine)
     ensure_producto_precio_inventario_column(engine)
+    ensure_producto_categoria_tipo_producto_columns(engine)
+    normalize_producto_pais_origen_shenzhen(engine)
+    normalize_producto_codes_uppercase(engine)
+    normalize_business_text_uppercase(engine)
 
 
 @app.get("/")

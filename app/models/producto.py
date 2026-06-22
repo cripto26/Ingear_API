@@ -38,14 +38,13 @@ class Producto(Base):
     valor_inventario = Column(Numeric(14, 2), nullable=True)
     precio_inventario = Column(Numeric(14, 2), nullable=True)
 
+    categoria = Column(String(120), nullable=True)
     tipo_producto = Column(String(120), nullable=True)
-    subtipo = Column(String(120), nullable=True)
 
     moneda = Column(String(20), nullable=True)
     arancel = Column(Numeric(8, 2), nullable=True)
 
     referencia = Column(String(120), nullable=True)
-    categoria = Column(String(120), nullable=True)
     precio_pvp = Column(Numeric(14, 2), nullable=True)
 
     cantidad_inventario = Column(Integer, nullable=False, default=0)

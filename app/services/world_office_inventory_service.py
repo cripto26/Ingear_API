@@ -88,7 +88,6 @@ class WorldOfficeProductRecord:
     descripcion: str | None = None
     categoria: str | None = None
     tipo_producto: str | None = None
-    subtipo: str | None = None
     precio_inventario: Decimal | None = None
     arancel: Decimal | None = None
     cantidad_inventario: int = 0
@@ -300,7 +299,6 @@ def _merge_world_office_product_record(
     precio: object,
     categoria: object,
     tipo_producto: object = None,
-    subtipo: object = None,
     arancel: object = None,
 ) -> None:
     key = _normalize_lookup(codigo)
@@ -317,7 +315,6 @@ def _merge_world_office_product_record(
             descripcion=_clean_text(descripcion, 1000),
             categoria=_clean_text(categoria, 120),
             tipo_producto=_clean_text(tipo_producto, 120),
-            subtipo=_clean_text(subtipo, 120),
             precio_inventario=incoming_price,
             arancel=incoming_arancel,
         )
@@ -331,9 +328,6 @@ def _merge_world_office_product_record(
 
     if record.tipo_producto is None:
         record.tipo_producto = _clean_text(tipo_producto, 120)
-
-    if record.subtipo is None:
-        record.subtipo = _clean_text(subtipo, 120)
 
     if (
         incoming_price is not None
@@ -507,14 +501,8 @@ def _load_world_office_product_catalog() -> dict[str, WorldOfficeProductRecord]:
                 {WORLD_OFFICE_PRODUCT_CODE_EXPR} AS codigo,
                 MAX(CAST(COALESCE({WORLD_OFFICE_DESCRIPTION_EXPR}, '') AS NVARCHAR(1000))) AS descripcion,
                 CAST(MAX(COALESCE({WORLD_OFFICE_INVENTORY_PRICE_COLUMN}, 0)) AS DECIMAL(14, 2)) AS precio,
-                MAX(CAST(COALESCE(
-                    NULLIF(LTRIM(RTRIM(CAST(Descripcion_Grupo_Dos AS NVARCHAR(120)))), ''),
-                    NULLIF(LTRIM(RTRIM(CAST(Descripcion_Grupo_Uno AS NVARCHAR(120)))), ''),
-                    NULLIF(LTRIM(RTRIM(CAST(Clasificacion AS NVARCHAR(120)))), ''),
-                    ''
-                ) AS NVARCHAR(120))) AS categoria,
-                MAX(CAST(COALESCE(Clasificacion, '') AS NVARCHAR(120))) AS tipo_producto,
-                MAX(CAST(COALESCE(Descripcion_Grupo_Tres, '') AS NVARCHAR(120))) AS subtipo,
+                MAX(CAST(COALESCE(Clasificacion, '') AS NVARCHAR(120))) AS categoria,
+                MAX(CAST(COALESCE(Descripcion_Grupo_Tres, '') AS NVARCHAR(120))) AS tipo_producto,
                 CAST(MAX(COALESCE(porcArancel, 0)) AS DECIMAL(14, 2)) AS arancel
             FROM {WORLD_OFFICE_INVENTORY_PRICE_VIEW}
             WHERE {WORLD_OFFICE_PRODUCT_CODE_EXPR} IS NOT NULL
@@ -528,7 +516,6 @@ def _load_world_office_product_catalog() -> dict[str, WorldOfficeProductRecord]:
             precio,
             categoria,
             tipo_producto,
-            subtipo,
             arancel,
         ) in cursor.fetchall():
             _merge_world_office_product_record(
@@ -538,7 +525,6 @@ def _load_world_office_product_catalog() -> dict[str, WorldOfficeProductRecord]:
                 precio,
                 categoria,
                 tipo_producto,
-                subtipo,
                 arancel,
             )
 
@@ -681,7 +667,6 @@ def import_missing_world_office_products(
                 descripcion=_clean_text(record.descripcion, 1000),
                 categoria=_clean_text(record.categoria, 120),
                 tipo_producto=_clean_text(record.tipo_producto, 120),
-                subtipo=_clean_text(record.subtipo, 120),
                 precio_inventario=record.precio_inventario,
                 arancel=record.arancel,
                 cantidad_inventario=record.cantidad_inventario,

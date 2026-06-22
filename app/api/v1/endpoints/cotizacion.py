@@ -72,6 +72,8 @@ def _build_team_anchor_by_empleado_id(empleados: list[Empleado]) -> dict[int, in
             team_anchor_by_id[empleado.id] = empleado.id
             continue
 
+        
+
         if (
             _looks_like_commercial_team_leader(empleado)
             or empleado.id in direct_manager_ids

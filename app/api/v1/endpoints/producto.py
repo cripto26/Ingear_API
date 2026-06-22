@@ -5,7 +5,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.api.deps import require_view_permissions
@@ -59,7 +59,6 @@ PRODUCT_SENSITIVE_VALUE_FIELDS = (
     "descuento_fabricante",
     "costo_ingear",
     "valor_inventario",
-    "precio_pvp",
     "precio_inventario",
 )
 
@@ -264,8 +263,12 @@ def _calculate_costo_ingear(precio_pvp, descuento_fabricante):
     return cost.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
-def _normalize_product_code(value) -> str:
+def _clean_product_code(value) -> str:
     return str(value or "").strip()
+
+
+def _normalize_product_code(value) -> str:
+    return _clean_product_code(value).upper()
 
 
 def _build_duplicate_code_message(code: str) -> str:
@@ -277,7 +280,12 @@ def _validate_unique_product_code(
     codigo_producto,
     *,
     exclude_id: int | None = None,
+    current_code: str | None = None,
 ) -> str:
+    clean_code = _clean_product_code(codigo_producto)
+    if exclude_id is not None and clean_code == _clean_product_code(current_code):
+        return clean_code
+
     normalized_code = _normalize_product_code(codigo_producto)
     if not normalized_code:
         raise HTTPException(
@@ -297,6 +305,62 @@ def _validate_unique_product_code(
         )
 
     return normalized_code
+
+
+def _normalize_product_type(value) -> str:
+    return str(value or "").strip()
+
+
+def _list_existing_product_types(db: Session) -> list[str]:
+    rows = db.execute(
+        select(Producto.tipo_producto)
+        .where(Producto.tipo_producto.is_not(None))
+        .where(func.length(func.trim(Producto.tipo_producto)) > 0)
+        .distinct()
+    ).scalars()
+
+    values: dict[str, str] = {}
+    for value in rows:
+        clean = _normalize_product_type(value)
+        if not clean:
+            continue
+        key = _normalize_lookup(clean)
+        values.setdefault(key, clean)
+
+    return sorted(values.values(), key=_normalize_lookup)
+
+
+def _validate_existing_product_type(
+    db: Session,
+    tipo_producto,
+    *,
+    current_value=None,
+) -> str | None:
+    normalized = _normalize_product_type(tipo_producto)
+    if not normalized:
+        raise HTTPException(
+            status_code=422,
+            detail="Debes seleccionar un tipo de producto existente.",
+        )
+
+    if _normalize_lookup(normalized) == _normalize_lookup(current_value):
+        return normalized
+
+    exists = db.execute(
+        select(Producto.id)
+        .where(func.upper(func.trim(Producto.tipo_producto)) == normalized.upper())
+        .limit(1)
+    ).scalar_one_or_none()
+    if exists is not None:
+        return normalized
+
+    raise HTTPException(
+        status_code=422,
+        detail=(
+            "Debes seleccionar un tipo de producto existente. "
+            f"'{normalized}' no esta registrado en el catalogo."
+        ),
+    )
 
 
 def _payload_with_calculated_costo_ingear(data: dict, current=None) -> dict:
@@ -329,6 +393,14 @@ def listar(
     rows = crud_producto.list(db, skip=skip, limit=limit)
     apply_world_office_inventory(rows)
     return [_serialize_product_for_permissions(row, current) for row in rows]
+
+
+@router.get("/tipos-producto", response_model=list[str])
+def listar_tipos_producto(
+    db: Session = Depends(get_db),
+    _current: Empleado = Depends(product_access),
+):
+    return _list_existing_product_types(db)
 
 
 @router.get(
@@ -575,6 +647,10 @@ def crear(
         db,
         data.get("codigo_producto"),
     )
+    data["tipo_producto"] = _validate_existing_product_type(
+        db,
+        data.get("tipo_producto"),
+    )
     try:
         return crud_producto.create(db, data)
     except HTTPException as exc:
@@ -605,6 +681,13 @@ def actualizar(
             db,
             data.get("codigo_producto"),
             exclude_id=producto_id,
+            current_code=obj.codigo_producto,
+        )
+    if "tipo_producto" in data:
+        data["tipo_producto"] = _validate_existing_product_type(
+            db,
+            data.get("tipo_producto"),
+            current_value=obj.tipo_producto,
         )
     try:
         updated = crud_producto.update(db, obj, data)

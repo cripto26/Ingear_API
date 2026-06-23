@@ -48,6 +48,10 @@ from app.services.world_office_inventory_service import (
 router = APIRouter()
 product_access = require_view_permissions("comercial.productos")
 product_data_request_access = require_view_permissions("comercial.cotizador")
+product_image_access = require_view_permissions(
+    "comercial.cotizador",
+    "comercial.productos",
+)
 
 PRODUCT_VALUES_PERMISSION = "comercial.productos.valores-edicion"
 product_image_upload_access = require_view_permissions(
@@ -487,7 +491,7 @@ def obtener_datos_cotizador(
 def obtener_imagen_producto(
     producto_id: int,
     db: Session = Depends(get_db),
-    _current: Empleado = Depends(product_access),
+    _current: Empleado = Depends(product_image_access),
 ):
     obj = crud_producto.get(db, producto_id)
     if not obj:

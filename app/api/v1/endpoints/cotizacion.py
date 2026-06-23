@@ -613,6 +613,9 @@ def actualizar(
     _assert_can_edit_cotizacion(db, current, obj)
 
     data = payload.model_dump(exclude_unset=True)
+    # El propietario/asesor de una cotizacion no debe cambiar por editarla
+    # desde otra cuenta con permisos.
+    data.pop("id_empleado", None)
     fecha_probable_venta = data.pop("fecha_probable_venta", None)
     crear_proyecto_ganada = bool(data.pop("crear_proyecto_ganada", False))
     if "productos" in data:

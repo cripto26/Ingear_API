@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.api.deps import require_any_access
@@ -27,10 +27,11 @@ def obtener(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(despacho_access),
 ):
-    obj = crud_despacho.get(db, despacho_id)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Despacho no encontrado")
-    return obj
+    return crud_despacho.get_or_404(
+        db,
+        despacho_id,
+        detail="Despacho no encontrado",
+    )
 
 
 @router.post("/", response_model=DespachoOut, status_code=201)
@@ -49,9 +50,11 @@ def actualizar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(despacho_access),
 ):
-    obj = crud_despacho.get(db, despacho_id)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Despacho no encontrado")
+    obj = crud_despacho.get_or_404(
+        db,
+        despacho_id,
+        detail="Despacho no encontrado",
+    )
     return crud_despacho.update(db, obj, payload.model_dump(exclude_unset=True))
 
 
@@ -61,7 +64,9 @@ def eliminar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(despacho_access),
 ):
-    deleted = crud_despacho.remove(db, despacho_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Despacho no encontrado")
+    crud_despacho.remove_or_404(
+        db,
+        despacho_id,
+        detail="Despacho no encontrado",
+    )
     return None

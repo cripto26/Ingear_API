@@ -16,6 +16,7 @@ BUSINESS_TEXT_COLUMNS: dict[str, tuple[str, ...]] = {
         "tipo_cotizacion",
         "etapa_cotizacion",
         "forma_pago",
+        "contacto",
         "tipo_servicio",
     ),
     "cotizacion_versiones_v2": (
@@ -24,6 +25,7 @@ BUSINESS_TEXT_COLUMNS: dict[str, tuple[str, ...]] = {
         "tipo_cotizacion",
         "etapa_cotizacion",
         "forma_pago",
+        "contacto",
         "tipo_servicio",
     ),
     "cuenta_cobro": (

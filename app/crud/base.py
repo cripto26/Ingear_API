@@ -14,6 +14,18 @@ class CRUDBase(Generic[ModelType]):
     def get(self, db: Session, id: Any) -> Optional[ModelType]:
         return db.get(self.model, id)
 
+    def get_or_404(
+        self,
+        db: Session,
+        id: Any,
+        *,
+        detail: str = "Registro no encontrado",
+    ) -> ModelType:
+        obj = self.get(db, id)
+        if not obj:
+            raise HTTPException(status_code=404, detail=detail)
+        return obj
+
     def _resolve_list_ordering(self):
         if hasattr(self.model, "id"):
             return self.model.id, True
@@ -81,4 +93,16 @@ class CRUDBase(Generic[ModelType]):
                     "relacionados."
                 ),
             )
+        return obj
+
+    def remove_or_404(
+        self,
+        db: Session,
+        id: Any,
+        *,
+        detail: str = "Registro no encontrado",
+    ) -> ModelType:
+        obj = self.remove(db, id)
+        if not obj:
+            raise HTTPException(status_code=404, detail=detail)
         return obj

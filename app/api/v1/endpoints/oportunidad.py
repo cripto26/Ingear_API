@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.api.deps import require_view_permissions
@@ -28,9 +28,11 @@ def obtener(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(opportunity_access),
 ):
-    obj = crud_oportunidad.get(db, oportunidad_id)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Oportunidad no encontrada")
+    obj = crud_oportunidad.get_or_404(
+        db,
+        oportunidad_id,
+        detail="Oportunidad no encontrada",
+    )
     apply_oportunidades_rubro_sin_iva(db, [obj])
     return obj
 
@@ -53,9 +55,11 @@ def actualizar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(opportunity_access),
 ):
-    obj = crud_oportunidad.get(db, oportunidad_id)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Oportunidad no encontrada")
+    obj = crud_oportunidad.get_or_404(
+        db,
+        oportunidad_id,
+        detail="Oportunidad no encontrada",
+    )
 
     data = payload.model_dump(exclude_unset=True)
     data.pop("rubro_sin_iva", None)
@@ -69,7 +73,9 @@ def eliminar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(opportunity_access),
 ):
-    deleted = crud_oportunidad.remove(db, oportunidad_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Oportunidad no encontrada")
+    crud_oportunidad.remove_or_404(
+        db,
+        oportunidad_id,
+        detail="Oportunidad no encontrada",
+    )
     return None

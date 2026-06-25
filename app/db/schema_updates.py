@@ -251,6 +251,32 @@ def ensure_cotizacion_version_estado_column(engine: Engine) -> None:
         )
 
 
+def ensure_cotizacion_contacto_columns(engine: Engine) -> None:
+    inspector = inspect(engine)
+    table_names = ("cotizacion", "cotizacion_versiones_v2")
+    existing_tables = [
+        table_name for table_name in table_names if inspector.has_table(table_name)
+    ]
+    if not existing_tables:
+        return
+
+    columns_by_table = {
+        table_name: {
+            column["name"] for column in inspector.get_columns(table_name)
+        }
+        for table_name in existing_tables
+    }
+
+    with engine.begin() as connection:
+        for table_name in existing_tables:
+            if "contacto" in columns_by_table[table_name]:
+                continue
+
+            connection.execute(
+                text(f"ALTER TABLE {table_name} ADD COLUMN contacto VARCHAR(255)")
+            )
+
+
 def ensure_cotizacion_trm_columns(engine: Engine) -> None:
     inspector = inspect(engine)
     table_names = ("cotizacion", "cotizacion_versiones_v2")

@@ -27,10 +27,7 @@ def obtener(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(get_current_empleado),
 ):
-    obj = crud_pais.get(db, pais)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Pais no encontrado")
-    return obj
+    return crud_pais.get_or_404(db, pais, detail="Pais no encontrado")
 
 
 @router.post("/", response_model=PaisOut, status_code=201)
@@ -55,9 +52,7 @@ def actualizar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(get_current_empleado),
 ):
-    obj = crud_pais.get(db, pais)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Pais no encontrado")
+    obj = crud_pais.get_or_404(db, pais, detail="Pais no encontrado")
 
     data = payload.model_dump(exclude_unset=True)
     return crud_pais.update(db, obj, data)
@@ -69,7 +64,5 @@ def eliminar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(get_current_empleado),
 ):
-    deleted = crud_pais.remove(db, pais)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Pais no encontrado")
+    crud_pais.remove_or_404(db, pais, detail="Pais no encontrado")
     return None

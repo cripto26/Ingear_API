@@ -9,6 +9,7 @@ from app.db.schema_updates import (
     ensure_apu_tipo_producto_column,
     ensure_auth_refresh_session_table,
     ensure_cuenta_cobro_table,
+    ensure_cotizacion_contacto_columns,
     ensure_cotizacion_version_estado_column,
     ensure_cotizacion_trm_columns,
     ensure_empleado_jefe_id_column,
@@ -57,6 +58,7 @@ app.include_router(api_router, prefix="/api/v1")
 @app.on_event("startup")
 def ensure_schema_updates():
     ensure_cotizacion_version_estado_column(engine)
+    ensure_cotizacion_contacto_columns(engine)
     ensure_cotizacion_trm_columns(engine)
     ensure_empleado_jefe_id_column(engine)
     ensure_empleado_permisos_vistas_column(engine)

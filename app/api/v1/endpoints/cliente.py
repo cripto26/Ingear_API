@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.api.deps import require_view_permissions
@@ -48,9 +48,11 @@ def actualizar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(client_access),
 ):
-    obj = crud_cliente.get(db, cliente_id)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Cliente no encontrado")
+    obj = crud_cliente.get_or_404(
+        db,
+        cliente_id,
+        detail="Cliente no encontrado",
+    )
     data = payload.model_dump(exclude_unset=True)
     return crud_cliente.update(db, obj, data)
 
@@ -61,7 +63,5 @@ def eliminar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(client_access),
 ):
-    deleted = crud_cliente.remove(db, cliente_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Cliente no encontrado")
+    crud_cliente.remove_or_404(db, cliente_id, detail="Cliente no encontrado")
     return None

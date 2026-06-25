@@ -47,6 +47,7 @@ class CotizacionVersion(Base):
     tipo_cotizacion = Column(String(120), nullable=True)
     etapa_cotizacion = Column(String(120), nullable=True)
     forma_pago = Column(String(120), nullable=True)
+    contacto = Column(String(255), nullable=True)
     tipo_servicio = Column(String(50), nullable=True)
     estado = Column(String(50), nullable=True)
     trm = Column(Numeric(14, 4), nullable=True)

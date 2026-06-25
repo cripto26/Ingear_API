@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.api.deps import require_view_permissions
@@ -27,10 +27,11 @@ def obtener(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(contact_access),
 ):
-    obj = crud_contacto.get(db, contacto_id)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Contacto no encontrado")
-    return obj
+    return crud_contacto.get_or_404(
+        db,
+        contacto_id,
+        detail="Contacto no encontrado",
+    )
 
 
 @router.post("/", response_model=ContactoOut, status_code=201)
@@ -49,9 +50,11 @@ def actualizar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(contact_access),
 ):
-    obj = crud_contacto.get(db, contacto_id)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Contacto no encontrado")
+    obj = crud_contacto.get_or_404(
+        db,
+        contacto_id,
+        detail="Contacto no encontrado",
+    )
     return crud_contacto.update(db, obj, payload.model_dump(exclude_unset=True))
 
 
@@ -61,7 +64,5 @@ def eliminar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(contact_access),
 ):
-    deleted = crud_contacto.remove(db, contacto_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Contacto no encontrado")
+    crud_contacto.remove_or_404(db, contacto_id, detail="Contacto no encontrado")
     return None

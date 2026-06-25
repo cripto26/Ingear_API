@@ -60,10 +60,11 @@ def obtener(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(project_access),
 ):
-    obj = crud_proyecto.get(db, proyecto_id)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Proyecto no encontrado")
-    return obj
+    return crud_proyecto.get_or_404(
+        db,
+        proyecto_id,
+        detail="Proyecto no encontrado",
+    )
 
 
 @router.post("/", response_model=ProyectoOut, status_code=201)
@@ -83,9 +84,11 @@ def actualizar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(project_access),
 ):
-    obj = crud_proyecto.get(db, proyecto_id)
-    if not obj:
-        raise HTTPException(status_code=404, detail="Proyecto no encontrado")
+    obj = crud_proyecto.get_or_404(
+        db,
+        proyecto_id,
+        detail="Proyecto no encontrado",
+    )
 
     data = payload.model_dump(exclude_unset=True)
     target_oportunidad_id = data.get("oportunidad_id")
@@ -108,7 +111,5 @@ def eliminar(
     db: Session = Depends(get_db),
     _current: Empleado = Depends(project_access),
 ):
-    deleted = crud_proyecto.remove(db, proyecto_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Proyecto no encontrado")
+    crud_proyecto.remove_or_404(db, proyecto_id, detail="Proyecto no encontrado")
     return None

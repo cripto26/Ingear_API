@@ -83,6 +83,7 @@ class CotizacionBase(BaseModel):
     tipo_cotizacion: Optional[str] = None
     etapa_cotizacion: Optional[str] = None
     forma_pago: Optional[str] = None
+    contacto: Optional[str] = None
     tipo_servicio: Optional[str] = None
     trm: Optional[Decimal] = None
     sub_total: Optional[Decimal] = None
@@ -119,6 +120,7 @@ class CotizacionUpdate(BaseModel):
     tipo_cotizacion: Optional[str] = None
     etapa_cotizacion: Optional[str] = None
     forma_pago: Optional[str] = None
+    contacto: Optional[str] = None
     tipo_servicio: Optional[str] = None
     fecha_probable_venta: Optional[date] = None
     trm: Optional[Decimal] = None

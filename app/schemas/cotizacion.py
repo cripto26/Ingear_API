@@ -5,6 +5,9 @@ from typing import Any, Optional
 from pydantic import AliasChoices, BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 
+LOGISTICA_STOCK_ESTADOS = {"incompleto", "parcial", "completo"}
+
+
 
 
 def _parse_productos(value: Any) -> Any:
@@ -136,9 +139,44 @@ class CotizacionUpdate(BaseModel):
         return _parse_productos(value)
 
 
+class CotizacionLogisticaUpdate(BaseModel):
+    logistica_stock: Optional[int] = Field(default=None, ge=0)
+    logistica_stock_estado: Optional[str] = None
+    logistica_fecha_despacho: Optional[date] = None
+    logistica_fecha_entrega: Optional[date] = None
+    logistica_remision: Optional[str] = Field(default=None, max_length=120)
+    logistica_unidades_pendientes: Optional[int] = Field(default=None, ge=0)
+    logistica_orden_compra: Optional[str] = Field(default=None, max_length=120)
+    logistica_observaciones: Optional[str] = None
+
+    @field_validator("logistica_stock_estado")
+    @classmethod
+    def validate_logistica_stock_estado(cls, value: Optional[str]):
+        if value is None:
+            return None
+
+        normalized = value.strip().lower()
+        if normalized not in LOGISTICA_STOCK_ESTADOS:
+            raise ValueError(
+                "El estado de stock debe ser incompleto, parcial o completo."
+            )
+
+        return normalized
+
+
 class CotizacionOut(CotizacionBase):
     id: int
     fecha_creacion: datetime
+    empleado_nombre: Optional[str] = None
+    proyecto_nombre: Optional[str] = None
+    logistica_stock: Optional[int] = None
+    logistica_stock_estado: Optional[str] = None
+    logistica_fecha_despacho: Optional[date] = None
+    logistica_fecha_entrega: Optional[date] = None
+    logistica_remision: Optional[str] = None
+    logistica_unidades_pendientes: Optional[int] = None
+    logistica_orden_compra: Optional[str] = None
+    logistica_observaciones: Optional[str] = None
     proyecto_creado_id: Optional[int] = None
     can_edit: bool = True
     can_duplicate: bool = True
@@ -160,3 +198,84 @@ class CotizacionEmailOut(BaseModel):
     sender_email: EmailStr
     to_email: EmailStr
     gmail_message_id: str
+
+
+class CotizacionLogisticaProductoOut(BaseModel):
+    item_key: str
+    id_producto: int
+    codigo_producto: Optional[str] = None
+    descripcion: Optional[str] = None
+    marca: Optional[str] = None
+    particion: int = 1
+    nombre_particion: Optional[str] = None
+    tipo_importacion: Optional[str] = None
+    cantidad_cotizada: int = 0
+    cantidad_inventario: int = 0
+    cantidad_separada: int = 0
+    cantidad_entregada: int = 0
+    cantidad_pendiente: int = 0
+    cantidad_por_entregar: int = 0
+    porcentaje_entregado: float = 0
+    observaciones_separacion: Optional[str] = None
+
+
+class CotizacionLogisticaSeparacionItemIn(BaseModel):
+    item_key: str = Field(min_length=1, max_length=180)
+    cantidad_separada: int = Field(ge=0)
+    observaciones: Optional[str] = None
+
+
+class CotizacionLogisticaSeparacionIn(BaseModel):
+    items: list[CotizacionLogisticaSeparacionItemIn] = Field(min_length=1)
+
+
+class CotizacionLogisticaRemisionItemIn(BaseModel):
+    item_key: str = Field(min_length=1, max_length=180)
+    cantidad: int = Field(gt=0)
+
+
+class CotizacionLogisticaRemisionCreate(BaseModel):
+    numero_remision: Optional[str] = Field(default=None, max_length=120)
+    fecha_entrega: date
+    observaciones: Optional[str] = None
+    items: list[CotizacionLogisticaRemisionItemIn] = Field(min_length=1)
+
+
+class CotizacionLogisticaRemisionItemOut(BaseModel):
+    item_key: str
+    id_producto: int
+    codigo_producto: Optional[str] = None
+    descripcion: Optional[str] = None
+    marca: Optional[str] = None
+    particion: int = 1
+    nombre_particion: Optional[str] = None
+    cantidad: int
+
+
+class CotizacionLogisticaRemisionOut(BaseModel):
+    id: int
+    numero_remision: str
+    fecha_entrega: date
+    observaciones: Optional[str] = None
+    creado_en: datetime
+    creado_por_id: Optional[int] = None
+    items: list[CotizacionLogisticaRemisionItemOut] = Field(default_factory=list)
+
+
+class CotizacionLogisticaOrdenCompraSugeridaOut(BaseModel):
+    marca: str
+    unidades_pendientes: int
+    productos: list[CotizacionLogisticaProductoOut] = Field(default_factory=list)
+
+
+class CotizacionLogisticaResumenOut(BaseModel):
+    cotizacion_id: int
+    stock_estado: str
+    porcentaje_stock: float
+    total_unidades: int
+    unidades_separadas: int
+    unidades_entregadas: int
+    unidades_pendientes: int
+    productos: list[CotizacionLogisticaProductoOut] = Field(default_factory=list)
+    remisiones: list[CotizacionLogisticaRemisionOut] = Field(default_factory=list)
+    ordenes_compra_sugeridas: list[CotizacionLogisticaOrdenCompraSugeridaOut] = Field(default_factory=list)

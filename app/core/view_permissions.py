@@ -17,7 +17,14 @@ COMMERCIAL_VIEW_PERMISSIONS = (
     "comercial.productos.valores-edicion",
 )
 
-COMMERCIAL_VIEW_PERMISSION_SET = set(COMMERCIAL_VIEW_PERMISSIONS)
+LOGISTICS_VIEW_PERMISSIONS = (
+    "logistica.cotizaciones",
+    "logistica.stock.solicitar",
+    "logistica.stock.actualizar",
+)
+VIEW_PERMISSIONS = COMMERCIAL_VIEW_PERMISSIONS + LOGISTICS_VIEW_PERMISSIONS
+
+COMMERCIAL_VIEW_PERMISSION_SET = set(VIEW_PERMISSIONS)
 COMMERCIAL_VIEW_PERMISSION_ALLOWED_SET = COMMERCIAL_VIEW_PERMISSION_SET | {
     COMMERCIAL_VIEW_PERMISSION_VERSION_MARKER
 }
@@ -73,6 +80,19 @@ def expand_legacy_view_permissions(
         if permission in COMMERCIAL_VIEW_PERMISSION_SET
     }
 
+    cargo_normalized = normalize(cargo)
+
+    if role == "LOGISTICA":
+        selected.add("logistica.cotizaciones")
+        if "almacen" in cargo_normalized or "bodega" in cargo_normalized:
+            selected.add("logistica.stock.actualizar")
+        if (
+            "director" in cargo_normalized
+            or "jefe" in cargo_normalized
+            or "coordinador" in cargo_normalized
+        ):
+            selected.add("logistica.stock.solicitar")
+
     if (
         role in {"LOGISTICA", "INGENIERIA"}
         or "comercial.cotizador" in selected
@@ -84,7 +104,7 @@ def expand_legacy_view_permissions(
 
     return [
         permission
-        for permission in COMMERCIAL_VIEW_PERMISSIONS
+        for permission in VIEW_PERMISSIONS
         if permission in selected
     ]
 
@@ -94,9 +114,12 @@ def infer_legacy_view_permissions(area: str | None, cargo: str | None) -> list[s
     cargo_normalized = normalize(cargo)
 
     if role == "GERENCIA":
-        return list(COMMERCIAL_VIEW_PERMISSIONS)
+        return list(VIEW_PERMISSIONS)
 
     permissions: list[str] = []
+
+    if role == "LOGISTICA":
+        permissions.append("logistica.cotizaciones")
 
     if role == "COMERCIAL":
         permissions.append("comercial.cotizador")
@@ -135,7 +158,7 @@ def resolve_view_permissions(
     role = infer_role(area, cargo)
 
     if role == "GERENCIA":
-        return list(COMMERCIAL_VIEW_PERMISSIONS)
+        return list(VIEW_PERMISSIONS)
 
     normalized = normalize_view_permissions(permissions)
     if normalized is None:

@@ -37,3 +37,18 @@ class Cotizacion(Base):
 
     empleado = relationship("Empleado", back_populates="cotizaciones", foreign_keys=[id_empleado])
     oportunidad = relationship("Oportunidad", foreign_keys=[id_oportunidad])
+
+    @property
+    def empleado_nombre(self):
+        override = getattr(self, "_empleado_nombre_override", None)
+        if override:
+            return override
+        return self.empleado.nombre if self.empleado else None
+
+    @empleado_nombre.setter
+    def empleado_nombre(self, value):
+        self._empleado_nombre_override = value
+
+    @property
+    def proyecto_nombre(self):
+        return self.oportunidad.nombre_proyecto if self.oportunidad else None

@@ -10,13 +10,16 @@ from app.db.schema_updates import (
     ensure_auth_refresh_session_table,
     ensure_cuenta_cobro_table,
     ensure_cotizacion_contacto_columns,
+    ensure_cotizacion_logistica_tracking_tables,
     ensure_cotizacion_version_estado_column,
     ensure_cotizacion_trm_columns,
+    ensure_cotizaciones_aprobada_table,
     ensure_empleado_jefe_id_column,
     ensure_empleado_permisos_vistas_column,
     ensure_notificacion_table,
     ensure_producto_categoria_tipo_producto_columns,
     ensure_producto_precio_inventario_column,
+    remove_cotizacion_logistica_columns,
     normalize_business_text_uppercase,
     normalize_producto_codes_uppercase,
     normalize_producto_pais_origen_shenzhen,
@@ -60,6 +63,9 @@ def ensure_schema_updates():
     ensure_cotizacion_version_estado_column(engine)
     ensure_cotizacion_contacto_columns(engine)
     ensure_cotizacion_trm_columns(engine)
+    ensure_cotizaciones_aprobada_table(engine)
+    ensure_cotizacion_logistica_tracking_tables(engine)
+    remove_cotizacion_logistica_columns(engine)
     ensure_empleado_jefe_id_column(engine)
     ensure_empleado_permisos_vistas_column(engine)
     ensure_auth_refresh_session_table(engine)

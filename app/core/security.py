@@ -12,10 +12,10 @@ def normalize(value: str | None) -> str:
 
 def infer_role(area: str | None, cargo: str | None = None) -> str:
     text = f"{normalize(area)} {normalize(cargo)}"
+    if "logistica" in text or "logistico" in text:
+        return "LOGISTICA"
     if "gerencia" in text or "gerente" in text or "director" in text:
         return "GERENCIA"
-    if "logistica" in text:
-        return "LOGISTICA"
     if "ingenieria" in text:
         return "INGENIERIA"
     if "administr" in text:

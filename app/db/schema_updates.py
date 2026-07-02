@@ -4,6 +4,12 @@ from sqlalchemy.engine import Engine
 from app.models.apu import Apu
 from app.models.auth_refresh_session import AuthRefreshSession
 from app.models.cuenta_cobro import CuentaCobro
+from app.models.cotizacion_logistica import (
+    CotizacionAprobada,
+    CotizacionLogisticaRemision,
+    CotizacionLogisticaRemisionItem,
+    CotizacionLogisticaSeparacion,
+)
 from app.models.notificacion import Notificacion
 from app.db.text_normalization import BUSINESS_TEXT_COLUMNS
 
@@ -91,6 +97,126 @@ def ensure_notificacion_table(engine: Engine) -> None:
 
 def ensure_cuenta_cobro_table(engine: Engine) -> None:
     CuentaCobro.__table__.create(bind=engine, checkfirst=True)
+
+
+def ensure_cotizaciones_aprobada_table(engine: Engine) -> None:
+    CotizacionAprobada.__table__.create(bind=engine, checkfirst=True)
+
+    inspector = inspect(engine)
+    if not inspector.has_table("cotizacion"):
+        return
+
+    columns = {column["name"] for column in inspector.get_columns("cotizacion")}
+    required_columns = {
+        "id",
+        "id_empleado",
+        "id_oportunidad",
+        "fecha_creacion",
+        "estado",
+    }
+    if not required_columns.issubset(columns):
+        return
+
+    def source_or_default(column_name: str, fallback: str) -> str:
+        return column_name if column_name in columns else fallback
+
+    target_columns = [
+        "id",
+        "id_empleado",
+        "id_oportunidad",
+        "url_cotizacion",
+        "tiempo_entrega",
+        "nombre_cotizacion",
+        "fecha_creacion",
+        "fecha_aprobacion",
+        "tipo_cotizacion",
+        "etapa_cotizacion",
+        "forma_pago",
+        "contacto",
+        "tipo_servicio",
+        "trm",
+        "sub_total",
+        "total",
+        "productos",
+        "estado",
+        "logistica_stock",
+        "logistica_stock_estado",
+        "logistica_fecha_despacho",
+        "logistica_fecha_entrega",
+        "logistica_remision",
+        "logistica_unidades_pendientes",
+        "logistica_orden_compra",
+        "logistica_observaciones",
+    ]
+    select_expressions = [
+        "id",
+        "id_empleado",
+        "id_oportunidad",
+        source_or_default("url_cotizacion", "NULL"),
+        source_or_default("tiempo_entrega", "NULL"),
+        source_or_default("nombre_cotizacion", "NULL"),
+        "fecha_creacion",
+        "CURRENT_TIMESTAMP",
+        source_or_default("tipo_cotizacion", "NULL"),
+        source_or_default("etapa_cotizacion", "NULL"),
+        source_or_default("forma_pago", "NULL"),
+        source_or_default("contacto", "NULL"),
+        source_or_default("tipo_servicio", "NULL"),
+        source_or_default("trm", "NULL"),
+        source_or_default("sub_total", "NULL"),
+        source_or_default("total", "NULL"),
+        source_or_default("productos", "NULL"),
+        "estado",
+        source_or_default("logistica_stock", "0"),
+        source_or_default("logistica_stock_estado", "'incompleto'"),
+        source_or_default("logistica_fecha_despacho", "NULL"),
+        source_or_default("logistica_fecha_entrega", "NULL"),
+        source_or_default("logistica_remision", "NULL"),
+        source_or_default("logistica_unidades_pendientes", "NULL"),
+        source_or_default("logistica_orden_compra", "NULL"),
+        source_or_default("logistica_observaciones", "NULL"),
+    ]
+    snapshot_update_columns = [
+        "id_empleado",
+        "id_oportunidad",
+        "url_cotizacion",
+        "tiempo_entrega",
+        "nombre_cotizacion",
+        "fecha_creacion",
+        "tipo_cotizacion",
+        "etapa_cotizacion",
+        "forma_pago",
+        "contacto",
+        "tipo_servicio",
+        "trm",
+        "sub_total",
+        "total",
+        "productos",
+        "estado",
+    ]
+    update_assignments = ", ".join(
+        f"{column_name} = EXCLUDED.{column_name}"
+        for column_name in snapshot_update_columns
+    )
+
+    with engine.begin() as connection:
+        connection.execute(
+            text(
+                "INSERT INTO cotizaciones_aprobada "
+                f"({', '.join(target_columns)}) "
+                f"SELECT {', '.join(select_expressions)} "
+                "FROM cotizacion "
+                "WHERE LOWER(TRIM(COALESCE(estado, ''))) IN ('2', 'aprobada') "
+                "ON CONFLICT (id) DO UPDATE SET "
+                f"{update_assignments}"
+            )
+        )
+
+
+def ensure_cotizacion_logistica_tracking_tables(engine: Engine) -> None:
+    CotizacionLogisticaSeparacion.__table__.create(bind=engine, checkfirst=True)
+    CotizacionLogisticaRemision.__table__.create(bind=engine, checkfirst=True)
+    CotizacionLogisticaRemisionItem.__table__.create(bind=engine, checkfirst=True)
 
 
 def ensure_producto_precio_inventario_column(engine: Engine) -> None:
@@ -301,3 +427,29 @@ def ensure_cotizacion_trm_columns(engine: Engine) -> None:
             connection.execute(
                 text(f"ALTER TABLE {table_name} ADD COLUMN trm NUMERIC(14, 4)")
             )
+
+
+def remove_cotizacion_logistica_columns(engine: Engine) -> None:
+    inspector = inspect(engine)
+
+    if not inspector.has_table("cotizacion"):
+        return
+
+    columns = {column["name"] for column in inspector.get_columns("cotizacion")}
+    legacy_columns = [
+        "logistica_stock",
+        "logistica_stock_estado",
+        "logistica_fecha_despacho",
+        "logistica_fecha_entrega",
+        "logistica_remision",
+        "logistica_unidades_pendientes",
+        "logistica_orden_compra",
+        "logistica_observaciones",
+    ]
+    columns_to_drop = [column_name for column_name in legacy_columns if column_name in columns]
+    if not columns_to_drop:
+        return
+
+    with engine.begin() as connection:
+        for column_name in columns_to_drop:
+            connection.execute(text(f"ALTER TABLE cotizacion DROP COLUMN {column_name}"))

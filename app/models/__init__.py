@@ -6,6 +6,12 @@ from app.models.cuenta_cobro import CuentaCobro
 from app.models.empleado import Empleado
 from app.models.oportunidad import Oportunidad
 from app.models.cotizacion import Cotizacion
+from app.models.cotizacion_logistica import (
+    CotizacionAprobada,
+    CotizacionLogisticaRemision,
+    CotizacionLogisticaRemisionItem,
+    CotizacionLogisticaSeparacion,
+)
 from app.models.proyecto import Proyecto
 from app.models.producto import Producto
 from app.models.despacho import Despacho
@@ -26,6 +32,10 @@ __all__ = [
     "Empleado",
     "Oportunidad",
     "Cotizacion",
+    "CotizacionAprobada",
+    "CotizacionLogisticaRemision",
+    "CotizacionLogisticaRemisionItem",
+    "CotizacionLogisticaSeparacion",
     "Proyecto",
     "Producto",
     "Despacho",
